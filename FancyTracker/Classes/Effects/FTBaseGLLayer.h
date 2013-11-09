@@ -14,16 +14,29 @@
 
 #import <TUIOFramework/TuioClient.h>
 
+#import "FTRGBA.h"
 #import "FTInteractiveObject.h"
+
 #import "consts.h"
 
 @interface FTBaseGLLayer : CAOpenGLLayer <TuioBoundsListener>
 {
     NSMutableDictionary *_blobs;
 	GLUtesselator *_tess;
-	
+    
+    CGLContextObj _glContext;
+    GLuint _textureId;
+	GLuint _rboId;
+	GLuint _fboId;
+    
+    BOOL _mustGlClear;
+    
 	GLbitfield _clearBitfield;
 }
+@property (readonly) CGLContextObj glContext;
+@property (readonly) GLuint textureId;
+
+@property BOOL mustGLClear;
 
 - (id) init;
 
@@ -43,6 +56,7 @@
 - (void) tuioBoundsUpdated: (TuioBounds*) updatedBounds;
 - (void) tuioBoundsRemoved: (TuioBounds*) deadBounds;
 - (void) tuioFrameFinished;
+- (void) tuioStopListening;
 
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define FRAMES 40.f
+#define FRAMES 45.f
 
 @interface FTRGBA : NSObject
 {

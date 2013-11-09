@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000AB42A182EDD64004D7B67 /* FTColorTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = 000AB429182EDD64004D7B67 /* FTColorTracks.m */; };
 		002C3530182B330E007154BB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C352F182B330E007154BB /* OpenGL.framework */; };
 		002C3532182B332C007154BB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C3531182B332C007154BB /* QuartzCore.framework */; };
 		0073573B1829E7A2000075A2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0073573A1829E7A2000075A2 /* Cocoa.framework */; };
@@ -21,10 +22,33 @@
 		00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED4F1829FCA800CF3573 /* FTBoundariesBurnEffect.m */; };
 		00BBED541829FDBD00CF3573 /* FTInteractiveObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED531829FDBD00CF3573 /* FTInteractiveObject.mm */; };
 		00BBED58182A0B4000CF3573 /* FTRGBA.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED57182A0B4000CF3573 /* FTRGBA.m */; };
+		00C527F6182CAAFA00D10198 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C527F5182CAAFA00D10198 /* Syphon.framework */; };
+		00C527FC182CBE1400D10198 /* FTPainterEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C527FB182CBE1400D10198 /* FTPainterEffect.m */; };
+		00C52802182DB8A500D10198 /* FTStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C52801182DB8A500D10198 /* FTStack.m */; };
+		00C52805182DBD9800D10198 /* FTQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C52804182DBD9800D10198 /* FTQueue.m */; };
+		00C52808182DE61100D10198 /* FTColorTrails.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C52807182DE61100D10198 /* FTColorTrails.m */; };
+		00C5280A182DF89500D10198 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00C527F5182CAAFA00D10198 /* Syphon.framework */; };
+		00C5280B182DF89900D10198 /* TUIOFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */; };
 		00D4D433182C7D4B002F0B4E /* TUIOFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		00C527F8182CAF8800D10198 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				00C5280A182DF89500D10198 /* Syphon.framework in CopyFiles */,
+				00C5280B182DF89900D10198 /* TUIOFramework.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		000AB428182EDD64004D7B67 /* FTColorTracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTColorTracks.h; path = Classes/Effects/FTColorTracks.h; sourceTree = "<group>"; };
+		000AB429182EDD64004D7B67 /* FTColorTracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTColorTracks.m; path = Classes/Effects/FTColorTracks.m; sourceTree = "<group>"; };
 		002C34F8182B0EDA007154BB /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = consts.h; path = Classes/Helpers/consts.h; sourceTree = "<group>"; };
 		002C352F182B330E007154BB /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		002C3531182B332C007154BB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -52,6 +76,15 @@
 		00BBED531829FDBD00CF3573 /* FTInteractiveObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FTInteractiveObject.mm; path = Classes/Items/FTInteractiveObject.mm; sourceTree = "<group>"; };
 		00BBED56182A0B4000CF3573 /* FTRGBA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTRGBA.h; path = Classes/Helpers/FTRGBA.h; sourceTree = "<group>"; };
 		00BBED57182A0B4000CF3573 /* FTRGBA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTRGBA.m; path = Classes/Helpers/FTRGBA.m; sourceTree = "<group>"; };
+		00C527F5182CAAFA00D10198 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = FancyTracker/Libraries/Syphon.framework; sourceTree = "<group>"; };
+		00C527FA182CBE1400D10198 /* FTPainterEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTPainterEffect.h; path = Classes/Effects/FTPainterEffect.h; sourceTree = "<group>"; };
+		00C527FB182CBE1400D10198 /* FTPainterEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTPainterEffect.m; path = Classes/Effects/FTPainterEffect.m; sourceTree = "<group>"; };
+		00C52800182DB8A500D10198 /* FTStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTStack.h; path = Classes/Helpers/FTStack.h; sourceTree = "<group>"; };
+		00C52801182DB8A500D10198 /* FTStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTStack.m; path = Classes/Helpers/FTStack.m; sourceTree = "<group>"; };
+		00C52803182DBD9800D10198 /* FTQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTQueue.h; path = Classes/Helpers/FTQueue.h; sourceTree = "<group>"; };
+		00C52804182DBD9800D10198 /* FTQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTQueue.m; path = Classes/Helpers/FTQueue.m; sourceTree = "<group>"; };
+		00C52806182DE61100D10198 /* FTColorTrails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTColorTrails.h; path = Classes/Effects/FTColorTrails.h; sourceTree = "<group>"; };
+		00C52807182DE61100D10198 /* FTColorTrails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTColorTrails.m; path = Classes/Effects/FTColorTrails.m; sourceTree = "<group>"; };
 		00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TUIOFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug/TUIOFramework.framework"; sourceTree = "<group>"; };
 		00E1BD5F182C73590008B498 /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
 		00E1BD60182C73590008B498 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -106,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00C527F6182CAAFA00D10198 /* Syphon.framework in Frameworks */,
 				00D4D433182C7D4B002F0B4E /* TUIOFramework.framework in Frameworks */,
 				002C3532182B332C007154BB /* QuartzCore.framework in Frameworks */,
 				002C3530182B330E007154BB /* OpenGL.framework in Frameworks */,
@@ -144,6 +178,7 @@
 		007357391829E7A2000075A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				00C527F5182CAAFA00D10198 /* Syphon.framework */,
 				00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */,
 				002C3531182B332C007154BB /* QuartzCore.framework */,
 				002C352F182B330E007154BB /* OpenGL.framework */,
@@ -208,6 +243,12 @@
 				00BBED4C1829FC8E00CF3573 /* FTBaseGLLayer.m */,
 				00BBED4E1829FCA800CF3573 /* FTBoundariesBurnEffect.h */,
 				00BBED4F1829FCA800CF3573 /* FTBoundariesBurnEffect.m */,
+				00C527FA182CBE1400D10198 /* FTPainterEffect.h */,
+				00C527FB182CBE1400D10198 /* FTPainterEffect.m */,
+				00C52806182DE61100D10198 /* FTColorTrails.h */,
+				00C52807182DE61100D10198 /* FTColorTrails.m */,
+				000AB428182EDD64004D7B67 /* FTColorTracks.h */,
+				000AB429182EDD64004D7B67 /* FTColorTracks.m */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -227,6 +268,10 @@
 				00BBED56182A0B4000CF3573 /* FTRGBA.h */,
 				00BBED57182A0B4000CF3573 /* FTRGBA.m */,
 				002C34F8182B0EDA007154BB /* consts.h */,
+				00C52800182DB8A500D10198 /* FTStack.h */,
+				00C52801182DB8A500D10198 /* FTStack.m */,
+				00C52803182DBD9800D10198 /* FTQueue.h */,
+				00C52804182DBD9800D10198 /* FTQueue.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -343,6 +388,7 @@
 				007357331829E7A2000075A2 /* Sources */,
 				007357341829E7A2000075A2 /* Frameworks */,
 				007357351829E7A2000075A2 /* Resources */,
+				00C527F8182CAF8800D10198 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -401,12 +447,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				0073574E1829E7A2000075A2 /* FTAppDelegate.m in Sources */,
+				00C52802182DB8A500D10198 /* FTStack.m in Sources */,
+				00C52808182DE61100D10198 /* FTColorTrails.m in Sources */,
 				00BBED58182A0B4000CF3573 /* FTRGBA.m in Sources */,
 				007357471829E7A2000075A2 /* main.m in Sources */,
 				00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */,
 				00BBED491829FB8900CF3573 /* FTEffectContainerView.m in Sources */,
 				00BBED4D1829FC8E00CF3573 /* FTBaseGLLayer.m in Sources */,
+				00C52805182DBD9800D10198 /* FTQueue.m in Sources */,
+				00C527FC182CBE1400D10198 /* FTPainterEffect.m in Sources */,
 				00BBED541829FDBD00CF3573 /* FTInteractiveObject.mm in Sources */,
+				000AB42A182EDD64004D7B67 /* FTColorTracks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,14 +567,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug",
+					"$(SRCROOT)/FancyTracker/Libraries/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
@@ -538,14 +589,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug",
+					"$(SRCROOT)/FancyTracker/Libraries/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;

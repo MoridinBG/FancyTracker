@@ -11,12 +11,13 @@
 
 #import "FTInteractiveObject.h"
 
-@interface FTBoundariesBurnEffect : FTBaseGLLayer <TuioBoundsListener>
+@interface FTBoundariesBurnEffect : FTBaseGLLayer
 {
     
 }
 - (id) init;
 
+- (void) addBurningFilter;
 - (void) drawGL;
 
 - (void) tuioBoundsAdded: (TuioBounds*) newBounds;

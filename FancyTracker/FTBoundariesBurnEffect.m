@@ -14,19 +14,35 @@
 {
 	if(self = [super init])
 	{
-		NSLog(@"Boundaries Burn");
-//		[self addBurningFilter];
+		[self addBurningFilter];
 	}
 	return self;
 }
 
+- (void) addBurningFilter
+{
+	CIFilter *bloom = [CIFilter filterWithName:@"CIBloom"];
+	[bloom setDefaults];
+	bloom.name = @"bloom";
+	
+    CIFilter *blur = [CIFilter filterWithName:@"CIDiscBlur"];
+	[blur setDefaults];
+	blur.name = @"blur";
+	[blur setValue:[NSNumber numberWithFloat:5.f] forKey:@"inputRadius"];
+	[self setFilters:[NSArray arrayWithObjects:bloom, blur, nil]];
+	
+	[self setValue:[NSNumber numberWithFloat:5.0f]
+		forKeyPath:[NSString stringWithFormat:@"filters.bloom.%@", kCIInputIntensityKey]];
+	[self setValue:[NSNumber numberWithFloat:20.0f]
+		forKeyPath:[NSString stringWithFormat:@"filters.bloom.%@", kCIInputRadiusKey]];
+}
+
 - (void) drawGL
 {
-    for(NSNumber *key in [_blobs allKeys])
+    for(FTInteractiveObject *blob in [_blobs allValues])
 	{
-        [(FTRGBA*)[[_blobs objectForKey:key] color] stepColors];
-        
-        [self renderContourOfObject:[_blobs objectForKey:key]];
+        [[blob color] stepColors];
+        [self renderContourOfObject:blob];
         
 	}
 }

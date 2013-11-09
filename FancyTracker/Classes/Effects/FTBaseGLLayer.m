@@ -57,11 +57,11 @@ void tessCombineCB(GLdouble coords[3],
 {
 	if(self = [super init])
 	{
-        NSLog(@"Base GL Layer");
 		self.asynchronous = YES;
 		_blobs = [[NSMutableDictionary alloc] init];
 		
 		_clearBitfield =	GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+        _mustGLClear = TRUE;
 		
 		_tess = gluNewTess();
 		gluTessCallback(_tess, GLU_TESS_BEGIN, (void (CALLBACK *)())tessBeginCB);
@@ -79,7 +79,7 @@ void tessCombineCB(GLdouble coords[3],
 	CGLCreateContext(pixelFormat, NULL, &contextObj);
 	if(contextObj == NULL)
 		NSLog(@"Error: Could not create context!");
-	
+	_glContext = contextObj;
 /*
 	// Enable OpenGL multi-threading
 	CGLError err = 0;
@@ -94,7 +94,7 @@ void tessCombineCB(GLdouble coords[3],
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable (GL_LINE_SMOOTH);
-    glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
+    //glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 	
@@ -105,7 +105,41 @@ void tessCombineCB(GLdouble coords[3],
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+    
+    float width = self.frame.size.width;
+	float height = self.frame.size.height;
 	
+	glGenTextures(1, &_textureId);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0,
+				 GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    
+	glEnable(GL_TEXTURE_2D);
+	
+	// create a framebuffer object
+	glGenFramebuffersEXT(1, &_fboId);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _fboId);
+
+	// attach the texture to FBO color attachment point
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,
+							  GL_COLOR_ATTACHMENT0_EXT,
+							  GL_TEXTURE_2D,
+							  _textureId,
+							  0);
+	
+	glClearColor(BACKGROUND, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+    GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+	if(status != GL_FRAMEBUFFER_COMPLETE_EXT)
+	{
+		NSLog(@"Bad Framebuffer status");
+	}
+    
 	return contextObj;
 }
 
@@ -117,6 +151,7 @@ void tessCombineCB(GLdouble coords[3],
 		kCGLPFADoubleBuffer,
 		kCGLPFAColorSize, 24,
 		kCGLPFADepthSize, 16,
+        NSOpenGLPFANoRecovery,
 		0
 	};
 	
@@ -139,13 +174,54 @@ void tessCombineCB(GLdouble coords[3],
             forLayerTime:(CFTimeInterval) interval
              displayTime:(const CVTimeStamp *) timeStamp
 {
-	glClearColor(0.f, 0.f, 0.f, 0.0f);
-	glClear(_clearBitfield);
-	[self drawGL];
+    CGLSetCurrentContext(glContext);
+    
+    GLint previousFBO, previousReadFBO, previousDrawFBO;
+	glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &previousFBO);
+	glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING_EXT, &previousReadFBO);
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING_EXT, &previousDrawFBO);
+	
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _fboId);
+    
+    if(_mustGLClear)
+    {
+        glClearColor(BACKGROUND, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    
+    [self drawGL];
+    glColor4f(1.f, 1.f, 1.f, 1.f);
+    
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFBO);
+	glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, previousReadFBO);
+	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, previousDrawFBO);
+    
+    glClearColor(BACKGROUND, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+    
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+	
+	float aspect = self.frame.size.width / self.frame.size.height;
+	
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.f, 0.f);
+	glVertex2f(0.f, 0.f);
+	glTexCoord2f(1.0f, 0.f);
+	glVertex2f(aspect, 0.f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(aspect, 1.f);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(0.f, 1.f);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+    
+    [super drawInCGLContext:glContext pixelFormat:pixelFormat forLayerTime:interval displayTime:timeStamp];
 }
 
 - (void) drawGL
 {
+    NSLog(@"Implement your own drawing!");
 }
 
 - (void) renderContourOfObject:(FTInteractiveObject*) object
@@ -193,6 +269,22 @@ void tessCombineCB(GLdouble coords[3],
 	{
 		[object updateWithTuioBounds:updatedBounds];
 	}
+    
+    if(updatedBounds.contour.count == 0)
+    {
+        if(object.contourHistory.count >= HISTORY_DEPTH)
+            [object.contourHistory removeObjectAtIndex:0];
+        
+        object.contour = [[NSMutableArray alloc] initWithCapacity:40];
+        for(int i = 0; i < 36; i++)
+        {
+            float angle = i * DEG2RAD * 10;
+            [object.contour addObject:[[ObjectPoint alloc] initWithX:cos(angle) * updatedBounds.dimensions.width * 0.5f + object.position.x
+                                                                          Y:sin(angle) * updatedBounds.dimensions.height * 0.5f + object.position.y]];
+        }
+        
+        [object.contourHistory addObject: object.contour];
+    }
 }
 
 - (void) tuioBoundsRemoved: (TuioBounds*) deadBounds
@@ -202,6 +294,11 @@ void tessCombineCB(GLdouble coords[3],
 
 - (void) tuioFrameFinished
 {
+}
+
+- (void) tuioStopListening
+{
+    [_blobs removeAllObjects];
 }
 #pragma mark -
 

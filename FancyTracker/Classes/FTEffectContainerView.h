@@ -9,16 +9,33 @@
 #import <Cocoa/Cocoa.h>
 
 #import <TUIOFramework/TuioClient.h>
+#import <Syphon/Syphon.h>
+
+#import "FTQueue.h"
+
 #import "FTBoundariesBurnEffect.h"
+#import "Effects/FTPainterEffect.h"
+#import "Effects/FTColorTrails.h"
 
 @interface FTEffectContainerView : NSView
 {
     TuioClient *_tuioClient;
-    FTBaseGLLayer *_dumbLayer;
+    SyphonServer *_syphon;
+    
+    FTBaseGLLayer *_currentEffect;
+    FTQueue *_effectsQueue;
+    
+    NSTimer *_renderTimer;
 }
 
 - (void) awakeFromNib;
 
 - (void) drawRect:(NSRect) dirtyRect;
+-(void) sendToSyphon:(NSTimer*) aTimer;
+
+- (void) switchToNextEffect;
+
+- (BOOL)acceptsFirstResponder;
+- (void)keyDown:(NSEvent *)event;
 
 @end
