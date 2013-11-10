@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		000AB42A182EDD64004D7B67 /* FTColorTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = 000AB429182EDD64004D7B67 /* FTColorTracks.m */; };
+		000AB42C182F0CA0004D7B67 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 000AB42B182F0CA0004D7B67 /* libBox2D.a */; };
+		000AB42F182F1A6B004D7B67 /* FTb2Physics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000AB42E182F1A6B004D7B67 /* FTb2Physics.mm */; };
+		000AB432182F1AC2004D7B67 /* Render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000AB430182F1AC2004D7B67 /* Render.cpp */; };
+		000AB435182F1B69004D7B67 /* FTContactDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000AB434182F1B69004D7B67 /* FTContactDetector.mm */; };
+		000AB43C182F1FDB004D7B67 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000AB43B182F1FDB004D7B67 /* GLUT.framework */; };
+		000AB43D182F21A4004D7B67 /* FTContactDetectorCpp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000AB439182F1E0E004D7B67 /* FTContactDetectorCpp.mm */; };
+		000AB440182F3334004D7B67 /* FTInteractiveLogos.m in Sources */ = {isa = PBXBuildFile; fileRef = 000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */; };
 		002C3530182B330E007154BB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C352F182B330E007154BB /* OpenGL.framework */; };
 		002C3532182B332C007154BB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C3531182B332C007154BB /* QuartzCore.framework */; };
 		0073573B1829E7A2000075A2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0073573A1829E7A2000075A2 /* Cocoa.framework */; };
@@ -49,6 +56,19 @@
 /* Begin PBXFileReference section */
 		000AB428182EDD64004D7B67 /* FTColorTracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTColorTracks.h; path = Classes/Effects/FTColorTracks.h; sourceTree = "<group>"; };
 		000AB429182EDD64004D7B67 /* FTColorTracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTColorTracks.m; path = Classes/Effects/FTColorTracks.m; sourceTree = "<group>"; };
+		000AB42B182F0CA0004D7B67 /* libBox2D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBox2D.a; path = "../../../../Library/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug/libBox2D.a"; sourceTree = "<group>"; };
+		000AB42D182F1A6B004D7B67 /* FTb2Physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTb2Physics.h; path = Classes/Physics/FTb2Physics.h; sourceTree = "<group>"; };
+		000AB42E182F1A6B004D7B67 /* FTb2Physics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FTb2Physics.mm; path = Classes/Physics/FTb2Physics.mm; sourceTree = "<group>"; };
+		000AB430182F1AC2004D7B67 /* Render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Render.cpp; path = Classes/Physics/Render.cpp; sourceTree = "<group>"; };
+		000AB431182F1AC2004D7B67 /* Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Render.h; path = Classes/Physics/Render.h; sourceTree = "<group>"; };
+		000AB433182F1B69004D7B67 /* FTContactDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTContactDetector.h; path = Classes/Physics/FTContactDetector.h; sourceTree = "<group>"; };
+		000AB434182F1B69004D7B67 /* FTContactDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FTContactDetector.mm; path = Classes/Physics/FTContactDetector.mm; sourceTree = "<group>"; };
+		000AB437182F1BA6004D7B67 /* FTProximitySensorListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FTProximitySensorListener.h; path = Protocols/FTProximitySensorListener.h; sourceTree = "<group>"; };
+		000AB438182F1E0E004D7B67 /* FTContactDetectorCpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTContactDetectorCpp.h; path = Classes/Physics/FTContactDetectorCpp.h; sourceTree = "<group>"; };
+		000AB439182F1E0E004D7B67 /* FTContactDetectorCpp.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FTContactDetectorCpp.mm; path = Classes/Physics/FTContactDetectorCpp.mm; sourceTree = "<group>"; };
+		000AB43B182F1FDB004D7B67 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLUT.framework; sourceTree = DEVELOPER_DIR; };
+		000AB43E182F3334004D7B67 /* FTInteractiveLogos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTInteractiveLogos.h; path = Classes/Effects/FTInteractiveLogos.h; sourceTree = "<group>"; };
+		000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTInteractiveLogos.m; path = Classes/Effects/FTInteractiveLogos.m; sourceTree = "<group>"; };
 		002C34F8182B0EDA007154BB /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = consts.h; path = Classes/Helpers/consts.h; sourceTree = "<group>"; };
 		002C352F182B330E007154BB /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		002C3531182B332C007154BB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -139,10 +159,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				000AB43C182F1FDB004D7B67 /* GLUT.framework in Frameworks */,
 				00C527F6182CAAFA00D10198 /* Syphon.framework in Frameworks */,
 				00D4D433182C7D4B002F0B4E /* TUIOFramework.framework in Frameworks */,
 				002C3532182B332C007154BB /* QuartzCore.framework in Frameworks */,
 				002C3530182B330E007154BB /* OpenGL.framework in Frameworks */,
+				000AB42C182F0CA0004D7B67 /* libBox2D.a in Frameworks */,
 				0073573B1829E7A2000075A2 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -150,10 +172,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000AB436182F1B88004D7B67 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				000AB437182F1BA6004D7B67 /* FTProximitySensorListener.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		002C3489182B0DC8007154BB /* Physics */ = {
 			isa = PBXGroup;
 			children = (
 				00E1BD5E182C73590008B498 /* Box2D */,
+				000AB42D182F1A6B004D7B67 /* FTb2Physics.h */,
+				000AB42E182F1A6B004D7B67 /* FTb2Physics.mm */,
+				000AB430182F1AC2004D7B67 /* Render.cpp */,
+				000AB431182F1AC2004D7B67 /* Render.h */,
+				000AB433182F1B69004D7B67 /* FTContactDetector.h */,
+				000AB434182F1B69004D7B67 /* FTContactDetector.mm */,
+				000AB438182F1E0E004D7B67 /* FTContactDetectorCpp.h */,
+				000AB439182F1E0E004D7B67 /* FTContactDetectorCpp.mm */,
 			);
 			name = Physics;
 			sourceTree = "<group>";
@@ -178,6 +216,8 @@
 		007357391829E7A2000075A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				000AB43B182F1FDB004D7B67 /* GLUT.framework */,
+				000AB42B182F0CA0004D7B67 /* libBox2D.a */,
 				00C527F5182CAAFA00D10198 /* Syphon.framework */,
 				00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */,
 				002C3531182B332C007154BB /* QuartzCore.framework */,
@@ -201,6 +241,7 @@
 		007357401829E7A2000075A2 /* FancyTracker */ = {
 			isa = PBXGroup;
 			children = (
+				000AB436182F1B88004D7B67 /* Protocols */,
 				00BBED431829FA6700CF3573 /* Classes */,
 				0073574F1829E7A2000075A2 /* MainMenu.xib */,
 				007357521829E7A2000075A2 /* Images.xcassets */,
@@ -249,6 +290,8 @@
 				00C52807182DE61100D10198 /* FTColorTrails.m */,
 				000AB428182EDD64004D7B67 /* FTColorTracks.h */,
 				000AB429182EDD64004D7B67 /* FTColorTracks.m */,
+				000AB43E182F3334004D7B67 /* FTInteractiveLogos.h */,
+				000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -451,13 +494,18 @@
 				00C52808182DE61100D10198 /* FTColorTrails.m in Sources */,
 				00BBED58182A0B4000CF3573 /* FTRGBA.m in Sources */,
 				007357471829E7A2000075A2 /* main.m in Sources */,
+				000AB440182F3334004D7B67 /* FTInteractiveLogos.m in Sources */,
 				00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */,
 				00BBED491829FB8900CF3573 /* FTEffectContainerView.m in Sources */,
 				00BBED4D1829FC8E00CF3573 /* FTBaseGLLayer.m in Sources */,
 				00C52805182DBD9800D10198 /* FTQueue.m in Sources */,
+				000AB43D182F21A4004D7B67 /* FTContactDetectorCpp.mm in Sources */,
+				000AB42F182F1A6B004D7B67 /* FTb2Physics.mm in Sources */,
 				00C527FC182CBE1400D10198 /* FTPainterEffect.m in Sources */,
 				00BBED541829FDBD00CF3573 /* FTInteractiveObject.mm in Sources */,
 				000AB42A182EDD64004D7B67 /* FTColorTracks.m in Sources */,
+				000AB435182F1B69004D7B67 /* FTContactDetector.mm in Sources */,
+				000AB432182F1AC2004D7B67 /* Render.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,7 +621,7 @@
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;
@@ -595,7 +643,7 @@
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;

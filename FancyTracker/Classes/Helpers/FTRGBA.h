@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define FRAMES 45.f
-
 @interface FTRGBA : NSObject
 {
     float _newR;
@@ -23,11 +21,15 @@
 	float _stepA;
     
     float _colorSpeed;
+    
+    unsigned int _colorChangeSteps;
 }
 @property float r;
 @property float g;
 @property float b;
 @property float a;
+
+@property unsigned int colorChangeSteps;
 
 - (id) initWithR:(float) r
 		   withG:(float) g
@@ -35,6 +37,9 @@
 		   withA:(float) a;
 
 + (id) randomColorWithMinimumValue:(int)minColor;
+
+- (unsigned int) colorChangeSteps;
+- (void) setColorChangeSteps:(unsigned int)colorChangeSteps;
 
 - (void) randomizeColor;
 - (void) stepColors;

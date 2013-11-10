@@ -60,6 +60,9 @@ typedef enum type {CIRCLE, ELIPSE, RECTANGLE, RECTANGLE_SENSOR, CIRCLE_SENSOR} T
 
 - (void) updateWithTuioBounds:(TuioBounds*)bounds;
 
+- (void) setPhysicsData:(NSValue *)data;
+- (NSValue*) physicsData;
+
 - (void) addNeighbour:(FTInteractiveObject*)neighbour;
 - (void) removeNeighbour:(FTInteractiveObject*)neigbour;
 

@@ -16,6 +16,7 @@
 #import "FTBoundariesBurnEffect.h"
 #import "Effects/FTPainterEffect.h"
 #import "Effects/FTColorTrails.h"
+#import "Effects/FTColorTracks.h"
 
 @interface FTEffectContainerView : NSView
 {

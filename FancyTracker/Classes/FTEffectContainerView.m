@@ -21,6 +21,11 @@
                                      relativeCoordinates:true];
     _effectsQueue = [[FTQueue alloc] initWithSingleClass:[FTBaseGLLayer class]];
 
+    _currentEffect = [FTColorTracks layer];
+    _currentEffect.mustGLClear = TRUE;
+    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [_effectsQueue enqueue:_currentEffect];
+    
     _currentEffect = [FTColorTrails layer];
     _currentEffect.mustGLClear = TRUE;
     _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);

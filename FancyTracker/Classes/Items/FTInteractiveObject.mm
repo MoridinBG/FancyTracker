@@ -68,6 +68,9 @@
 	return self;
 }
 
+#pragma mark -
+
+#pragma mark TUIO
 - (void) updateWithTuioBounds:(TuioBounds*)bounds
 {
 	self.position = bounds.position;
@@ -77,6 +80,27 @@
 	self.velocity = bounds.movementVelocity;
 	self.contour = bounds.contour;
 }
+#pragma mark -
+
+#pragma mark Physics packing
+
+- (void) setPhysicsData:(NSValue *)data
+{
+	if(_physicsData)
+		_physicsData->GetWorld()->DestroyBody(_physicsData);
+	_physicsData = (b2Body*) [data pointerValue];
+}
+
+- (NSValue*) physicsData
+{
+	if(_physicsData)
+		return [NSValue valueWithPointer:_physicsData];
+	else
+		return nil;
+	
+}
+
+#pragma mark -
 
 
 #pragma mark Manage Neighbours

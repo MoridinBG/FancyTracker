@@ -27,7 +27,9 @@
         _newB = b;
         _newA = a;
         
-        [self calcColorChangeInSteps:FRAMES];
+        _colorChangeSteps = 45;
+        
+        [self calcColorChangeInSteps:_colorChangeSteps];
 	}
 	
 	return self;
@@ -41,6 +43,17 @@
                              withA:1.f];
 }
 
+- (unsigned int) colorChangeSteps
+{
+    return _colorChangeSteps;
+}
+
+- (void) setColorChangeSteps:(unsigned int)colorChangeSteps
+{
+    _colorChangeSteps = colorChangeSteps;
+    [self calcColorChangeInSteps:_colorChangeSteps];
+}
+
 - (void) randomizeColor
 {
 	if(_r != _newR)
@@ -48,12 +61,12 @@
 		if((_r > _newR) && (_stepR > 0))
 		{
 			_newR = (((float)(arc4random() % 255)) / 255.f);
-			_stepR = (_newR - _r) / (FRAMES * 2.f);
+			_stepR = (_newR - _r) / (_colorChangeSteps * 2.f);
 		}
 		if((_r < _newR) && (_stepR < 0))
 		{
 			_newR = (((float)(arc4random() % 255)) / 255.f);
-			_stepR = (_newR - _r) / (FRAMES * 2.f);
+			_stepR = (_newR - _r) / (_colorChangeSteps * 2.f);
 		}
 		_stepR *= _colorSpeed;
 		_r += _stepR;
@@ -61,7 +74,7 @@
 	else
 	{
 		_newR = (((float)(arc4random() % 255)) / 255.f);
-		_stepR = (_newR - _r) / (FRAMES * 2.f);
+		_stepR = (_newR - _r) / (_colorChangeSteps * 2.f);
 	}
 	
 	if(_g != _newG)
@@ -69,12 +82,12 @@
 		if((_g > _newG) && (_stepG > 0))
 		{
 			_newG = (((float)(arc4random() % 255)) / 255.f);
-			_stepG = (_newG - _g) / (FRAMES * 2.f);
+			_stepG = (_newG - _g) / (_colorChangeSteps * 2.f);
 		}
 		if((_g < _newG) && (_stepG < 0))
 		{
 			_newG = (((float)(arc4random() % 255)) / 255.f);
-			_stepG = (_newG - _g) / (FRAMES * 2.f);
+			_stepG = (_newG - _g) / (_colorChangeSteps * 2.f);
 		}
 		_stepG *= _colorSpeed;
 		_g += _stepG;
@@ -82,7 +95,7 @@
 	else
 	{
 		_newG = (((float)(arc4random() % 255)) / 255.f);
-		_stepG = (_newG - _g) / (FRAMES * 2.f);
+		_stepG = (_newG - _g) / (_colorChangeSteps * 2.f);
 	}
 	
 	if(_b != _newB)
@@ -90,12 +103,12 @@
 		if((_b > _newB) && (_stepB > 0))
 		{
 			_newB = (((float)(arc4random() % 255)) / 255.f);
-			_stepB = (_newB - _b) / (FRAMES * 2.f);
+			_stepB = (_newB - _b) / (_colorChangeSteps * 2.f);
 		}
 		if((_b < _newB) && (_stepB < 0))
 		{
 			_newB = (((float)(arc4random() % 255)) / 255.f);
-			_stepB = (_newB - _b) / (FRAMES * 2.f);
+			_stepB = (_newB - _b) / (_colorChangeSteps * 2.f);
 		}
 		_stepB *= _colorSpeed;
 		_b += _stepB;
@@ -103,7 +116,7 @@
 	else
 	{
 		_newB = (((float)(arc4random() % 255)) / 255.f);
-		_stepB = (_newB - _b) / (FRAMES * 2);
+		_stepB = (_newB - _b) / (_colorChangeSteps * 2);
 	}
 }
 
@@ -156,7 +169,7 @@
 	_newR = (((float)(arc4random() % 255)) / 255.f);
 	_newG = (((float)(arc4random() % 255)) / 255.f);
 	_newB = (((float)(arc4random() % 255)) / 255.f);
-    [self calcColorChangeInSteps:FRAMES];
+    [self calcColorChangeInSteps:_colorChangeSteps];
     
 }
 

@@ -46,6 +46,7 @@
 	[super tuioBoundsAdded:newBounds];
 	FTInteractiveObject * object = [_blobs objectForKey:[newBounds getKey]];
 	object.color = [FTRGBA randomColorWithMinimumValue:10];
+    object.color.colorChangeSteps = 60;
 }
 
 @end
