@@ -17,6 +17,7 @@
 #import "Effects/FTPainterEffect.h"
 #import "Effects/FTColorTrails.h"
 #import "Effects/FTColorTracks.h"
+#import "Effects/FTInteractiveLogos.h"
 
 @interface FTEffectContainerView : NSView
 {
@@ -27,6 +28,7 @@
     FTQueue *_effectsQueue;
     
     NSTimer *_renderTimer;
+    CATextLayer *_text;
 }
 
 - (void) awakeFromNib;

@@ -14,7 +14,7 @@
 {
 	if(self = [super init])
 	{
-		[self addBlurFilter];
+//		[self addBlurFilter];
 	}
 	return self;
 }

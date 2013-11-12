@@ -15,24 +15,37 @@
     #import <Box2D/Dynamics/b2Body.h>
     #import <Box2D/Dynamics/b2World.h>
     #import <Box2D/Dynamics/b2Fixture.h>
+    #import "b2PolygonShape.h"
 #endif
 
-typedef enum type {CIRCLE, ELIPSE, RECTANGLE, RECTANGLE_SENSOR, CIRCLE_SENSOR} Type;
+typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RECTANGLE_SENSOR} Type;
+#define PHYS_AREA_DIFF 0.2f
 
 @interface FTInteractiveObject : NSObject
 {
     Type _type;
     
+    CGPoint _position;
+    float _angle;
+    id _userObject;
+    
 #ifdef __cplusplus
 	b2Body *_physicsData;
 #endif
 }
+@property Type type;
 
 @property CGPoint position;
 @property NSMutableArray * positionHistory;
 
+@property id userObject;
+
+@property CGSize physicsSize;
+@property BOOL shouldResizePhysics;
+@property BOOL isPhysicsControlled;
+
 @property CGSize size;
-@property double angle;
+@property float angle;
 @property CGPoint velocity;
 
 @property NSMutableArray *contour;
@@ -62,6 +75,8 @@ typedef enum type {CIRCLE, ELIPSE, RECTANGLE, RECTANGLE_SENSOR, CIRCLE_SENSOR} T
 
 - (void) setPhysicsData:(NSValue *)data;
 - (NSValue*) physicsData;
+
+- (void) destroyPhysicsData;
 
 - (void) addNeighbour:(FTInteractiveObject*)neighbour;
 - (void) removeNeighbour:(FTInteractiveObject*)neigbour;

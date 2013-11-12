@@ -24,6 +24,9 @@
 		0073574E1829E7A2000075A2 /* FTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0073574D1829E7A2000075A2 /* FTAppDelegate.m */; };
 		007357511829E7A2000075A2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0073574F1829E7A2000075A2 /* MainMenu.xib */; };
 		007357531829E7A2000075A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 007357521829E7A2000075A2 /* Images.xcassets */; };
+		00A6866218329DB600D40A7C /* C1.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6865F18329DB600D40A7C /* C1.png */; };
+		00A6866318329DB600D40A7C /* C2.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866018329DB600D40A7C /* C2.png */; };
+		00A6866418329DB600D40A7C /* C3.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866118329DB600D40A7C /* C3.png */; };
 		00BBED491829FB8900CF3573 /* FTEffectContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED481829FB8900CF3573 /* FTEffectContainerView.m */; };
 		00BBED4D1829FC8E00CF3573 /* FTBaseGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED4C1829FC8E00CF3573 /* FTBaseGLLayer.m */; };
 		00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED4F1829FCA800CF3573 /* FTBoundariesBurnEffect.m */; };
@@ -86,6 +89,9 @@
 		0073574D1829E7A2000075A2 /* FTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTAppDelegate.m; sourceTree = "<group>"; };
 		007357501829E7A2000075A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		007357521829E7A2000075A2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		00A6865F18329DB600D40A7C /* C1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C1.png; sourceTree = "<group>"; };
+		00A6866018329DB600D40A7C /* C2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C2.png; sourceTree = "<group>"; };
+		00A6866118329DB600D40A7C /* C3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C3.png; sourceTree = "<group>"; };
 		00BBED471829FB4E00CF3573 /* FTEffectContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTEffectContainerView.h; path = Classes/FTEffectContainerView.h; sourceTree = "<group>"; };
 		00BBED481829FB8900CF3573 /* FTEffectContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTEffectContainerView.m; path = Classes/FTEffectContainerView.m; sourceTree = "<group>"; };
 		00BBED4B1829FC8E00CF3573 /* FTBaseGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTBaseGLLayer.h; path = Classes/Effects/FTBaseGLLayer.h; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 		0073572E1829E7A2000075A2 = {
 			isa = PBXGroup;
 			children = (
+				00A6865E18329DB600D40A7C /* Resources */,
 				007357401829E7A2000075A2 /* FancyTracker */,
 				007357391829E7A2000075A2 /* Frameworks */,
 				007357381829E7A2000075A2 /* Products */,
@@ -260,6 +267,17 @@
 				007357491829E7A2000075A2 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		00A6865E18329DB600D40A7C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				00A6865F18329DB600D40A7C /* C1.png */,
+				00A6866018329DB600D40A7C /* C2.png */,
+				00A6866118329DB600D40A7C /* C3.png */,
+			);
+			name = Resources;
+			path = FancyTracker/Resources;
 			sourceTree = "<group>";
 		};
 		00BBED431829FA6700CF3573 /* Classes */ = {
@@ -475,6 +493,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00A6866318329DB600D40A7C /* C2.png in Resources */,
+				00A6866218329DB600D40A7C /* C1.png in Resources */,
+				00A6866418329DB600D40A7C /* C3.png in Resources */,
 				007357451829E7A2000075A2 /* InfoPlist.strings in Resources */,
 				007357531829E7A2000075A2 /* Images.xcassets in Resources */,
 				0073574B1829E7A2000075A2 /* Credits.rtf in Resources */,
@@ -621,7 +642,10 @@
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug";
+				LIBRARY_SEARCH_PATHS = (
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug",
+					../../../,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;
@@ -643,7 +667,10 @@
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/FancyTracker/Classes/Physics/**";
 				INFOPLIST_FILE = "FancyTracker/FancyTracker-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug";
+				LIBRARY_SEARCH_PATHS = (
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrandNew-gspgyuimftoclpfrcmbbewofbqko/Build/Products/Debug",
+					../../../,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;

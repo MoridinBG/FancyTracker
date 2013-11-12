@@ -10,22 +10,22 @@
 #import "FTProximitySensorListener.h"
 #import "FTInteractiveObject.h"
 
-//#ifdef __cplusplus
+#ifdef __cplusplus
 #import "FTContactDetectorCpp.h"
-//#endif
+#endif
 
 @interface FTContactDetector : NSObject <FTProximitySensorListener>
 {
 	id<FTProximitySensorListener> _effect;
 	
-//#ifdef __cplusplus
+#ifdef __cplusplus
 	FTContactDetectorCpp *_box2DContactDetector;
-//#endif
+#endif
 }
 @property id effect;
-//#ifdef __cplusplus
+#ifdef __cplusplus
 @property(readonly) FTContactDetectorCpp *box2DContactDetector;
-//#endif
+#endif
 
 - (id) init;
 

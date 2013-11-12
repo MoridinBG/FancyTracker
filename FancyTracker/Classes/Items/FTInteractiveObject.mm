@@ -47,6 +47,8 @@
 		_connectedNeighbours = [[NSMutableDictionary alloc] init];
 		
 		_type = CIRCLE;
+        
+        _physicsData = NULL;
 	}
 	
 	return self;
@@ -70,6 +72,43 @@
 
 #pragma mark -
 
+#pragma mark Accessors
+
+- (CGPoint) position
+{
+    if(_isPhysicsControlled && (_physicsData != NULL))
+    {
+        _position = CGPointMake(_physicsData->GetPosition().x / PHYSICS_SCALE,
+                                _physicsData->GetPosition().y / PHYSICS_SCALE);
+        return _position;
+    } else
+        return _position;
+}
+
+- (void) setPosition:(CGPoint)position
+{
+    _position = position;
+}
+
+- (float) angle
+{
+    if(_isPhysicsControlled && (_physicsData != NULL))
+    {
+        _angle = _physicsData->GetAngle();
+        return _angle;
+    } else
+        return _angle;
+}
+
+- (void) setAngle:(float)angle
+{
+    if(_isPhysicsControlled && (_physicsData != NULL))
+        NSLog(@"Ignoring setting angle on physics backed body");
+    else
+        _angle = angle;
+}
+#pragma mark -
+
 #pragma mark TUIO
 - (void) updateWithTuioBounds:(TuioBounds*)bounds
 {
@@ -79,6 +118,48 @@
 	self.size = bounds.dimensions;
 	self.velocity = bounds.movementVelocity;
 	self.contour = bounds.contour;
+    
+    if(fabs(1 - ((self.size.width * self.size.height) / (self.physicsSize.width * self.physicsSize.height))) > PHYS_AREA_DIFF)
+    {
+        if(_shouldResizePhysics && _physicsData != NULL)
+        {
+            _physicsSize = self.size;
+            switch(_type)
+            {
+                case ELLIPSE:
+                {
+                    b2Fixture *fixtures = _physicsData->GetFixtureList();
+                    for(b2Fixture* f = fixtures; f; f = f->GetNext())
+                    {
+                        _physicsData->DestroyFixture(f);
+                    }
+
+                    b2Vec2 vertices[ELLIPSOID_RESOLUTION];
+                    
+                    float angleStep = 360.f / ELLIPSOID_RESOLUTION;
+                    
+                    for(int i = 0; i < ELLIPSOID_RESOLUTION; i++)
+                    {
+                        vertices[i].Set(cos(i * angleStep * DEG2RAD)  * self.size.width * 50.f,
+                                        sin(i * angleStep * DEG2RAD)  * self.size.height * 50.f);
+                    }
+                    
+                    b2PolygonShape ellips;
+                    ellips.Set(vertices, ELLIPSOID_RESOLUTION);
+                    
+                    b2FixtureDef fixtureDef;
+                    fixtureDef.shape = &ellips;
+                    fixtureDef.density = 1.0f;
+                    fixtureDef.userData = (__bridge void *) self;
+                    
+                    _physicsData->CreateFixture(&fixtureDef);
+                } break;
+                default:
+                {
+                } break;
+            }
+        }
+    }
 }
 #pragma mark -
 
@@ -98,6 +179,12 @@
 	else
 		return nil;
 	
+}
+
+- (void) destroyPhysicsData
+{
+	if (_physicsData)
+		_physicsData->GetWorld()->DestroyBody(_physicsData);
 }
 
 #pragma mark -

@@ -38,7 +38,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 	glBegin(GL_TRIANGLE_FAN);
 	for (int32 i = 0; i < vertexCount; ++i)
 	{
-		glVertex2f(vertices[i].x, vertices[i].y);
+		glVertex2f(vertices[i].x / 100.f, vertices[i].y / 100.f);
 	}
 	glEnd();
 	glDisable(GL_BLEND);
@@ -47,7 +47,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 	glBegin(GL_LINE_LOOP);
 	for (int32 i = 0; i < vertexCount; ++i)
 	{
-		glVertex2f(vertices[i].x, vertices[i].y);
+		glVertex2f(vertices[i].x / 100.f, vertices[i].y / 100.f);
 	}
 	glEnd();
 }

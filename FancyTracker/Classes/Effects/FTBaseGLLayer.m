@@ -69,8 +69,17 @@ void tessCombineCB(GLdouble coords[3],
 		gluTessCallback(_tess, GLU_TESS_ERROR, (void (CALLBACK *)())tessErrorCB);
 		gluTessCallback(_tess, GLU_TESS_VERTEX, (void (CALLBACK *)())tessVertexCB);
 		gluTessCallback(_tess, GLU_TESS_COMBINE, (void (CALLBACK *)())tessCombineCB);
+        
+        _text = [CATextLayer layer];
+        isGLInit = FALSE;
 	}
 	return self;
+}
+
+- (void) setBounds:(CGRect)bounds
+{
+	[super setBounds:bounds];
+	_aspect = bounds.size.width / bounds.size.height;
 }
 
 - (CGLContextObj) copyCGLContextForPixelFormat:(CGLPixelFormatObj) pixelFormat
@@ -89,6 +98,7 @@ void tessCombineCB(GLdouble coords[3],
 		NSLog(@"Error switching to Multi Threaded OpenGL!");
 	}
 //*/
+    isGLInit = TRUE;
     
 	CGLSetCurrentContext(contextObj);
 	glEnable (GL_BLEND);
@@ -224,6 +234,21 @@ void tessCombineCB(GLdouble coords[3],
     NSLog(@"Implement your own drawing!");
 }
 
+- (void) printLimits
+{
+    _text.string = [NSString stringWithFormat:@"Min X: %f; Max X: %f; Min Y: %f; Max Y:%f\n Min X: %f; Max X: %f; Min Y: %f; Max Y:%f ", _minX, _maxX, _minY, _maxY,  _minX2, _maxX2, _minY2, _maxY2];
+    CGColorRef fgColor = CGColorCreateGenericRGB(1.f, 1.f, 1.f, 1.f);
+	_text.foregroundColor = fgColor;
+	CGColorRelease(fgColor);
+    _text.fontSize = 20.f;
+    [self addSublayer:_text];
+    
+    _text.frame = CGRectMake(0, 0, 800, 600);
+
+}
+
+
+
 - (void) renderContourOfObject:(FTInteractiveObject*) object
 {
     if(object.contour.count <= 0)
@@ -249,6 +274,24 @@ void tessCombineCB(GLdouble coords[3],
 
 #pragma mark -
 
+- (CGPoint) getRandomGLPointWithinDimension
+{
+	CGSize dimensions;
+	dimensions.width = _aspect;
+	dimensions.height = 1.f;
+	
+	int x = (dimensions.width * 1000) - 200;
+	int y = (dimensions.height * 1000) - 200;
+	
+    CGPoint randomPoint = CGPointMake((arc4random() % x) / 1000.f, (arc4random() % y) / 1000.f);
+	return randomPoint;
+}
+
+- (CGPoint) convertGLPointToCAPoint:(CGPoint) glPoint
+{
+    return CGPointMake((self.bounds.size.width / _aspect) * glPoint.x,
+                       self.bounds.size.height * glPoint.y);
+}
 
 #pragma mark TUIO
 - (void) tuioBoundsAdded: (TuioBounds*) newBounds
@@ -264,13 +307,36 @@ void tessCombineCB(GLdouble coords[3],
 
 - (void) tuioBoundsUpdated: (TuioBounds*) updatedBounds
 {
+    for(ObjectPoint *point in updatedBounds.contour)
+    {
+        if(_minX > point.x)
+            _minX = point.x;
+        if(_maxX < point.x)
+            _maxX = point.x;
+        if(_minY > point.y)
+            _minY = point.y;
+        if(_maxY < point.y)
+            _maxY = point.y;
+    }
+    
+    if(_minX2 > updatedBounds.position.x)
+        _minX2 = updatedBounds.position.x;
+    if(_maxX2 < updatedBounds.position.x)
+        _maxX2 = updatedBounds.position.x;
+    if(_minY2 > updatedBounds.position.y)
+        _minY2 = updatedBounds.position.y;
+    if(_maxY2 < updatedBounds.position.y)
+        _maxY2 = updatedBounds.position.y;
+    
+    
+    
 	FTInteractiveObject *object = [_blobs objectForKey:[updatedBounds getKey]];
 	if(object)
 	{
 		[object updateWithTuioBounds:updatedBounds];
 	}
     
-    if(updatedBounds.contour.count == 0)
+    if(1)//updatedBounds.contour.count == 0)
     {
         if(object.contourHistory.count >= HISTORY_DEPTH)
             [object.contourHistory removeObjectAtIndex:0];
@@ -280,7 +346,7 @@ void tessCombineCB(GLdouble coords[3],
         {
             float angle = i * DEG2RAD * 10;
             [object.contour addObject:[[ObjectPoint alloc] initWithX:cos(angle) * updatedBounds.dimensions.width * 0.5f + object.position.x
-                                                                          Y:sin(angle) * updatedBounds.dimensions.height * 0.5f + object.position.y]];
+                                                                   Y:sin(angle) * updatedBounds.dimensions.height * 0.5f + object.position.y]];
         }
         
         [object.contourHistory addObject: object.contour];

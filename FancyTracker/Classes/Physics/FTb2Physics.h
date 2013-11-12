@@ -17,13 +17,14 @@
 #endif
 
 //#import "GlobalFunctions.h"
+#import "consts.h"
 #import "FTInteractiveObject.h"
 #import "FTContactDetector.h"
 
 @interface FTb2Physics : NSObject
 {
 #ifdef __cplusplus
-	b2World *world;
+	b2World *_world;
 	b2Body *_groundBody;
 	DebugDraw debugDraw;
 #endif
@@ -42,11 +43,30 @@
 - (FTContactDetector *) addContactDetector;
 
 #pragma mark Create/Destroy Bodies
-- (void) attachRectangleBodyWithSize:(CGSize)size rotatedAt:(float)angle toObject:(FTInteractiveObject*)object;
-- (FTInteractiveObject*) createRectangleBodyAtPosition:(CGPoint)position withSize:(CGSize)size rotatedAt:(float)angle;
+- (void) attachRectangleBodyWithSize:(CGSize)size
+                           rotatedAt:(float)angle
+                         withDensity:(float)density
+                     withRestitution:(float)restitution
+                            toObject:(FTInteractiveObject*)object;
 
-- (void) attachCircleBodyWithSize:(CGSize)size toObject:(FTInteractiveObject*)object;
-- (FTInteractiveObject*) createCircleBodyAtPosition:(CGPoint)position withSize:(CGSize)size;
+- (FTInteractiveObject*) createRectangleBodyAtPosition:(CGPoint)position
+                                              withSize:(CGSize)size
+                                             rotatedAt:(float)angle
+                                           withDensity:(float)density
+                                       withRestitution:(float)restitution;
+
+- (void) attachCircleBodyWithSize:(CGSize)size
+                      withDensity:(float)density
+                  withRestitution:(float)restitution
+                         toObject:(FTInteractiveObject*)object;
+
+- (FTInteractiveObject*) createCircleBodyAtPosition:(CGPoint)position
+                                           withSize:(CGSize)size
+                                        withDensity:(float)density
+                                    withRestitution:(float)restitution;
+
+- (void) attachEllipsoidBodyWithSize:(CGSize)size rotatedAt:(float)angle toObject:(FTInteractiveObject*)object;
+- (FTInteractiveObject*) createEllipsoidleBodyAtPosition:(CGPoint)position withSize:(CGSize)size rotatedAt:(float)angle;
 
 - (void) attachRectangleSensorWithSize:(CGSize)size rotatedAt:(float)angle toObject:(FTInteractiveObject*)object;
 - (FTInteractiveObject*) createRectangleSensorAtPosition:(CGPoint)position withSize:(CGSize)size rotatedAt:(float)angle;
