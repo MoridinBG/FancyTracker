@@ -18,14 +18,17 @@
 #import "Effects/FTColorTrails.h"
 #import "Effects/FTColorTracks.h"
 #import "Effects/FTInteractiveLogos.h"
+#import "Effects/FTPictureReveal.h"
+#import "Effects/FTBackgroundLayer.h"
 
 @interface FTEffectContainerView : NSView
 {
     TuioClient *_tuioClient;
     SyphonServer *_syphon;
     
+    FTBackgroundLayer *_background;
+    
     FTBaseGLLayer *_currentEffect;
-    FTQueue *_effectsQueue;
     
     NSTimer *_renderTimer;
     CATextLayer *_text;
@@ -33,10 +36,7 @@
 
 - (void) awakeFromNib;
 
-- (void) drawRect:(NSRect) dirtyRect;
 -(void) sendToSyphon:(NSTimer*) aTimer;
-
-- (void) switchToNextEffect;
 
 - (BOOL)acceptsFirstResponder;
 - (void)keyDown:(NSEvent *)event;

@@ -230,7 +230,7 @@
     
     object.physicsSize = size;
     
-    float angleStep = 360.f / (ELLIPSOID_RESOLUTION + 1);
+    float angleStep = 360.f / (ELLIPSOID_RESOLUTION - 1);
     size.width *= 50.f;
     size.height *= 50.f;
     

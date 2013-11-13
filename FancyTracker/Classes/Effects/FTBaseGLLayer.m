@@ -293,6 +293,11 @@ void tessCombineCB(GLdouble coords[3],
                        self.bounds.size.height * glPoint.y);
 }
 
+- (void)keyDown:(NSEvent *)event
+{
+    NSLog(@"Unprocessed key press in effect!");
+}
+
 #pragma mark TUIO
 - (void) tuioBoundsAdded: (TuioBounds*) newBounds
 {

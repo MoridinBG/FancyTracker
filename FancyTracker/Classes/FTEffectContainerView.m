@@ -23,36 +23,8 @@
                                      relativeCoordinates:true];
     _tuioClient.isCalibrating = TRUE;
     
-    _effectsQueue = [[FTQueue alloc] initWithSingleClass:[FTBaseGLLayer class]];
-
-    _currentEffect = [FTInteractiveLogos layer];
-    _currentEffect.mustGLClear = TRUE;
-    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [FTBoundariesBurnEffect layer];
-    _currentEffect.mustGLClear = TRUE;
-    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [FTColorTracks layer];
-    _currentEffect.mustGLClear = TRUE;
-    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [FTColorTrails layer];
-    _currentEffect.mustGLClear = TRUE;
-    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [FTPainterEffect layer];
-    _currentEffect.mustGLClear = FALSE;
-    _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [_effectsQueue peek];
-    [_tuioClient addObjectToDelegates:_currentEffect];
-	[self.layer addSublayer:_currentEffect];
+    _background = [FTBackgroundLayer layer];
+    _background.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     
     _text = [CATextLayer layer];
     
@@ -67,11 +39,6 @@
 #pragma mark -
 
 #pragma mark Implementation
-
-- (void) drawRect:(NSRect) dirtyRect
-{
-	[super drawRect:dirtyRect];
-}
 
 - (void) setBounds:(NSRect)aRect
 {
@@ -94,20 +61,6 @@
 }
 #pragma marka -
 
-#pragma mark Effect switching
-
-- (void) switchToNextEffect
-{
-    [_tuioClient removeObjectFromDelegates:_currentEffect];
-    [_currentEffect removeFromSuperlayer];
-    [_effectsQueue dequeue];
-    [_effectsQueue enqueue:_currentEffect];
-    
-    _currentEffect = [_effectsQueue peek];
-    [_tuioClient addObjectToDelegates:_currentEffect];
-    [self.layer addSublayer:_currentEffect];
-}
-
 #pragma mark Keyboard Handler
 - (BOOL)acceptsFirstResponder
 {
@@ -116,7 +69,7 @@
 
 - (void) printLimits
 {
-    _text.string = [NSString stringWithFormat:@"Min X: %f; Max X: %f; Min Y: %f; Max Y:%f", _tuioClient.contourMinX, _tuioClient.contourMaxX, _tuioClient.contourMinY, _tuioClient.contourMaxY];
+    _text.string = [NSString stringWithFormat:@"Current TUIO Min X: %f; Max X: %f; Min Y: %f; Max Y:%f", _tuioClient.contourMinX, _tuioClient.contourMaxX, _tuioClient.contourMinY, _tuioClient.contourMaxY];
     CGColorRef fgColor = CGColorCreateGenericRGB(1.f, 1.f, 1.f, 1.f);
 	_text.foregroundColor = fgColor;
 	CGColorRelease(fgColor);
@@ -133,14 +86,43 @@
     [self printLimits];
     switch(key)
     {
-        case 'n' : case 'N':
-		{
-            [self switchToNextEffect];
-		} break;
-        case 'g' : case 'G':
-		{
-
-		} break;
+        case '1' :
+        {
+            [_tuioClient removeObjectFromDelegates:_currentEffect];
+            [_currentEffect removeFromSuperlayer];
+            
+            NSArray *imagePaths = [NSArray arrayWithObjects:@"C1.png", @"C2.png", @"C3.png", nil];
+            _currentEffect = [FTInteractiveLogos layer];
+            _currentEffect.mustGLClear = TRUE;
+            _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+            [self.layer addSublayer:_currentEffect];
+            
+            [(FTInteractiveLogos*) _currentEffect loadImagesFrom:imagePaths
+                                                   withNumOfEach:2
+                                                        withSize:CGSizeMake(0.3f * self.frame.size.width,
+                                                                            0.3f * self.frame.size.width)];
+            [_tuioClient addObjectToDelegates:_currentEffect];
+        } break;
+            
+            
+        case '2' :
+        {
+            [_tuioClient removeObjectFromDelegates:_currentEffect];
+            [_currentEffect removeFromSuperlayer];
+            
+            NSArray *imagePaths = [NSArray arrayWithObjects:@"C1.png", @"C2.png", @"C3.png", nil];
+            _currentEffect = [FTInteractiveLogos layer];
+            _currentEffect.mustGLClear = TRUE;
+            _currentEffect.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+            [self.layer addSublayer:_currentEffect];
+            
+            [(FTInteractiveLogos*) _currentEffect loadImagesFrom:imagePaths
+                                                   withNumOfEach:4
+                                                        withSize:CGSizeMake(0.15f * self.frame.size.width,
+                                                                            0.15f * self.frame.size.width)];
+            [_tuioClient addObjectToDelegates:_currentEffect];
+        } break;
+            
             case 'p':
         {
             [self printLimits];
@@ -179,6 +161,14 @@
         case 'l':
         {
             [_tuioClient calibrateContourMinXAdd:0.025f];
+        } break;
+        case '-' :
+        {
+            [_currentEffect keyDown:event];
+        } break;
+        case '+' :
+        {
+            [_currentEffect keyDown:event];
         } break;
     }
 }

@@ -16,6 +16,7 @@
     #import <Box2D/Dynamics/b2World.h>
     #import <Box2D/Dynamics/b2Fixture.h>
     #import "b2PolygonShape.h"
+    #import "b2CircleShape.h"
 #endif
 
 typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RECTANGLE_SENSOR} Type;
@@ -26,6 +27,7 @@ typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RE
     Type _type;
     
     CGPoint _position;
+    CGSize _size;
     float _angle;
     id _userObject;
     
@@ -75,6 +77,8 @@ typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RE
 
 - (void) setPhysicsData:(NSValue *)data;
 - (NSValue*) physicsData;
+
+- (void) setFixedPhysicsRotation:(BOOL) rotation;
 
 - (void) destroyPhysicsData;
 

@@ -68,6 +68,8 @@
 - (CGPoint) getRandomGLPointWithinDimension;
 - (CGPoint) convertGLPointToCAPoint:(CGPoint) glPoint;
 
+- (void)keyDown:(NSEvent *)event;
+
 - (void) tuioBoundsAdded: (TuioBounds*) newBounds;
 - (void) tuioBoundsUpdated: (TuioBounds*) updatedBounds;
 - (void) tuioBoundsRemoved: (TuioBounds*) deadBounds;

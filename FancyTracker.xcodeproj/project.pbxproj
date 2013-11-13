@@ -27,6 +27,10 @@
 		00A6866218329DB600D40A7C /* C1.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6865F18329DB600D40A7C /* C1.png */; };
 		00A6866318329DB600D40A7C /* C2.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866018329DB600D40A7C /* C2.png */; };
 		00A6866418329DB600D40A7C /* C3.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866118329DB600D40A7C /* C3.png */; };
+		00A686671832B1CB00D40A7C /* FTPictureReveal.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A686661832B1CB00D40A7C /* FTPictureReveal.m */; };
+		00A6866A18338EFF00D40A7C /* back_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866818338EFF00D40A7C /* back_1.jpg */; };
+		00A6866B18338EFF00D40A7C /* back_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866918338EFF00D40A7C /* back_2.jpg */; };
+		00A6866E18339BF700D40A7C /* FTBackgroundLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */; };
 		00BBED491829FB8900CF3573 /* FTEffectContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED481829FB8900CF3573 /* FTEffectContainerView.m */; };
 		00BBED4D1829FC8E00CF3573 /* FTBaseGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED4C1829FC8E00CF3573 /* FTBaseGLLayer.m */; };
 		00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBED4F1829FCA800CF3573 /* FTBoundariesBurnEffect.m */; };
@@ -92,6 +96,12 @@
 		00A6865F18329DB600D40A7C /* C1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C1.png; sourceTree = "<group>"; };
 		00A6866018329DB600D40A7C /* C2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C2.png; sourceTree = "<group>"; };
 		00A6866118329DB600D40A7C /* C3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C3.png; sourceTree = "<group>"; };
+		00A686651832B1CB00D40A7C /* FTPictureReveal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTPictureReveal.h; path = Classes/Effects/FTPictureReveal.h; sourceTree = "<group>"; };
+		00A686661832B1CB00D40A7C /* FTPictureReveal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTPictureReveal.m; path = Classes/Effects/FTPictureReveal.m; sourceTree = "<group>"; };
+		00A6866818338EFF00D40A7C /* back_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back_1.jpg; sourceTree = "<group>"; };
+		00A6866918338EFF00D40A7C /* back_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back_2.jpg; sourceTree = "<group>"; };
+		00A6866C18339BF700D40A7C /* FTBackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTBackgroundLayer.h; path = Classes/Effects/FTBackgroundLayer.h; sourceTree = "<group>"; };
+		00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTBackgroundLayer.m; path = Classes/Effects/FTBackgroundLayer.m; sourceTree = "<group>"; };
 		00BBED471829FB4E00CF3573 /* FTEffectContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTEffectContainerView.h; path = Classes/FTEffectContainerView.h; sourceTree = "<group>"; };
 		00BBED481829FB8900CF3573 /* FTEffectContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTEffectContainerView.m; path = Classes/FTEffectContainerView.m; sourceTree = "<group>"; };
 		00BBED4B1829FC8E00CF3573 /* FTBaseGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTBaseGLLayer.h; path = Classes/Effects/FTBaseGLLayer.h; sourceTree = "<group>"; };
@@ -272,6 +282,8 @@
 		00A6865E18329DB600D40A7C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				00A6866818338EFF00D40A7C /* back_1.jpg */,
+				00A6866918338EFF00D40A7C /* back_2.jpg */,
 				00A6865F18329DB600D40A7C /* C1.png */,
 				00A6866018329DB600D40A7C /* C2.png */,
 				00A6866118329DB600D40A7C /* C3.png */,
@@ -310,6 +322,10 @@
 				000AB429182EDD64004D7B67 /* FTColorTracks.m */,
 				000AB43E182F3334004D7B67 /* FTInteractiveLogos.h */,
 				000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */,
+				00A686651832B1CB00D40A7C /* FTPictureReveal.h */,
+				00A686661832B1CB00D40A7C /* FTPictureReveal.m */,
+				00A6866C18339BF700D40A7C /* FTBackgroundLayer.h */,
+				00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -495,9 +511,11 @@
 			files = (
 				00A6866318329DB600D40A7C /* C2.png in Resources */,
 				00A6866218329DB600D40A7C /* C1.png in Resources */,
+				00A6866A18338EFF00D40A7C /* back_1.jpg in Resources */,
 				00A6866418329DB600D40A7C /* C3.png in Resources */,
 				007357451829E7A2000075A2 /* InfoPlist.strings in Resources */,
 				007357531829E7A2000075A2 /* Images.xcassets in Resources */,
+				00A6866B18338EFF00D40A7C /* back_2.jpg in Resources */,
 				0073574B1829E7A2000075A2 /* Credits.rtf in Resources */,
 				007357511829E7A2000075A2 /* MainMenu.xib in Resources */,
 			);
@@ -514,6 +532,7 @@
 				00C52802182DB8A500D10198 /* FTStack.m in Sources */,
 				00C52808182DE61100D10198 /* FTColorTrails.m in Sources */,
 				00BBED58182A0B4000CF3573 /* FTRGBA.m in Sources */,
+				00A6866E18339BF700D40A7C /* FTBackgroundLayer.m in Sources */,
 				007357471829E7A2000075A2 /* main.m in Sources */,
 				000AB440182F3334004D7B67 /* FTInteractiveLogos.m in Sources */,
 				00BBED501829FCA800CF3573 /* FTBoundariesBurnEffect.m in Sources */,
@@ -525,6 +544,7 @@
 				00C527FC182CBE1400D10198 /* FTPainterEffect.m in Sources */,
 				00BBED541829FDBD00CF3573 /* FTInteractiveObject.mm in Sources */,
 				000AB42A182EDD64004D7B67 /* FTColorTracks.m in Sources */,
+				00A686671832B1CB00D40A7C /* FTPictureReveal.m in Sources */,
 				000AB435182F1B69004D7B67 /* FTContactDetector.mm in Sources */,
 				000AB432182F1AC2004D7B67 /* Render.cpp in Sources */,
 			);

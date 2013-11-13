@@ -25,39 +25,42 @@
 - (void) setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self loadImages];
+    [_physics createGroundWithDimensions:CGSizeMake(_aspect, 1.f)];
 }
 
-- (void) loadImages
+- (void) loadImagesFrom:(NSArray*)imagePaths withNumOfEach:(int)num withSize:(CGSize) size
 {
-    [_physics createGroundWithDimensions:CGSizeMake(_aspect, 1.f)];
-
-    NSImage *logo1 = [NSImage imageNamed:@"C1.png"];
-    NSImage *logo2 = [NSImage imageNamed:@"C2.png"];
-    NSImage *logo3 = [NSImage imageNamed:@"C3.png"];
-    
-    for(int i = 0; i < NUM_LOGOS; i++)
+    for(NSString *path in imagePaths)
     {
-        CALayer *layer = [CALayer layer];
-        if(logo1.isValid)
-            layer.contents = logo1;
-        else
-            NSLog(@"Disaster");
+        NSImage *image = [NSImage imageNamed:path];
+        if(!image.isValid)
+        {
+            NSLog(@"Ignoring invalid image path");
+            continue;
+        }
         
-        CGPoint glPosition = [self getRandomGLPointWithinDimension];
-        CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
-        
-        layer.bounds = CGRectMake(caPosition.x, caPosition.y, LOGO_WIDTH, LOGO_HEIGHT);
-        CGSize glSize = CGSizeMake((LOGO_WIDTH / self.bounds.size.width) * _aspect, LOGO_HEIGHT / self.bounds.size.height);
-        
-        FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
-                                                                       withSize:glSize
-                                                                    withDensity:1.f
-                                                                withRestitution:0.6f];
-        layerObject.isPhysicsControlled = TRUE;
-        layerObject.userObject = layer;
-        [_logoObjects addObject:layerObject];
-        [self addSublayer:layer];
+        for(int i = 0; i < num; i++)
+        {
+            CALayer *layer = [CALayer layer];
+            layer.contents = image;
+            
+            CGPoint glPosition = [self getRandomGLPointWithinDimension];
+            CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+            
+            layer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
+            CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
+            
+            FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+                                                                           withSize:glSize
+                                                                        withDensity:1.f
+                                                                    withRestitution:0.6f];
+            layerObject.isPhysicsControlled = TRUE;
+            layerObject.userObject = layer;
+            layerObject.shouldResizePhysics = TRUE;
+            layerObject.type = CIRCLE;
+            [_logoObjects addObject:layerObject];
+            [self addSublayer:layer];
+        }
     }
 }
 
@@ -83,6 +86,49 @@
     [_physics step];
 }
 
+- (void)keyDown:(NSEvent *)event
+{
+    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    switch(key)
+    {
+        case '-' :
+        {
+            float stepSize = 0.9f;
+            [CATransaction begin];
+            [CATransaction setAnimationDuration:0.f];
+            for(FTInteractiveObject *logo in _logoObjects)
+            {
+                CALayer *layer = logo.userObject;
+                CGRect frame = CGRectMake(layer.bounds.origin.x,
+                                          layer.bounds.origin.y ,
+                                          layer.bounds.size.width * stepSize,
+                                          layer.bounds.size.height * stepSize);
+                layer.bounds = frame;
+                logo.size = CGSizeMake(logo.size.width * stepSize, logo.size.height * stepSize);
+            }
+            [CATransaction commit];
+        } break;
+            
+        case '+' :
+        {
+            [CATransaction begin];
+            [CATransaction setAnimationDuration:0.f];
+            for(FTInteractiveObject *logo in _logoObjects)
+            {
+                float stepSize = 1.1f;
+                CALayer *layer = logo.userObject;
+                CGRect frame = CGRectMake(layer.bounds.origin.x,
+                                          layer.bounds.origin.y ,
+                                          layer.bounds.size.width * stepSize,
+                                          layer.bounds.size.height * stepSize);
+                layer.bounds = frame;
+                logo.size = CGSizeMake(logo.size.width * stepSize, logo.size.height * stepSize);
+            }
+            [CATransaction commit];
+        } break;
+    }
+}
+
 - (void) tuioBoundsAdded:(TuioBounds*) newBounds
 {
     [super tuioBoundsAdded:newBounds];
@@ -95,6 +141,7 @@
                               withId:object.uid];
     object.type = ELLIPSE;
     object.shouldResizePhysics = TRUE;
+    [object setFixedPhysicsRotation:TRUE];
 }
 
 - (void) tuioBoundsUpdated:(TuioBounds*) updatedBounds

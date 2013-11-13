@@ -9,9 +9,6 @@
 #import "FTBaseGLLayer.h"
 #import "FTb2Physics.h"
 
-#define NUM_LOGOS 5
-#define LOGO_WIDTH 100.f
-#define LOGO_HEIGHT 100.f
 
 @interface FTInteractiveLogos : FTBaseGLLayer
 {
@@ -22,13 +19,12 @@
 @property float density;
 
 - (id) init;
-- (void) setBounds:(CGRect)bounds;
 
-- (void) loadImages;
-
-
+- (void) loadImagesFrom:(NSArray*)imagePaths withNumOfEach:(int)num withSize:(CGSize) size;
 
 - (void) drawGL;
+
+- (void)keyDown:(NSEvent *)event;
 
 - (void) tuioBoundsAdded:(TuioBounds*) newBounds;
 - (void) tuioBoundsUpdated:(TuioBounds*) updatedBounds;

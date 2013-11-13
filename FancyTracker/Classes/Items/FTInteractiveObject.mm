@@ -107,21 +107,18 @@
     else
         _angle = angle;
 }
-#pragma mark -
 
-#pragma mark TUIO
-- (void) updateWithTuioBounds:(TuioBounds*)bounds
+- (CGSize) size
 {
-	self.position = bounds.position;
-	self.positionHistory = bounds.movementHistory; //TODO: Check if assigment is neccessery
-	self.angle = bounds.angle * RAD2DEG;
-	self.size = bounds.dimensions;
-	self.velocity = bounds.movementVelocity;
-	self.contour = bounds.contour;
-    
-    if(fabs(1 - ((self.size.width * self.size.height) / (self.physicsSize.width * self.physicsSize.height))) > PHYS_AREA_DIFF)
+    return _size;
+}
+
+- (void) setSize:(CGSize)size
+{
+    _size = size;
+    if(_shouldResizePhysics && _physicsData != NULL)
     {
-        if(_shouldResizePhysics && _physicsData != NULL)
+        if(fabs(1 - ((self.size.width * self.size.height) / (self.physicsSize.width * self.physicsSize.height))) > PHYS_AREA_DIFF)
         {
             _physicsSize = self.size;
             switch(_type)
@@ -133,7 +130,7 @@
                     {
                         _physicsData->DestroyFixture(f);
                     }
-
+                    
                     b2Vec2 vertices[ELLIPSOID_RESOLUTION];
                     
                     float angleStep = 360.f / ELLIPSOID_RESOLUTION;
@@ -154,12 +151,52 @@
                     
                     _physicsData->CreateFixture(&fixtureDef);
                 } break;
+                    
+                case CIRCLE:
+                {
+                    float density = 10.f;
+                    float restitution = 0.6f;
+                    b2Fixture *fixtures = _physicsData->GetFixtureList();
+                    for(b2Fixture* f = fixtures; f; f = f->GetNext())
+                    {
+                        _physicsData->DestroyFixture(f);
+                        density = f->GetDensity();
+                        restitution = f->GetRestitution();
+                    }
+                    
+                    
+                    b2CircleShape circle;
+                    circle.m_radius = (_physicsSize.width * PHYSICS_SCALE) / 2.f;
+                    
+                    b2FixtureDef fixtureDef;
+                    fixtureDef.shape = &circle;
+                    fixtureDef.density = density;
+                    fixtureDef.restitution = restitution;
+                    fixtureDef.userData = (__bridge void *) self;
+                    
+                    _physicsData->CreateFixture(&fixtureDef);
+                } break;
+                    
                 default:
                 {
                 } break;
             }
         }
     }
+}
+
+#pragma mark -
+
+#pragma mark TUIO
+- (void) updateWithTuioBounds:(TuioBounds*)bounds
+{
+	self.position = bounds.position;
+	self.positionHistory = bounds.movementHistory; //TODO: Check if assigment is neccessery
+	self.angle = bounds.angle * RAD2DEG;
+	self.size = bounds.dimensions;
+	self.velocity = bounds.movementVelocity;
+	self.contour = bounds.contour;
+    
 }
 #pragma mark -
 
@@ -179,6 +216,11 @@
 	else
 		return nil;
 	
+}
+
+- (void) setFixedPhysicsRotation:(BOOL) rotation
+{
+    _physicsData->SetFixedRotation(rotation);
 }
 
 - (void) destroyPhysicsData
