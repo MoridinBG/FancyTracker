@@ -10,6 +10,7 @@
 #define __FancyTracker__Render__
 
 #include "Box2D/Box2D.h"
+#include "consts.h"
 
 struct b2AABB;
 

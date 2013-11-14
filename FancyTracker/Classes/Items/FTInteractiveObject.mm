@@ -49,6 +49,8 @@
 		_type = CIRCLE;
         
         _physicsData = NULL;
+        
+//        _uid = [FTUtilityFunctions buildUUID];
 	}
 	
 	return self;
@@ -116,7 +118,7 @@
 - (void) setSize:(CGSize)size
 {
     _size = size;
-    if(_shouldResizePhysics && _physicsData != NULL)
+    if(_shouldResizePhysics && _physicsData != NULL && self.size.height > 0.f && self.size.width > 0.f)
     {
         if(fabs(1 - ((self.size.width * self.size.height) / (self.physicsSize.width * self.physicsSize.height))) > PHYS_AREA_DIFF)
         {
@@ -154,27 +156,48 @@
                     
                 case CIRCLE:
                 {
-                    float density = 10.f;
-                    float restitution = 0.6f;
+                    BOOL bodyFixture = FALSE;
+                    BOOL sensorFixture = FALSE;
+                    
+                    b2CircleShape circleBody;
+                    circleBody.m_radius = (_physicsSize.width * PHYSICS_SCALE) / 2.f;
+                    
+                    b2FixtureDef fixtureDefBody;
+                    fixtureDefBody.shape = &circleBody;
+                    fixtureDefBody.userData = (__bridge void *) self;
+
+                    b2CircleShape circleSensor;
+                    circleSensor.m_radius = ((_physicsSize.width * PHYSICS_SCALE) / 2.f) * PHYSICS_SENSOR_FACTOR;
+                    
+                    b2FixtureDef fixtureDefSensor;
+                    fixtureDefSensor.shape = &circleSensor;
+                    fixtureDefSensor.userData = (__bridge void *) self;
+                    
                     b2Fixture *fixtures = _physicsData->GetFixtureList();
-                    for(b2Fixture* f = fixtures; f; f = f->GetNext())
+                    while(fixtures)
                     {
-                        _physicsData->DestroyFixture(f);
-                        density = f->GetDensity();
-                        restitution = f->GetRestitution();
+                        b2Fixture *copy = fixtures;
+                        fixtures = fixtures->GetNext();
+                        
+                        if(!copy->IsSensor())
+                        {
+                            bodyFixture = TRUE;
+                            fixtureDefBody.density = copy->GetDensity();
+                            fixtureDefBody.restitution = copy->GetRestitution();
+                        } else
+                        {
+                            sensorFixture = TRUE;
+                            fixtureDefSensor.isSensor = true;
+                        }
+                        
+                        _physicsData->DestroyFixture(copy);
                     }
                     
+                    if(bodyFixture)
+                        _physicsData->CreateFixture(&fixtureDefBody);
+                    if(sensorFixture)
+                        _physicsData->CreateFixture(&fixtureDefSensor);
                     
-                    b2CircleShape circle;
-                    circle.m_radius = (_physicsSize.width * PHYSICS_SCALE) / 2.f;
-                    
-                    b2FixtureDef fixtureDef;
-                    fixtureDef.shape = &circle;
-                    fixtureDef.density = density;
-                    fixtureDef.restitution = restitution;
-                    fixtureDef.userData = (__bridge void *) self;
-                    
-                    _physicsData->CreateFixture(&fixtureDef);
                 } break;
                     
                 default:
@@ -241,6 +264,19 @@
 - (void) removeNeighbour:(FTInteractiveObject*)neigbour
 {
 	[_neighbours removeObject:neigbour];
+}
+
+- (void) connectTo:(FTInteractiveObject*)neighbour withConnection:(FTConnection*)connection;
+{
+	[_connectedNeighbours setObject:connection forKey:neighbour.uid];
+}
+
+- (FTConnection*) disconnectFrom:(FTInteractiveObject*)neighbour
+{
+	FTConnection *connection = [_connectedNeighbours objectForKey:neighbour.uid];
+	[_connectedNeighbours removeObjectForKey:neighbour.uid];
+    
+	return connection;
 }
 
 - (bool) isConnectedToNeighbour:(FTInteractiveObject *)neighbour

@@ -12,6 +12,7 @@
 #import <Syphon/Syphon.h>
 
 #import "FTQueue.h"
+#import "FTLineConnectionDrawer.h"
 
 #import "FTBoundariesBurnEffect.h"
 #import "Effects/FTPainterEffect.h"
@@ -29,13 +30,25 @@
     FTBackgroundLayer *_background;
     
     FTBaseGLLayer *_currentEffect;
+    FTInteractiveLogos *_logos1, *_logos2;
+    FTInteractiveLogos *_logos3, *_logos4;
+    FTInteractiveLogos *_logos5, *_logos6;
     
     NSTimer *_renderTimer;
     CATextLayer *_text;
+    
+    CARenderer *_syphonRenderer;
+    CGLContextObj _syphonContext;
+    GLuint _syphoneTextureId;
+    GLuint _syphonFboId;
 }
 
 - (void) awakeFromNib;
+- (void) loadEffects;
+- (void) createSyphonContext;
 
+
+- (void) setBounds:(NSRect)aRect;
 -(void) sendToSyphon:(NSTimer*) aTimer;
 
 - (BOOL)acceptsFirstResponder;

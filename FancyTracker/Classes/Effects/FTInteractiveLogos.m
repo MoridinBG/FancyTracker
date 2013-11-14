@@ -10,13 +10,20 @@
 
 @implementation FTInteractiveLogos
 
+#pragma mark Initialization
 - (id) init
 {
     if(self = [super init])
     {
         _physics = [[FTb2Physics alloc] init];
-        
+        _mustRunPhysics = TRUE;
+        _mustCreateSensors = FALSE;
+        _mustDistanceJointNeihgbours = FALSE;
         _logoObjects = [[NSMutableArray alloc] init];
+        _connections = [[NSMutableArray alloc] init];
+        _queuedForJoints = [[NSMutableArray alloc] init];
+        
+        _pictureId = 0;
     }
     
     return self;
@@ -28,8 +35,15 @@
     [_physics createGroundWithDimensions:CGSizeMake(_aspect, 1.f)];
 }
 
+- (void) setupSensors
+{
+    _contactDetector = [_physics addContactDetector];
+    _contactDetector.effect = self;
+}
+
 - (void) loadImagesFrom:(NSArray*)imagePaths withNumOfEach:(int)num withSize:(CGSize) size
 {
+    _mustRunPhysics = TRUE;
     for(NSString *path in imagePaths)
     {
         NSImage *image = [NSImage imageNamed:path];
@@ -52,20 +66,39 @@
             
             FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
                                                                            withSize:glSize
-                                                                        withDensity:1.f
-                                                                    withRestitution:0.6f];
+                                                                        withDensity:LOGO_DENSITY
+                                                                    withRestitution:LOGO_RESTITUTION];
+            _pictureId--;
+            layerObject.uid = [NSNumber numberWithLong:_pictureId];
             layerObject.isPhysicsControlled = TRUE;
             layerObject.userObject = layer;
             layerObject.shouldResizePhysics = TRUE;
             layerObject.type = CIRCLE;
+            if(_mustCreateSensors)
+                [_physics attachCircleSensorWithSize:glSize toObject:layerObject];
+            
             [_logoObjects addObject:layerObject];
             [self addSublayer:layer];
         }
     }
 }
+#pragma mark -
 
+#pragma mark Drawing
 - (void) drawGL
 {
+    for(FTConnection *conn in _queuedForJoints)
+    {
+        NSValue *joint = [_physics distanceJointBody:conn.endA.physicsData
+                                            withBody:conn.endB.physicsData
+                                            withFreq:SPRING_FREQ
+                                            withDamp:SPRING_DAMP];
+        if(joint == nil)
+            NSLog(@"Impossible to make a joint now");
+        conn.joint = joint;
+    }
+    [_queuedForJoints removeAllObjects];
+    
     for(FTInteractiveObject *blob in [_blobs allValues])
 	{
         [[blob color] stepColors];
@@ -83,9 +116,17 @@
     }
     [CATransaction commit];
     
-    [_physics step];
+    for(FTConnection *connection in _connections)
+    {
+        [connection render];
+    }
+    
+    if(_mustRunPhysics)
+        [_physics step];
 }
+#pragma mark -
 
+#pragma mark Event handling
 - (void)keyDown:(NSEvent *)event
 {
     unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
@@ -154,10 +195,76 @@
 - (void) tuioBoundsRemoved:(TuioBounds*) deadBounds
 {
     FTInteractiveObject *object = [_blobs objectForKey:deadBounds.sessionID];
-    [_physics destroyBody:object.physicsData];
-//    [_physics detachMouseJointWithId:deadBounds.sessionID];   //FIXME: Crash!
+    if(object)
+    {
+        [_physics destroyBody:object.physicsData];
+//      [_physics detachMouseJointWithId:deadBounds.sessionID];   //FIXME: Crash!
+    }
     
     [super tuioBoundsRemoved:deadBounds];
+}
+
+- (void) tuioStopListening
+{
+    for(FTInteractiveObject *object in [_blobs allValues])
+    {
+        [_physics destroyBody:object.physicsData];
+    }
+    [_blobs removeAllObjects];
+    _mustRunPhysics = FALSE;
+}
+#pragma mark -
+
+#pragma mark Contact Handlers
+- (void) contactBetween:(FTInteractiveObject*)firstObj And:(FTInteractiveObject*)secondObj
+{
+	[firstObj addNeighbour:secondObj];
+	[secondObj addNeighbour:firstObj];
+	
+	if((firstObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && (secondObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS))
+		if(![firstObj isConnectedToNeighbour:secondObj])
+		{
+			FTConnection *connection = [[_connectionDrawer alloc] initWithendA:firstObj
+                                                                          endB:secondObj
+                                                                   beginningAt:0.f
+                                                                      endingAt:1.f];
+			
+			[firstObj connectTo:secondObj withConnection:connection];
+			[secondObj connectTo:firstObj withConnection:connection];
+            
+            if(_mustDistanceJointNeihgbours)
+            {
+                NSValue *joint = [_physics distanceJointBody:firstObj.physicsData
+                                                    withBody:secondObj.physicsData
+                                                    withFreq:SPRING_FREQ
+                                                    withDamp:SPRING_DAMP];
+                if(joint == nil)
+                {
+                    [_queuedForJoints addObject:connection];
+                }
+            }
+            
+			[_connections addObject:connection];
+		}
+}
+
+- (void) removedContactBetween:(FTInteractiveObject*)firstObj And:(FTInteractiveObject*)secondObj
+{
+	[firstObj removeNeighbour:secondObj];
+	[secondObj removeNeighbour:firstObj];
+	
+	if([firstObj isConnectedToNeighbour:secondObj])
+	{
+		FTConnection *connection = [firstObj disconnectFrom:secondObj];
+		[secondObj disconnectFrom:firstObj];
+        
+        if(connection.joint != nil)
+        {
+            [_physics destroyJoint:connection.joint];
+        }
+        
+		[_connections removeObject:connection];
+	}
 }
 
 @end

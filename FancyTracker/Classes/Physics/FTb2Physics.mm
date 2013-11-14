@@ -30,6 +30,9 @@
         debugDraw.SetFlags(b2Draw::e_shapeBit);
         _world->SetDebugDraw(&debugDraw);
         
+        _lockedDeadBodies = [[NSMutableArray alloc] init];
+        _lockedDeadJoints = [[NSMutableArray alloc] init];
+        
         /*
          uint32 flags = 0;
          flags += 1			* b2DebugDraw::e_shapeBit;
@@ -76,24 +79,18 @@
 
 - (void) step
 {
-    //	while(1)
-	{
-        //		uint64_t start = mach_absolute_time();
-		_world->Step(timeStep, velocityIterations, positionIterations);
-		_world->ClearForces();
-        /*
-         uint64_t end = mach_absolute_time();
-         uint64_t diff = end - start;
-         
-         Nanoseconds nanoSeconds = AbsoluteToNanoseconds( *(AbsoluteTime *) &diff );
-         uint64_t microSeconds = *(uint64_t *) &nanoSeconds / 1000;
-         int sleepTime = 16667 - microSeconds;
-         
-         if(sleepTime > 0)
-         usleep(16667 - microSeconds);
-         //*/
-        _world->DrawDebugData();
-	}
+    _world->Step(timeStep, velocityIterations, positionIterations);
+    _world->ClearForces();
+    _world->DrawDebugData();
+    
+    for(NSValue *packedBody in _lockedDeadBodies)
+        [self destroyBody:packedBody];
+    
+    for(NSValue *packedJoint in _lockedDeadJoints)
+        [self destroyJoint:packedJoint];
+    
+    [_lockedDeadBodies removeAllObjects];
+    [_lockedDeadJoints removeAllObjects];
 }
 
 - (FTContactDetector *) addContactDetector
@@ -271,6 +268,29 @@
 }
 #pragma mark -
 
+- (void) destroyBody:(NSValue*)packedBody
+{
+    if(_world->IsLocked())
+    {
+        [_lockedDeadBodies addObject:packedBody];
+        return;
+    } else
+    {
+        b2Body *body = (b2Body*)[packedBody pointerValue];
+        if(body != NULL)
+        {
+            if(body->GetUserData() != NULL)
+            {
+                CFRelease(body->GetUserData());
+                _world->DestroyBody(body);
+            }
+        } else
+            NSLog(@"Attempt to destroy NULL body");
+    }
+}
+#pragma mark -
+
+#pragma mark Create Sensors
 - (void) attachRectangleSensorWithSize:(CGSize)size
                              rotatedAt:(float)angle
                               toObject:(FTInteractiveObject*)object
@@ -324,13 +344,23 @@
 - (void) attachCircleSensorWithSize:(CGSize)size
 						   toObject:(FTInteractiveObject*)object
 {
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(object.position.x, object.position.y);
-	b2Body* body = _world->CreateBody(&bodyDef);
+    b2Body* body;
+    if(object.physicsData != nil)
+    {
+        body = (b2Body*) [object.physicsData pointerValue];
+    } else
+    {
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        bodyDef.position.Set(object.position.x * PHYSICS_SCALE, object.position.y * PHYSICS_SCALE);
+        body = _world->CreateBody(&bodyDef);
+        
+        body->SetUserData((__bridge_retained void *) object);
+        object.physicsData = [NSValue valueWithPointer:body];
+    }
 	
 	b2CircleShape circle;
-	circle.m_radius = size.width / 2.f;
+	circle.m_radius = (size.width / 2.f) * PHYSICS_SCALE * PHYSICS_SENSOR_FACTOR;
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
@@ -339,9 +369,6 @@
 	fixtureDef.userData = (__bridge void *) object;
 	
 	body->CreateFixture(&fixtureDef);
-	body->SetUserData((__bridge_retained void *) object);
-	
-	object.physicsData = [NSValue valueWithPointer:body];
 }
 
 - (FTInteractiveObject*) createCircleSensorAtPosition:(CGPoint)position
@@ -359,50 +386,43 @@
 }
 #pragma mark -
 
-//TODO: Need implementation of ConstantAreBlob
-- (NSMutableArray *) createBlobAt:(CGPoint)position
-					   withRadius:(float) blobRadius
+#pragma mark Create Joints
+- (NSValue*) distanceJointBody:(NSValue*)packedBody1
+                      withBody:(NSValue*)packedBody2
+                      withFreq:(float)freq
+                      withDamp:(float)damp
 {
+    b2Body *body1 = (b2Body*) [packedBody1 pointerValue];
+    b2Body *body2 = (b2Body*) [packedBody2 pointerValue];
     
-    /*
-     int nodes = 30;
-     NSMutableArray *objBodies = [[NSMutableArray alloc] initWithCapacity:nodes];
-     float pointRadius = 0.025f;
-     
-     float twoPi = 2.0f * 3.14159f;
-     
-     ConstantVolumeJointDef springsDef;
-     springsDef.frequencyHz = 10.f;
-     springsDef.dampingRatio = 0.5f;
-     
-     b2BodyDef bd;
-     
-     
-     for(int i = 0; i <= nodes - 1; i++)
-     {
-     CGPoint pointPosition = CGPointMake(position.x + blobRadius * cos(i * twoPi / nodes),
-     position.y + blobRadius * sin(i * twoPi / nodes));
-     InteractiveObject *objBody = [self createCircleBodyAtPosition:pointPosition
-     withSize:CGSizeMake(pointRadius, pointRadius)];
-     //		objBody.categoryBits = 0x0004;
-     //		objBody.maskBits = 0x0002;
-     
-     springsDef.addBody((b2Body*)[objBody.physicsData pointerValue]);
-     [objBodies addObject:objBody];
-     }
-     
-     _world->CreateJoint(&springsDef);
-     
-     return objBodies;
-     //*/
-    return nil;
+    b2DistanceJointDef jointDef;
+    
+    jointDef.Initialize(body1, body2, body1->GetWorldCenter(), body2->GetWorldCenter());
+    jointDef.collideConnected = true;
+    jointDef.frequencyHz = freq;
+    jointDef.dampingRatio = damp;
+    
+    
+    if(!_world->IsLocked())
+        return [NSValue valueWithPointer:_world->CreateJoint(&jointDef)];
+    else
+        return nil;
 }
 
-- (void) destroyBody:(NSValue*)packedBody
+- (void) destroyJoint:(NSValue*)packedJoint
 {
-    b2Body *body = (b2Body*)[packedBody pointerValue];
-    CFRelease(body->GetUserData());
-	_world->DestroyBody(body);
+    if(_world->IsLocked())
+    {
+        [_lockedDeadJoints addObject:packedJoint];
+        return;
+    } else
+    {
+        b2Joint *joint = (b2Joint*)[packedJoint pointerValue];
+        if(joint != NULL)
+            _world->DestroyJoint(joint);
+        else
+            NSLog(@"Attempt to destroy NULL body");
+    }
 }
 #pragma mark -
 

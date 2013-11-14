@@ -19,9 +19,12 @@
     #import "b2CircleShape.h"
 #endif
 
+#import "FTUtilityFunctions.h"
+
 typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RECTANGLE_SENSOR} Type;
 #define PHYS_AREA_DIFF 0.2f
 
+@class FTConnection;
 @interface FTInteractiveObject : NSObject
 {
     Type _type;
@@ -45,6 +48,7 @@ typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RE
 @property CGSize physicsSize;
 @property BOOL shouldResizePhysics;
 @property BOOL isPhysicsControlled;
+@property BOOL isManualNeighboured;
 
 @property CGSize size;
 @property float angle;
@@ -85,7 +89,10 @@ typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RE
 - (void) addNeighbour:(FTInteractiveObject*)neighbour;
 - (void) removeNeighbour:(FTInteractiveObject*)neigbour;
 
+- (void) connectTo:(FTInteractiveObject*)neighbour withConnection:(FTConnection*)connection;
+- (FTConnection*) disconnectFrom:(FTInteractiveObject*)neighbour;
 - (bool) isConnectedToNeighbour:(FTInteractiveObject*)neighbour;
+
 - (unsigned long) neighboursCount;
 - (unsigned long) connectedNeighboursCount;
 

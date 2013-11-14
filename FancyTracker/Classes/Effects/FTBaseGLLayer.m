@@ -84,11 +84,10 @@ void tessCombineCB(GLdouble coords[3],
 
 - (CGLContextObj) copyCGLContextForPixelFormat:(CGLPixelFormatObj) pixelFormat
 {
-	CGLContextObj contextObj = NULL;
-	CGLCreateContext(pixelFormat, NULL, &contextObj);
-	if(contextObj == NULL)
+	_glContext = NULL;
+	CGLCreateContext(pixelFormat, NULL, &_glContext);
+	if(_glContext == NULL)
 		NSLog(@"Error: Could not create context!");
-	_glContext = contextObj;
 /*
 	// Enable OpenGL multi-threading
 	CGLError err = 0;
@@ -100,7 +99,7 @@ void tessCombineCB(GLdouble coords[3],
 //*/
     isGLInit = TRUE;
     
-	CGLSetCurrentContext(contextObj);
+	CGLSetCurrentContext(_glContext);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable (GL_LINE_SMOOTH);
@@ -150,7 +149,7 @@ void tessCombineCB(GLdouble coords[3],
 		NSLog(@"Bad Framebuffer status");
 	}
     
-	return contextObj;
+	return _glContext;
 }
 
 - (CGLPixelFormatObj) copyCGLPixelFormatForDisplayMask:(uint32_t) mask

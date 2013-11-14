@@ -19,8 +19,8 @@ void FTContactDetectorCpp::BeginContact(b2Contact *contact)
 	{
 		FTInteractiveObject *firstObject = (__bridge FTInteractiveObject*) contact->GetFixtureA()->GetUserData();
 		FTInteractiveObject *secondObject = (__bridge FTInteractiveObject*) contact->GetFixtureB()->GetUserData();
-		
-		[_objectiveBridge contactBetween:firstObject And:secondObject];
+		if(firstObject != secondObject)
+            [_objectiveBridge contactBetween:firstObject And:secondObject];
 	}
 }
 
@@ -31,6 +31,7 @@ void FTContactDetectorCpp::EndContact(b2Contact *contact)
 		FTInteractiveObject *firstObject = (__bridge FTInteractiveObject*) contact->GetFixtureA()->GetUserData();
 		FTInteractiveObject *secondObject = (__bridge FTInteractiveObject*) contact->GetFixtureB()->GetUserData();
 		
-		[_objectiveBridge removedContactBetween:firstObject And:secondObject];
+        if(firstObject != secondObject)
+            [_objectiveBridge removedContactBetween:firstObject And:secondObject];
 	}
 }

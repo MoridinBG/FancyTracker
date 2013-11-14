@@ -35,11 +35,14 @@
 	int positionIterations;
 	
 	NSMutableDictionary *mouseJoints;
+    NSMutableArray *_lockedDeadBodies;
+    NSMutableArray *_lockedDeadJoints;
 }
 
 - (id) init;
 - (void) createGroundWithDimensions:(CGSize)dimensions;
 - (void) step;
+
 - (FTContactDetector *) addContactDetector;
 
 #pragma mark Create/Destroy Bodies
@@ -77,6 +80,14 @@
 - (void) destroyBody:(NSValue*)packedBody;
 #pragma mark -
 
+#pragma mark Create/Destroy Joints
+- (NSValue*) distanceJointBody:(NSValue*)packedBody1
+                      withBody:(NSValue*)packedBody2
+                      withFreq:(float)freq
+                      withDamp:(float)damp;
+- (void) destroyJoint:(NSValue*)packedJoint;
+#pragma mark
+
 #pragma mark Modify Bodies
 
 #pragma mark -
@@ -86,7 +97,4 @@
 - (void) detachMouseJointWithId:(NSNumber*)uid;
 - (void) updateMouseJointWithId:(NSNumber*)uid toPosition:(CGPoint)position;
 #pragma mark -
-
-- (NSMutableArray *) createBlobAt:(CGPoint)position
-					   withRadius:(float) blobRadius;
 @end
