@@ -13,11 +13,12 @@
 #import "FTConnection.h"
 
 #define SPRING_FREQ 1.f
-#define SPRING_DAMP 1.f
-#define CONNECTED_NEIGHBOURS 3
-#define LOGO_RESTITUTION 1.2f
+#define SPRING_DAMP 0.38f
+#define CONNECTED_NEIGHBOURS 5
+#define LOGO_RESTITUTION 0.9f
 #define LOGO_DENSITY 1.f
 
+#define SUBIMAGES_MAX_DISTANCE 0.075f
 
 @interface FTInteractiveLogos : FTBaseGLLayer <FTProximitySensorListener>
 {
@@ -26,6 +27,7 @@
     BOOL _mustRunPhysics;
     BOOL _mustCreateSensors;
     BOOL _mustDistanceJointNeihgbours;
+    BOOL _mustDrawConnections;
     
     NSMutableArray *_logoObjects;
     NSMutableArray *_queuedForJoints;
@@ -41,6 +43,7 @@
 @property BOOL mustRunPhysics;
 @property BOOL mustCreateSensors;
 @property BOOL mustDistanceJointNeihgbours;
+@property BOOL mustDrawConnections;
 
 @property(assign) Class connectionDrawer;
 
@@ -48,7 +51,10 @@
 - (void) setBounds:(CGRect)bounds;
 - (void) setupSensors;
 
-- (void) loadImagesFrom:(NSArray*)imagePaths withNumOfEach:(int)num withSize:(CGSize) size;
+- (void) loadImagesFrom:(NSArray*)imagePaths
+          withNumOfEach:(int)num
+               withSize:(CGSize) size
+     connectsAllToFirst:(BOOL)connectsAll;
 
 - (void) drawGL;
 

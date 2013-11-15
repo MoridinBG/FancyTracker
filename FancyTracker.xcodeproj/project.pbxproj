@@ -24,6 +24,10 @@
 		0073574E1829E7A2000075A2 /* FTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0073574D1829E7A2000075A2 /* FTAppDelegate.m */; };
 		007357511829E7A2000075A2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0073574F1829E7A2000075A2 /* MainMenu.xib */; };
 		007357531829E7A2000075A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 007357521829E7A2000075A2 /* Images.xcassets */; };
+		0092CCDA18354BE100159598 /* H1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD618354BE100159598 /* H1.png */; };
+		0092CCDB18354BE100159598 /* H2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD718354BE100159598 /* H2.png */; };
+		0092CCDC18354BE100159598 /* H3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD818354BE100159598 /* H3.png */; };
+		0092CCDD18354BE100159598 /* Humira.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD918354BE100159598 /* Humira.png */; };
 		00A6866218329DB600D40A7C /* C1.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6865F18329DB600D40A7C /* C1.png */; };
 		00A6866318329DB600D40A7C /* C2.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866018329DB600D40A7C /* C2.png */; };
 		00A6866418329DB600D40A7C /* C3.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866118329DB600D40A7C /* C3.png */; };
@@ -97,6 +101,10 @@
 		0073574D1829E7A2000075A2 /* FTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTAppDelegate.m; sourceTree = "<group>"; };
 		007357501829E7A2000075A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		007357521829E7A2000075A2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0092CCD618354BE100159598 /* H1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H1.png; sourceTree = "<group>"; };
+		0092CCD718354BE100159598 /* H2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H2.png; sourceTree = "<group>"; };
+		0092CCD818354BE100159598 /* H3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H3.png; sourceTree = "<group>"; };
+		0092CCD918354BE100159598 /* Humira.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Humira.png; sourceTree = "<group>"; };
 		00A6865F18329DB600D40A7C /* C1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C1.png; sourceTree = "<group>"; };
 		00A6866018329DB600D40A7C /* C2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C2.png; sourceTree = "<group>"; };
 		00A6866118329DB600D40A7C /* C3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C3.png; sourceTree = "<group>"; };
@@ -301,6 +309,10 @@
 				00A6865F18329DB600D40A7C /* C1.png */,
 				00A6866018329DB600D40A7C /* C2.png */,
 				00A6866118329DB600D40A7C /* C3.png */,
+				0092CCD618354BE100159598 /* H1.png */,
+				0092CCD718354BE100159598 /* H2.png */,
+				0092CCD818354BE100159598 /* H3.png */,
+				0092CCD918354BE100159598 /* Humira.png */,
 			);
 			name = Resources;
 			path = FancyTracker/Resources;
@@ -539,12 +551,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0092CCDA18354BE100159598 /* H1.png in Resources */,
 				00A6866318329DB600D40A7C /* C2.png in Resources */,
 				00A6866218329DB600D40A7C /* C1.png in Resources */,
 				00A6866A18338EFF00D40A7C /* back_1.jpg in Resources */,
+				0092CCDC18354BE100159598 /* H3.png in Resources */,
 				00A6866418329DB600D40A7C /* C3.png in Resources */,
 				007357451829E7A2000075A2 /* InfoPlist.strings in Resources */,
 				007357531829E7A2000075A2 /* Images.xcassets in Resources */,
+				0092CCDB18354BE100159598 /* H2.png in Resources */,
+				0092CCDD18354BE100159598 /* Humira.png in Resources */,
 				00A6866B18338EFF00D40A7C /* back_2.jpg in Resources */,
 				0073574B1829E7A2000075A2 /* Credits.rtf in Resources */,
 				007357511829E7A2000075A2 /* MainMenu.xib in Resources */,
@@ -687,6 +703,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_X86_VECTOR_INSTRUCTIONS = sse3;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -714,11 +731,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_X86_VECTOR_INSTRUCTIONS = sse3;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/FancyTracker/Libraries/**",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FancyTracker/FancyTracker-Prefix.pch";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;

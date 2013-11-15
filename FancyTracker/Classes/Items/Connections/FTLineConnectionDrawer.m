@@ -31,12 +31,12 @@
 	glLineWidth(3);
     
     glBegin(GL_LINES);
-    glColor4f(1.f, 1.f, 1.f, 1.f);
+    glColor3f(1.f, 1.f, 1.f);
     glVertex2f(_endA.position.x,
                _endA.position.y);
-    glColor4f(1.f, 1.f, 1.f, 1.f);
     glVertex2f(_endB.position.x,
                _endB.position.y);
+    glEnd();
 
 }
 

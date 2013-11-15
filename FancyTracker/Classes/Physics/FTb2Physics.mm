@@ -81,7 +81,7 @@
 {
     _world->Step(timeStep, velocityIterations, positionIterations);
     _world->ClearForces();
-    _world->DrawDebugData();
+//    _world->DrawDebugData();
     
     for(NSValue *packedBody in _lockedDeadBodies)
         [self destroyBody:packedBody];
@@ -218,6 +218,9 @@
                            rotatedAt:(float)angle
                             toObject:(FTInteractiveObject*)object
 {
+    if(size.width <= 0.f || size.height <= 0)
+        return;
+    
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(object.position.x * 100, object.position.y * 100);
@@ -283,6 +286,7 @@
             {
                 CFRelease(body->GetUserData());
                 _world->DestroyBody(body);
+                body = NULL;
             }
         } else
             NSLog(@"Attempt to destroy NULL body");
@@ -301,8 +305,6 @@
 	b2Body* body = _world->CreateBody(&bodyDef);
 	if(!body)
 	{
-		NSLog(@"Fail");
-		_world->Step(timeStep, 1, 1);
 		body = _world->CreateBody(&bodyDef);
 		
 		if(!body)
@@ -345,7 +347,7 @@
 						   toObject:(FTInteractiveObject*)object
 {
     b2Body* body;
-    if(object.physicsData != nil)
+    if((object.physicsData != nil) && ([object.physicsData pointerValue] != NULL))
     {
         body = (b2Body*) [object.physicsData pointerValue];
     } else
@@ -364,7 +366,7 @@
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
-	fixtureDef.density = 0.1f;
+	fixtureDef.density = 1.f;
 	fixtureDef.isSensor = true;
 	fixtureDef.userData = (__bridge void *) object;
 	
@@ -429,14 +431,20 @@
 #pragma mark Create/Destroy Mouse Joints
 - (void) attachMouseJointToBody:(NSValue*)packedBody withId:(NSNumber*)uid
 {
-	b2Body* body = (b2Body*) [packedBody pointerValue];
-	b2MouseJointDef mouseDef;
-	mouseDef.bodyA = _groundBody;
-	mouseDef.bodyB = body;
-	mouseDef.target = body->GetWorldCenter();
-	mouseDef.maxForce = PHYSICS_DRAG_ELASTICITY * 10.f * body->GetMass();
-    
-	[mouseJoints setObject:[NSValue valueWithPointer:_world->CreateJoint(&mouseDef)] forKey:uid];
+    if(packedBody != nil)
+    {
+        b2Body* body = (b2Body*) [packedBody pointerValue];
+        if(body != NULL)
+        {
+            b2MouseJointDef mouseDef;
+            mouseDef.bodyA = _groundBody;
+            mouseDef.bodyB = body;
+            mouseDef.target = body->GetWorldCenter();
+            mouseDef.maxForce = PHYSICS_DRAG_ELASTICITY * 10.f * body->GetMass();
+            
+            [mouseJoints setObject:[NSValue valueWithPointer:_world->CreateJoint(&mouseDef)] forKey:uid];
+        }
+    }
 }
 
 - (void) detachMouseJointWithId:(NSNumber*)uid

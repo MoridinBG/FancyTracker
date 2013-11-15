@@ -19,6 +19,8 @@
         _mustRunPhysics = TRUE;
         _mustCreateSensors = FALSE;
         _mustDistanceJointNeihgbours = FALSE;
+        _mustDrawConnections = TRUE;
+        
         _logoObjects = [[NSMutableArray alloc] init];
         _connections = [[NSMutableArray alloc] init];
         _queuedForJoints = [[NSMutableArray alloc] init];
@@ -41,52 +43,188 @@
     _contactDetector.effect = self;
 }
 
-- (void) loadImagesFrom:(NSArray*)imagePaths withNumOfEach:(int)num withSize:(CGSize) size
+- (void) loadImagesFrom:(NSArray*)imagePaths
+          withNumOfEach:(int)num
+               withSize:(CGSize) size
+     connectsAllToFirst:(BOOL)connectsAll
 {
-    _mustRunPhysics = TRUE;
-    for(NSString *path in imagePaths)
+    if(!connectsAll)
     {
-        NSImage *image = [NSImage imageNamed:path];
-        if(!image.isValid)
+        for(NSString *path in imagePaths)
         {
-            NSLog(@"Ignoring invalid image path");
-            continue;
+            NSImage *image = [NSImage imageNamed:path];
+            if(!image.isValid)
+            {
+                NSLog(@"Ignoring invalid image path");
+                continue;
+            }
+            
+            for(int i = 0; i < num; i++)
+            {
+                CALayer *layer = [CALayer layer];
+                layer.contents = image;
+                
+                CGPoint glPosition = [self getRandomGLPointWithinDimension];
+                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+                
+                layer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
+                CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
+                
+                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+                                                                               withSize:glSize
+                                                                            withDensity:LOGO_DENSITY
+                                                                        withRestitution:LOGO_RESTITUTION];
+                _pictureId--;
+                layerObject.uid = [NSNumber numberWithLong:_pictureId];
+                layerObject.isPhysicsControlled = TRUE;
+                layerObject.userObject = layer;
+                layerObject.shouldResizePhysics = TRUE;
+                layerObject.type = CIRCLE;
+                
+                [_logoObjects addObject:layerObject];
+                [self addSublayer:layer];
+            }
         }
-        
+    } else
+    {
         for(int i = 0; i < num; i++)
         {
-            CALayer *layer = [CALayer layer];
-            layer.contents = image;
+            NSImage *mainImage = [NSImage imageNamed:[imagePaths objectAtIndex:0]];
             
-            CGPoint glPosition = [self getRandomGLPointWithinDimension];
-            CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+            CALayer *centralLayer = [CALayer layer];
+            centralLayer.contents = mainImage;
             
-            layer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
+            CGPoint glPositionCentral = [self getRandomGLPointWithinDimension];
+            CGPoint caPositionCentral = [self convertGLPointToCAPoint:glPositionCentral];
+            
+            centralLayer.frame = CGRectMake(caPositionCentral.x, caPositionCentral.y, size.width, size.height);
             CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
             
-            FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+            FTInteractiveObject *centralObject = [_physics createCircleBodyAtPosition:glPositionCentral
                                                                            withSize:glSize
                                                                         withDensity:LOGO_DENSITY
                                                                     withRestitution:LOGO_RESTITUTION];
             _pictureId--;
-            layerObject.uid = [NSNumber numberWithLong:_pictureId];
-            layerObject.isPhysicsControlled = TRUE;
-            layerObject.userObject = layer;
-            layerObject.shouldResizePhysics = TRUE;
-            layerObject.type = CIRCLE;
-            if(_mustCreateSensors)
-                [_physics attachCircleSensorWithSize:glSize toObject:layerObject];
+            centralObject.uid = [NSNumber numberWithLong:_pictureId];
+            centralObject.isPhysicsControlled = TRUE;
+            centralObject.userObject = centralLayer;
+            centralObject.shouldResizePhysics = TRUE;
+            centralObject.type = CIRCLE;
             
-            [_logoObjects addObject:layerObject];
-            [self addSublayer:layer];
+            [_logoObjects addObject:centralObject];
+            [self addSublayer:centralLayer];
+
+
+            NSMutableArray *subImages = [NSMutableArray arrayWithArray:imagePaths];
+            [subImages removeObjectAtIndex:0];
+            
+            for(NSString *path in subImages)
+            {
+                NSImage *subImage = [NSImage imageNamed:path];
+                
+                CALayer *subLayer = [CALayer layer];
+                subLayer.contents = subImage;
+                
+                CGPoint glPosition;
+                do
+                {
+                    glPosition = [self getRandomGLPointWithinDimension];
+                } while ([FTUtilityFunctions lengthBetweenPoint:glPositionCentral andPoint:glPositionCentral] > SUBIMAGES_MAX_DISTANCE);
+                
+                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+                
+                subLayer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
+                CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
+                
+                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+                                                                                 withSize:glSize
+                                                                              withDensity:LOGO_DENSITY
+                                                                          withRestitution:LOGO_RESTITUTION];
+                _pictureId--;
+                layerObject.uid = [NSNumber numberWithLong:_pictureId];
+                layerObject.isPhysicsControlled = TRUE;
+                layerObject.userObject = subLayer;
+                layerObject.shouldResizePhysics = TRUE;
+                layerObject.type = CIRCLE;
+                
+                FTConnection *connection = [[_connectionDrawer alloc] initWithendA:centralObject
+                                                                              endB:layerObject
+                                                                       beginningAt:0.f
+                                                                          endingAt:1.f];
+                
+                [centralObject connectTo:layerObject withConnection:connection];
+                [layerObject connectTo:centralObject withConnection:connection];
+                
+                if(_mustDistanceJointNeihgbours)
+                {
+                    NSValue *joint = [_physics distanceJointBody:centralObject.physicsData
+                                                        withBody:layerObject.physicsData
+                                                        withFreq:SPRING_FREQ
+                                                        withDamp:SPRING_DAMP];
+                    if(joint == nil)
+                        [_queuedForJoints addObject:connection];
+                    else
+                        connection.joint = joint;
+                }
+                
+                [_connections addObject:connection];
+                
+                [_logoObjects addObject:layerObject];
+                [self addSublayer:subLayer];
+            }
         }
     }
 }
 #pragma mark -
 
+- (BOOL) mustCreateSensors
+{
+    return _mustCreateSensors;
+}
+
+- (void) setMustCreateSensors:(BOOL)mustCreateSensors
+{
+    if(_mustCreateSensors)
+    {
+        if(!mustCreateSensors)
+        {
+            for(FTInteractiveObject *layerObject in _logoObjects)
+            {
+                [_physics destroyBody:layerObject.physicsData];
+            }
+            
+            for(FTConnection *conn in _connections)
+            {
+                if(conn.joint != nil)
+                {
+                    [_physics destroyJoint:conn.joint];
+                }
+            }
+        }
+    } else
+    {
+        if(mustCreateSensors)
+        {
+            for(FTInteractiveObject *layerObject in _logoObjects)
+            {
+                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
+            }
+        }
+    }
+    _mustCreateSensors = mustCreateSensors;
+}
+
 #pragma mark Drawing
 - (void) drawGL
 {
+    if(_mustDrawConnections)
+    {
+        for(FTConnection *connection in _connections)
+        {
+            [connection render];
+        }
+    }
+    
     for(FTConnection *conn in _queuedForJoints)
     {
         NSValue *joint = [_physics distanceJointBody:conn.endA.physicsData
@@ -115,11 +253,6 @@
         layer.transform = CATransform3DMakeRotation(logo.angle, 0.f, 0.f, 1.f);
     }
     [CATransaction commit];
-    
-    for(FTConnection *connection in _connections)
-    {
-        [connection render];
-    }
     
     if(_mustRunPhysics)
         [_physics step];
@@ -239,9 +372,9 @@
                                                     withFreq:SPRING_FREQ
                                                     withDamp:SPRING_DAMP];
                 if(joint == nil)
-                {
                     [_queuedForJoints addObject:connection];
-                }
+                else
+                    connection.joint = joint;
             }
             
 			[_connections addObject:connection];

@@ -235,7 +235,7 @@ void tessCombineCB(GLdouble coords[3],
 
 - (void) printLimits
 {
-    _text.string = [NSString stringWithFormat:@"Min X: %f; Max X: %f; Min Y: %f; Max Y:%f\n Min X: %f; Max X: %f; Min Y: %f; Max Y:%f ", _minX, _maxX, _minY, _maxY,  _minX2, _maxX2, _minY2, _maxY2];
+    _text.string = [NSString stringWithFormat:@"Contour MinX: %f; MaxX: %f; MinY: %f; MaxY:%f\nPoint MinX: %f; Max X: %f; Min Y: %f; Max Y:%f ", _minX, _maxX, _minY, _maxY,  _minX2, _maxX2, _minY2, _maxY2];
     CGColorRef fgColor = CGColorCreateGenericRGB(1.f, 1.f, 1.f, 1.f);
 	_text.foregroundColor = fgColor;
 	CGColorRelease(fgColor);
@@ -340,7 +340,7 @@ void tessCombineCB(GLdouble coords[3],
 		[object updateWithTuioBounds:updatedBounds];
 	}
     
-    if(1)//updatedBounds.contour.count == 0)
+    if(0)//updatedBounds.contour.count == 0)
     {
         if(object.contourHistory.count >= HISTORY_DEPTH)
             [object.contourHistory removeObjectAtIndex:0];

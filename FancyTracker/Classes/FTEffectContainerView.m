@@ -39,57 +39,54 @@
 - (void) loadEffects
 {
     NSArray *imagePaths = [NSArray arrayWithObjects:@"C1.png", @"C2.png", @"C3.png", nil];
-    _logos1 = [FTInteractiveLogos layer];
-    _logos1.mustGLClear = TRUE;
-    _logos1.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [(FTInteractiveLogos*) _logos1 loadImagesFrom:imagePaths
-                                    withNumOfEach:2
-                                         withSize:CGSizeMake(0.2f * self.frame.size.width,
-                                                             0.2f * self.frame.size.width)];
+    _logos13 = [FTInteractiveLogos layer];
+    _logos13.mustGLClear = TRUE;
+    _logos13.connectionDrawer = [FTLineConnectionDrawer class];
+    _logos13.mustCreateSensors = FALSE;
+    _logos13.mustDrawConnections = FALSE;
+    _logos13.mustRunPhysics = FALSE;
+    _logos13.mustDistanceJointNeihgbours = FALSE;
+    [_logos13 setupSensors];
+    _logos13.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [(FTInteractiveLogos*) _logos13 loadImagesFrom:imagePaths
+                                     withNumOfEach:2
+                                          withSize:CGSizeMake(0.2f * self.frame.size.width,
+                                                              0.2f * self.frame.size.width)
+                                connectsAllToFirst:FALSE];
     
-    _logos2 = [FTInteractiveLogos layer];
-    _logos2.mustGLClear = TRUE;
-    _logos2.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [(FTInteractiveLogos*) _logos2 loadImagesFrom:imagePaths
-                                    withNumOfEach:4
-                                         withSize:CGSizeMake(0.1f * self.frame.size.width,
-                                                             0.1f * self.frame.size.width)];
-
-    _logos3 = [FTInteractiveLogos layer];
-    _logos3.mustGLClear = TRUE;
-    _logos3.mustCreateSensors = TRUE;
-    _logos3.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos3.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_logos3 setupSensors];
-    [(FTInteractiveLogos*) _logos3 loadImagesFrom:imagePaths
-                                    withNumOfEach:2
-                                         withSize:CGSizeMake(0.2f * self.frame.size.width,
-                                                             0.2f * self.frame.size.width)];
+    _logos24 = [FTInteractiveLogos layer];
+    _logos24.mustGLClear = TRUE;
+    _logos24.connectionDrawer = [FTLineConnectionDrawer class];
+    _logos24.mustCreateSensors = FALSE;
+    _logos24.mustDrawConnections = FALSE;
+    _logos24.mustRunPhysics = FALSE;
+    _logos24.mustDistanceJointNeihgbours = FALSE;
+    [_logos24 setupSensors];
+    _logos24.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [(FTInteractiveLogos*) _logos24 loadImagesFrom:imagePaths
+                                     withNumOfEach:4
+                                          withSize:CGSizeMake(0.1f * self.frame.size.width,
+                                                              0.1f * self.frame.size.width)
+                                connectsAllToFirst:FALSE];
     
-    _logos4 = [FTInteractiveLogos layer];
-    _logos4.mustGLClear = TRUE;
-    _logos4.mustCreateSensors = TRUE;
-    _logos4.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos4.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_logos4 setupSensors];
-    [(FTInteractiveLogos*) _logos4 loadImagesFrom:imagePaths
-                                    withNumOfEach:4
-                                         withSize:CGSizeMake(0.1f * self.frame.size.width,
-                                                             0.1f * self.frame.size.width)];
+    imagePaths = [NSArray arrayWithObjects:@"Humira.png", @"H1.png", @"H2.png", @"H3.png", nil];
+    _logos56 = [FTInteractiveLogos layer];
+    _logos56.mustGLClear = TRUE;
+    _logos56.connectionDrawer = [FTLineConnectionDrawer class];
+    _logos56.mustCreateSensors = FALSE;
+    _logos56.mustDrawConnections = TRUE;
+    _logos56.mustRunPhysics = FALSE;
+    _logos56.mustDistanceJointNeihgbours = TRUE;
+    _logos56.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [_logos56 setupSensors];
+    [(FTInteractiveLogos*) _logos56 loadImagesFrom:imagePaths
+                                     withNumOfEach:2
+                                          withSize:CGSizeMake(0.1f * self.frame.size.width,
+                                                              0.1f * self.frame.size.width)
+                                connectsAllToFirst:TRUE];
     
-    _logos5 = [FTInteractiveLogos layer];
-    _logos5.mustGLClear = TRUE;
-    _logos5.mustCreateSensors = TRUE;
-    _logos5.mustDistanceJointNeihgbours = TRUE;
-    _logos5.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos5.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [_logos5 setupSensors];
-    [(FTInteractiveLogos*) _logos5 loadImagesFrom:imagePaths
-                                    withNumOfEach:4
-                                         withSize:CGSizeMake(0.1f * self.frame.size.width,
-                                                             0.1f * self.frame.size.width)];
-    
-    _currentEffect = _logos5;
+    _currentEffect = _logos13;
+    _logos13.mustRunPhysics = TRUE;
     [self.layer addSublayer:_currentEffect];
     [_tuioClient addObjectToDelegates:_currentEffect];
 }
@@ -212,14 +209,16 @@
 
 - (void) printLimits
 {
-    _text.string = [NSString stringWithFormat:@"Current TUIO Min X: %f; Max X: %f; Min Y: %f; Max Y:%f", _tuioClient.contourMinX, _tuioClient.contourMaxX, _tuioClient.contourMinY, _tuioClient.contourMaxY];
+    _text.string = [NSString stringWithFormat:@"Cur Contour MinX: %f; MaxX: %f; MinY: %f; Max Y:%f\nCur Point MinX: %f; MaxX: %f; MinY: %f; Max Y:%f",
+                    _tuioClient.contourMinX, _tuioClient.contourMaxX, _tuioClient.contourMinY, _tuioClient.contourMaxY,
+                    _tuioClient.pointMinX, _tuioClient.pointMaxX, _tuioClient.pointMinY, _tuioClient.pointMaxY];
     CGColorRef fgColor = CGColorCreateGenericRGB(1.f, 1.f, 1.f, 1.f);
 	_text.foregroundColor = fgColor;
 	CGColorRelease(fgColor);
-    _text.fontSize = 20.f;
+    _text.fontSize = 17.f;
     [self.layer addSublayer:_text];
     
-    _text.frame = CGRectMake(0, 0, 800, 600);
+    _text.frame = CGRectMake(0, 45, 800, 600);
     
 }
 
@@ -231,116 +230,183 @@
     {
         case '1' :
         {
-            if(_currentEffect == _logos1)
-                break;
-            
-            [_tuioClient removeObjectFromDelegates:_currentEffect];
-            [_currentEffect removeFromSuperlayer];
-            
-            _logos1.mustRunPhysics = TRUE;
-            _currentEffect = _logos1;
-            [self.layer addSublayer:_currentEffect];
-            [_tuioClient addObjectToDelegates:_currentEffect];
+            if(_currentEffect != _logos13)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+
+                _currentEffect = _logos13;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos13.mustCreateSensors = FALSE;
+            _logos13.mustDrawConnections = FALSE;
+            _logos13.mustRunPhysics = TRUE;
+            _logos13.mustDistanceJointNeihgbours = FALSE;
         } break;
             
             
         case '2' :
         {
-            if(_currentEffect == _logos2)
-                break;
-            
-            [_tuioClient removeObjectFromDelegates:_currentEffect];
-            [_currentEffect removeFromSuperlayer];
-            
-            _logos2.mustRunPhysics = TRUE;
-            _currentEffect = _logos2;
-            [self.layer addSublayer:_currentEffect];
-            [_tuioClient addObjectToDelegates:_currentEffect];
+            if(_currentEffect != _logos24)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _logos24;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos24.mustCreateSensors = FALSE;
+            _logos24.mustDrawConnections = FALSE;
+            _logos24.mustRunPhysics = TRUE;
+            _logos24.mustDistanceJointNeihgbours = FALSE;
         } break;
             
         case '3' :
         {
-            if(_currentEffect == _logos3)
-                break;
-            
-            [_tuioClient removeObjectFromDelegates:_currentEffect];
-            [_currentEffect removeFromSuperlayer];
-            
-            
-            _logos3.mustRunPhysics = TRUE;
-            _currentEffect = _logos3;
-            [self.layer addSublayer:_currentEffect];
-            [_tuioClient addObjectToDelegates:_currentEffect];
+            if(_currentEffect != _logos13)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _logos13;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos13.mustCreateSensors = TRUE;
+            _logos13.mustDrawConnections = TRUE;
+            _logos13.mustRunPhysics = TRUE;
+            _logos13.mustDistanceJointNeihgbours = FALSE;
         } break;
             
         case '4' :
         {
-            if(_currentEffect == _logos4)
-                break;
-            
-            [_tuioClient removeObjectFromDelegates:_currentEffect];
-            [_currentEffect removeFromSuperlayer];
-            
-            
-            _logos4.mustRunPhysics = TRUE;
-            _currentEffect = _logos4;
-            [self.layer addSublayer:_currentEffect];
-            [_tuioClient addObjectToDelegates:_currentEffect];
+            if(_currentEffect != _logos24)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _logos24;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos24.mustCreateSensors = TRUE;
+            _logos24.mustDrawConnections = TRUE;
+            _logos24.mustRunPhysics = TRUE;
+            _logos24.mustDistanceJointNeihgbours = FALSE;
         } break;
 
         case '5' :
         {
-            if(_currentEffect == _logos5)
-                break;
-            
-            [_tuioClient removeObjectFromDelegates:_currentEffect];
-            [_currentEffect removeFromSuperlayer];
-            
-            
-            _logos5.mustRunPhysics = TRUE;
-            _currentEffect = _logos4;
-            [self.layer addSublayer:_currentEffect];
-            [_tuioClient addObjectToDelegates:_currentEffect];
+            if(_currentEffect != _logos56)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _logos56;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos56.mustCreateSensors = FALSE;
+            _logos56.mustDrawConnections = FALSE;
+            _logos56.mustRunPhysics = TRUE;
+            _logos56.mustDistanceJointNeihgbours = TRUE;
         } break;
             
-            case 'p':
+        case '6' :
         {
-            [self printLimits];
+            if(_currentEffect != _logos56)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _logos56;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
+            _logos56.mustCreateSensors = FALSE;
+            _logos56.mustDrawConnections = TRUE;
+            _logos56.mustRunPhysics = TRUE;
+            _logos56.mustDistanceJointNeihgbours = TRUE;
         } break;
             
-        case 'w':
+            
+        case 'p':
         {
-            [_tuioClient calibrateContourMaxYAdd:0.025f];
-        } break;
-        case 's':
-        {
-            [_tuioClient calibrateContourMaxYAdd:-0.025f];
-        } break;
-        case 'a':
-        {
-            [_tuioClient calibrateContourMaxXAdd:-0.025f];
-        } break;
-        case 'd':
-        {
-            [_tuioClient calibrateContourMaxXAdd:0.025f];
+            [_currentEffect printLimits];
         } break;
             
+        case ' ':
+        {
+            _calibratesContour = !_calibratesContour;
+        } break;
             
         case 'i':
         {
-            [_tuioClient calibrateContourMinYAdd:0.025f];
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMaxYAdd:TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMaxYAdd:TUIO_CALIBRATION_STEP];
+            [self printLimits];
         } break;
         case 'k':
         {
-            [_tuioClient calibrateContourMinYAdd:-0.025f];
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMaxYAdd:-TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMaxYAdd:-TUIO_CALIBRATION_STEP];
+            [self printLimits];
         } break;
         case 'j':
         {
-            [_tuioClient calibrateContourMinXAdd:-0.025f];
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMaxXAdd:-TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMaxXAdd:-TUIO_CALIBRATION_STEP];
+            [self printLimits];
         } break;
         case 'l':
         {
-            [_tuioClient calibrateContourMinXAdd:0.025f];
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMaxXAdd:TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMaxXAdd:TUIO_CALIBRATION_STEP];
+            [self printLimits];
+        } break;
+            
+            
+        case 'w':
+        {
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMinYAdd:TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMinYAdd:TUIO_CALIBRATION_STEP];
+            [self printLimits];
+        } break;
+        case 's':
+        {
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMinYAdd:-TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMinYAdd:-TUIO_CALIBRATION_STEP];
+            [self printLimits];
+        } break;
+        case 'a':
+        {
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMinXAdd:-TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMinXAdd:-TUIO_CALIBRATION_STEP];
+            [self printLimits];
+        } break;
+        case 'd':
+        {
+            if(_calibratesContour)
+                [_tuioClient calibrateContourMinXAdd:TUIO_CALIBRATION_STEP];
+            else
+                [_tuioClient calibratePointMinXAdd:TUIO_CALIBRATION_STEP];
+            [self printLimits];
         } break;
         case '-' :
         {

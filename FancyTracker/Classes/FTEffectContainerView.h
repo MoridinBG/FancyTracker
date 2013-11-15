@@ -22,6 +22,8 @@
 #import "Effects/FTPictureReveal.h"
 #import "Effects/FTBackgroundLayer.h"
 
+#define TUIO_CALIBRATION_STEP 0.01f
+
 @interface FTEffectContainerView : NSView
 {
     TuioClient *_tuioClient;
@@ -30,9 +32,7 @@
     FTBackgroundLayer *_background;
     
     FTBaseGLLayer *_currentEffect;
-    FTInteractiveLogos *_logos1, *_logos2;
-    FTInteractiveLogos *_logos3, *_logos4;
-    FTInteractiveLogos *_logos5, *_logos6;
+    FTInteractiveLogos *_logos13, *_logos24, *_logos56;
     
     NSTimer *_renderTimer;
     CATextLayer *_text;
@@ -41,6 +41,8 @@
     CGLContextObj _syphonContext;
     GLuint _syphoneTextureId;
     GLuint _syphonFboId;
+    
+    BOOL _calibratesContour;
 }
 
 - (void) awakeFromNib;
