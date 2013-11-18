@@ -8,7 +8,7 @@
 
 #import "FTBaseGLLayer.h"
 
-#define CONTOURS_BACK_COLOR_TRACKS 300
+#define CONTOURS_BACK_COLOR_TRACKS 100
 
 @interface FTColorTracks : FTBaseGLLayer
 {

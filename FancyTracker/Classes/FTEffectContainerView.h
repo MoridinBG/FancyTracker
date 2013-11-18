@@ -33,6 +33,7 @@
     
     FTBaseGLLayer *_currentEffect;
     FTInteractiveLogos *_logos13, *_logos24, *_logos56;
+    FTBaseGLLayer *_colorTracks;
     
     NSTimer *_renderTimer;
     CATextLayer *_text;

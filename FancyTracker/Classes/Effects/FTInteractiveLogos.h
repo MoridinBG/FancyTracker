@@ -13,12 +13,13 @@
 #import "FTConnection.h"
 
 #define SPRING_FREQ 1.f
-#define SPRING_DAMP 0.38f
+#define SPRING_DAMP 0.1f
 #define CONNECTED_NEIGHBOURS 5
-#define LOGO_RESTITUTION 0.9f
+#define LOGO_RESTITUTION 1.f
 #define LOGO_DENSITY 1.f
 
-#define SUBIMAGES_MAX_DISTANCE 0.075f
+#define SUBIMAGES_MAX_DISTANCE 0.25f
+#define SUBIMAGES_MIN_DISTANCE 0.1f
 
 @interface FTInteractiveLogos : FTBaseGLLayer <FTProximitySensorListener>
 {

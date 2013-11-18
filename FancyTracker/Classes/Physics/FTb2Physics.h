@@ -39,6 +39,8 @@
     NSMutableArray *_lockedDeadJoints;
 }
 
+@property BOOL mustDebugDraw;
+
 - (id) init;
 - (void) createGroundWithDimensions:(CGSize)dimensions;
 - (void) step;

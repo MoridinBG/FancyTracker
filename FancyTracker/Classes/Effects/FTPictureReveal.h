@@ -10,6 +10,8 @@
 
 @interface FTPictureReveal : FTBaseGLLayer
 {
+    GLuint _texture;
+    GLuint _textureStencil;
 }
 
 - (id) init;

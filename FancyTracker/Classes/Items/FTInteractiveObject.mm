@@ -227,7 +227,7 @@
 
 - (void) setPhysicsData:(NSValue *)data
 {
-	if(_physicsData)
+	if(_physicsData && data != nil)
 		_physicsData->GetWorld()->DestroyBody(_physicsData);
 	_physicsData = (b2Body*) [data pointerValue];
 }

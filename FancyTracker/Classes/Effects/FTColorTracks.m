@@ -30,7 +30,6 @@
 
 - (void) drawGL
 {
-    
 	FTRGBA *color;
 	for(FTInteractiveObject *blob in [_blobs allValues])
 	{
@@ -73,8 +72,8 @@
 			gluTessEndContour(_tess);
 			gluTessEndPolygon(_tess);
 			
-			index -= 5;
-            alpha -= alphaStep * 5;
+			index -= 1;
+            alpha -= alphaStep * 1;
 		}
         //*/
 	}

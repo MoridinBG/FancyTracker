@@ -14,7 +14,7 @@
 {
 	if(self = [super init])
 	{
-		[self addBurningFilter];
+//		[self addBurningFilter];
 	}
 	return self;
 }

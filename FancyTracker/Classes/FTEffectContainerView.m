@@ -14,12 +14,12 @@
 
 - (void) awakeFromNib
 {
-
-//    [self enterFullScreenMode:[[NSScreen screens] objectAtIndex:0] withOptions:NULL];
+    
+    //    [self enterFullScreenMode:[[NSScreen screens] objectAtIndex:0] withOptions:NULL];
     
     [self.window makeKeyAndOrderFront:self];
     _tuioClient = [[TuioClient alloc] initWithPortNumber:3333
-                                  andDelegateDimensions:self.frame.size
+                                   andDelegateDimensions:self.frame.size
                                      relativeCoordinates:true];
     _tuioClient.isCalibrating = TRUE;
     
@@ -85,8 +85,11 @@
                                                               0.1f * self.frame.size.width)
                                 connectsAllToFirst:TRUE];
     
-    _currentEffect = _logos13;
-    _logos13.mustRunPhysics = TRUE;
+    _colorTracks = [FTPictureReveal layer];
+    _colorTracks.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    
+    _currentEffect = _colorTracks;
+//    _logos13.mustRunPhysics = TRUE;
     [self.layer addSublayer:_currentEffect];
     [_tuioClient addObjectToDelegates:_currentEffect];
 }
@@ -201,31 +204,38 @@
 }
 #pragma marka -
 
-#pragma mark Keyboard Handler
-- (BOOL)acceptsFirstResponder
-{
-	return YES;
-}
-
 - (void) printLimits
 {
-    _text.string = [NSString stringWithFormat:@"Cur Contour MinX: %f; MaxX: %f; MinY: %f; Max Y:%f\nCur Point MinX: %f; MaxX: %f; MinY: %f; Max Y:%f",
+    NSString *msg = [NSString stringWithFormat:@"CContour MinX: %f; MaxX: %f; MinY: %f; Max Y:%f\nCPoint MinX: %f; MaxX: %f; MinY: %f; Max Y:%f",
                     _tuioClient.contourMinX, _tuioClient.contourMaxX, _tuioClient.contourMinY, _tuioClient.contourMaxY,
                     _tuioClient.pointMinX, _tuioClient.pointMaxX, _tuioClient.pointMinY, _tuioClient.pointMaxY];
+    
+    if(!_tuioClient.isCalibrating)
+        msg = [NSString stringWithFormat:@"%@\nAdjusting calibration", msg];
+    else
+        msg = [NSString stringWithFormat:@"%@\nInternal calibration", msg];
+    
+    _text.string = msg;
     CGColorRef fgColor = CGColorCreateGenericRGB(1.f, 1.f, 1.f, 1.f);
 	_text.foregroundColor = fgColor;
 	CGColorRelease(fgColor);
     _text.fontSize = 17.f;
     [self.layer addSublayer:_text];
     
-    _text.frame = CGRectMake(0, 45, 800, 600);
+    _text.frame = CGRectMake(0, 0, 600, 500);
     
+}
+
+#pragma mark Keyboard Handler
+- (BOOL)acceptsFirstResponder
+{
+	return YES;
 }
 
 - (void)keyDown:(NSEvent *)event
 {
     unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
-
+    
     switch(key)
     {
         case '1' :
@@ -234,7 +244,7 @@
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
-
+                
                 _currentEffect = _logos13;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
@@ -296,7 +306,7 @@
             _logos24.mustRunPhysics = TRUE;
             _logos24.mustDistanceJointNeihgbours = FALSE;
         } break;
-
+            
         case '5' :
         {
             if(_currentEffect != _logos56)
@@ -329,6 +339,19 @@
             _logos56.mustDrawConnections = TRUE;
             _logos56.mustRunPhysics = TRUE;
             _logos56.mustDistanceJointNeihgbours = TRUE;
+        } break;
+            
+        case '0' :
+        {
+            if(_currentEffect != _colorTracks)
+            {
+                [_tuioClient removeObjectFromDelegates:_currentEffect];
+                [_currentEffect removeFromSuperlayer];
+                
+                _currentEffect = _colorTracks;
+                [self.layer addSublayer:_currentEffect];
+                [_tuioClient addObjectToDelegates:_currentEffect];
+            }
         } break;
             
             
@@ -408,6 +431,18 @@
                 [_tuioClient calibratePointMinXAdd:TUIO_CALIBRATION_STEP];
             [self printLimits];
         } break;
+            
+        case 'z' :
+        {
+            _tuioClient.isCalibrating = !_tuioClient.isCalibrating;
+            [self printLimits];
+        } break;
+            
+        case 'x' :
+        {
+            [_currentEffect keyDown:event];
+        } break;
+            
         case '-' :
         {
             [_currentEffect keyDown:event];

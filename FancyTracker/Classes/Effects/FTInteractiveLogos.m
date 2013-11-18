@@ -74,6 +74,8 @@
                                                                                withSize:glSize
                                                                             withDensity:LOGO_DENSITY
                                                                         withRestitution:LOGO_RESTITUTION];
+                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
+                
                 _pictureId--;
                 layerObject.uid = [NSNumber numberWithLong:_pictureId];
                 layerObject.isPhysicsControlled = TRUE;
@@ -101,9 +103,9 @@
             CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
             
             FTInteractiveObject *centralObject = [_physics createCircleBodyAtPosition:glPositionCentral
-                                                                           withSize:glSize
-                                                                        withDensity:LOGO_DENSITY
-                                                                    withRestitution:LOGO_RESTITUTION];
+                                                                             withSize:glSize
+                                                                          withDensity:LOGO_DENSITY
+                                                                      withRestitution:LOGO_RESTITUTION];
             _pictureId--;
             centralObject.uid = [NSNumber numberWithLong:_pictureId];
             centralObject.isPhysicsControlled = TRUE;
@@ -113,8 +115,8 @@
             
             [_logoObjects addObject:centralObject];
             [self addSublayer:centralLayer];
-
-
+            
+            
             NSMutableArray *subImages = [NSMutableArray arrayWithArray:imagePaths];
             [subImages removeObjectAtIndex:0];
             
@@ -126,10 +128,12 @@
                 subLayer.contents = subImage;
                 
                 CGPoint glPosition;
+                float distance;
                 do
                 {
                     glPosition = [self getRandomGLPointWithinDimension];
-                } while ([FTUtilityFunctions lengthBetweenPoint:glPositionCentral andPoint:glPositionCentral] > SUBIMAGES_MAX_DISTANCE);
+                    distance = [FTUtilityFunctions lengthBetweenPoint:glPositionCentral andPoint:glPosition];
+                } while (distance > SUBIMAGES_MAX_DISTANCE || distance < SUBIMAGES_MIN_DISTANCE);
                 
                 CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
                 
@@ -137,9 +141,9 @@
                 CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
                 
                 FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
-                                                                                 withSize:glSize
-                                                                              withDensity:LOGO_DENSITY
-                                                                          withRestitution:LOGO_RESTITUTION];
+                                                                               withSize:glSize
+                                                                            withDensity:LOGO_DENSITY
+                                                                        withRestitution:LOGO_RESTITUTION];
                 _pictureId--;
                 layerObject.uid = [NSNumber numberWithLong:_pictureId];
                 layerObject.isPhysicsControlled = TRUE;
@@ -190,7 +194,8 @@
         {
             for(FTInteractiveObject *layerObject in _logoObjects)
             {
-                [_physics destroyBody:layerObject.physicsData];
+//                [_physics destroyBody:layerObject.physicsData];
+//                layerObject.physicsData = nil;
             }
             
             for(FTConnection *conn in _connections)
@@ -207,7 +212,7 @@
         {
             for(FTInteractiveObject *layerObject in _logoObjects)
             {
-                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
+//                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
             }
         }
     }
@@ -217,14 +222,6 @@
 #pragma mark Drawing
 - (void) drawGL
 {
-    if(_mustDrawConnections)
-    {
-        for(FTConnection *connection in _connections)
-        {
-            [connection render];
-        }
-    }
-    
     for(FTConnection *conn in _queuedForJoints)
     {
         NSValue *joint = [_physics distanceJointBody:conn.endA.physicsData
@@ -253,6 +250,14 @@
         layer.transform = CATransform3DMakeRotation(logo.angle, 0.f, 0.f, 1.f);
     }
     [CATransaction commit];
+    
+    if(_mustDrawConnections)
+    {
+        for(FTConnection *connection in _connections)
+        {
+            [connection render];
+        }
+    }
     
     if(_mustRunPhysics)
         [_physics step];
@@ -300,6 +305,10 @@
             }
             [CATransaction commit];
         } break;
+        case 'x' :
+        {
+            _physics.mustDebugDraw = !_physics.mustDebugDraw;
+        } break;
     }
 }
 
@@ -331,7 +340,7 @@
     if(object)
     {
         [_physics destroyBody:object.physicsData];
-//      [_physics detachMouseJointWithId:deadBounds.sessionID];   //FIXME: Crash!
+        //      [_physics detachMouseJointWithId:deadBounds.sessionID];   //FIXME: Crash!
     }
     
     [super tuioBoundsRemoved:deadBounds];
@@ -354,7 +363,7 @@
 	[firstObj addNeighbour:secondObj];
 	[secondObj addNeighbour:firstObj];
 	
-	if((firstObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && (secondObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS))
+	if((firstObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && (secondObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && _mustCreateSensors)
 		if(![firstObj isConnectedToNeighbour:secondObj])
 		{
 			FTConnection *connection = [[_connectionDrawer alloc] initWithendA:firstObj
@@ -386,7 +395,7 @@
 	[firstObj removeNeighbour:secondObj];
 	[secondObj removeNeighbour:firstObj];
 	
-	if([firstObj isConnectedToNeighbour:secondObj])
+	if([firstObj isConnectedToNeighbour:secondObj] && _mustCreateSensors)
 	{
 		FTConnection *connection = [firstObj disconnectFrom:secondObj];
 		[secondObj disconnectFrom:firstObj];

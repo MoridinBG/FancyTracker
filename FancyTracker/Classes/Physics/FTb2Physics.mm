@@ -33,6 +33,8 @@
         _lockedDeadBodies = [[NSMutableArray alloc] init];
         _lockedDeadJoints = [[NSMutableArray alloc] init];
         
+        _mustDebugDraw = FALSE;
+        
         /*
          uint32 flags = 0;
          flags += 1			* b2DebugDraw::e_shapeBit;
@@ -81,7 +83,8 @@
 {
     _world->Step(timeStep, velocityIterations, positionIterations);
     _world->ClearForces();
-//    _world->DrawDebugData();
+    if(_mustDebugDraw)
+    _world->DrawDebugData();
     
     for(NSValue *packedBody in _lockedDeadBodies)
         [self destroyBody:packedBody];
@@ -246,6 +249,7 @@
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &ellips;
 	fixtureDef.density = 1.0f;
+    fixtureDef.restitution = 1.5f;
 	fixtureDef.userData = (__bridge void *) object;
 	
 	body->CreateFixture(&fixtureDef);
@@ -273,21 +277,24 @@
 
 - (void) destroyBody:(NSValue*)packedBody
 {
+    b2Body *body = (b2Body*) [packedBody pointerValue];
     if(_world->IsLocked())
     {
         [_lockedDeadBodies addObject:packedBody];
         return;
     } else
     {
-        b2Body *body = (b2Body*)[packedBody pointerValue];
         if(body != NULL)
         {
-            if(body->GetUserData() != NULL)
+            if(body->GetWorld() != _world)
             {
-                CFRelease(body->GetUserData());
-                _world->DestroyBody(body);
-                body = NULL;
+                NSLog(@"Aliens");
             }
+            if(body->GetUserData() != NULL)
+                CFRelease(body->GetUserData());
+            
+            _world->DestroyBody(body);
+            body = NULL;
         } else
             NSLog(@"Attempt to destroy NULL body");
     }
