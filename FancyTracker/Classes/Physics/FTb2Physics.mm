@@ -27,36 +27,25 @@
 		
 		mouseJoints = [[NSMutableDictionary alloc] init];
         
-        debugDraw.SetFlags(b2Draw::e_shapeBit);
+        
+        uint32 flags = 0;
+        flags += 1			* b2Draw::e_shapeBit;
+        flags += 0			* b2Draw::e_jointBit;
+        flags += 0			* b2Draw::e_aabbBit;
+        flags += 0			* b2Draw::e_pairBit;
+        flags += 0			* b2Draw::e_centerOfMassBit;
+        debugDraw.SetFlags(flags);
         _world->SetDebugDraw(&debugDraw);
         
         _lockedDeadBodies = [[NSMutableArray alloc] init];
         _lockedDeadJoints = [[NSMutableArray alloc] init];
         
         _mustDebugDraw = FALSE;
-        
-        /*
-         uint32 flags = 0;
-         flags += 1			* b2DebugDraw::e_shapeBit;
-         flags += 1			* b2DebugDraw::e_jointBit;
-         flags += 1			* b2DebugDraw::e_aabbBit;
-         flags += 1			* b2DebugDraw::e_pairBit;
-         flags += 1			* b2DebugDraw::e_centerOfMassBit;
-         debugDraw.SetFlags(flags);
-         _world->SetDebugDraw(&debugDraw);
-         //*/
-        /*
-         NSInvocationOperation* evolution = [[NSInvocationOperation alloc] initWithTarget:self
-         selector:@selector(step)
-         object:nil];
-         
-         operationQueue = [[NSOperationQueue alloc] init];
-         [operationQueue addOperation:evolution];
-         //*/
 	}
 	return self;
 }
 
+//Creates a box around the window preventing physics bodies from escaping
 - (void) createGroundWithDimensions:(CGSize)dimensions
 {
     b2Vec2 vs[4];
@@ -79,12 +68,14 @@
     body->CreateFixture(&fixtureDef);;
 }
 
+//Step the b2Body. Also destroy bodies and joits that have been sent for destruction during a step
 - (void) step
 {
     _world->Step(timeStep, velocityIterations, positionIterations);
     _world->ClearForces();
+    
     if(_mustDebugDraw)
-    _world->DrawDebugData();
+        _world->DrawDebugData();
     
     for(NSValue *packedBody in _lockedDeadBodies)
         [self destroyBody:packedBody];
@@ -96,6 +87,7 @@
     [_lockedDeadJoints removeAllObjects];
 }
 
+//Create and return a new contact detector
 - (FTContactDetector *) addContactDetector
 {
 	FTContactDetector *contactDetector = [[FTContactDetector alloc] init];
@@ -107,6 +99,7 @@
 #pragma mark -
 #pragma mark Create/Destroy Bodies
 
+//Create a new rectangle
 - (void) attachRectangleBodyWithSize:(CGSize)size
                            rotatedAt:(float)angle
                          withDensity:(float)density

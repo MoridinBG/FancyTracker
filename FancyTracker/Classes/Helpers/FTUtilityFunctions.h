@@ -35,6 +35,6 @@
 
 #pragma mark Graphics
 + (GLuint) getTextureFromImage:(CGImageRef)image;
-+ (CGImageRef) getCGImageAtPath:(NSString*)filePath;
++ (CGImageRef) cgImageNamed:(NSString*)name;
 #pragma mark -
 @end

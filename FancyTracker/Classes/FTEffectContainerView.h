@@ -21,6 +21,7 @@
 #import "Effects/FTInteractiveLogos.h"
 #import "Effects/FTPictureReveal.h"
 #import "Effects/FTBackgroundLayer.h"
+#import "Effects/FTSparkleEmitter.h"
 
 #define TUIO_CALIBRATION_STEP 0.01f
 
@@ -34,6 +35,10 @@
     FTBaseGLLayer *_currentEffect;
     FTInteractiveLogos *_logos13, *_logos24, *_logos56;
     FTBaseGLLayer *_colorTracks;
+    FTSparkleEmitter *_sparkleEmitter;
+    
+    CALayer *rootLayer;
+    CAEmitterLayer *fireEmitter;
     
     NSTimer *_renderTimer;
     CATextLayer *_text;

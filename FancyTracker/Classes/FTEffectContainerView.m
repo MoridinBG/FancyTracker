@@ -15,16 +15,13 @@
 - (void) awakeFromNib
 {
     
-    //    [self enterFullScreenMode:[[NSScreen screens] objectAtIndex:0] withOptions:NULL];
+//    [self enterFullScreenMode:[[NSScreen screens] objectAtIndex:0] withOptions:NULL];
     
     [self.window makeKeyAndOrderFront:self];
     _tuioClient = [[TuioClient alloc] initWithPortNumber:3333
                                    andDelegateDimensions:self.frame.size
                                      relativeCoordinates:true];
     _tuioClient.isCalibrating = TRUE;
-    
-    _background = [FTBackgroundLayer layer];
-    _background.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     
     _text = [CATextLayer layer];
     _currentEffect = nil;
@@ -88,7 +85,11 @@
     _colorTracks = [FTPictureReveal layer];
     _colorTracks.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     
-    _currentEffect = _colorTracks;
+    _sparkleEmitter = [FTSparkleEmitter layer];
+    _sparkleEmitter.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    
+
+    _currentEffect = _sparkleEmitter;
 //    _logos13.mustRunPhysics = TRUE;
     [self.layer addSublayer:_currentEffect];
     [_tuioClient addObjectToDelegates:_currentEffect];
@@ -164,9 +165,9 @@
 		NSLog(@"Bad Framebuffer status");
 	}
     
-    _syphonRenderer = [CARenderer rendererWithCGLContext:_syphonContext options:nil];
-    _syphonRenderer.layer = self.layer;
-    _syphonRenderer.bounds = NSRectToCGRect(self.frame);
+//    _syphonRenderer = [CARenderer rendererWithCGLContext:_syphonContext options:nil];
+//    _syphonRenderer.layer = self.layer;
+//    _syphonRenderer.bounds = NSRectToCGRect(self.frame);
 }
 
 - (void) dealloc
@@ -190,10 +191,10 @@
     
     if([_syphon hasClients])
     {
-        [_syphonRenderer beginFrameAtTime:CACurrentMediaTime() timeStamp:NULL];
-        [_syphonRenderer addUpdateRect:_syphonRenderer.bounds];
-        [_syphonRenderer render];
-        [_syphonRenderer endFrame];
+//        [_syphonRenderer beginFrameAtTime:CACurrentMediaTime() timeStamp:NULL];
+//        [_syphonRenderer addUpdateRect:_syphonRenderer.bounds];
+//        [_syphonRenderer render];
+//        [_syphonRenderer endFrame];
         
         [_syphon publishFrameTexture:_syphoneTextureId
                        textureTarget:GL_TEXTURE_2D
@@ -454,5 +455,4 @@
     }
 }
 #pragma mark -
-
 @end

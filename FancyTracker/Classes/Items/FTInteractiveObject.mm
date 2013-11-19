@@ -11,6 +11,7 @@
 @implementation FTInteractiveObject
 
 #pragma mark Initialization
+//Create InteractiveObject out of touch/blob information
 + (id) interactiveFrom:(TuioBounds*)bounds
 {
 	FTInteractiveObject *interactive = [FTInteractiveObject alloc];
@@ -30,6 +31,7 @@
 	return interactive;
 }
 
+//Bare minimal constructor
 - (id) initAtPosition:(CGPoint)position
 			  atAngle:(float)angle
 			 withSize:(CGSize)size
@@ -56,6 +58,7 @@
 	return self;
 }
 
+//Create minimum Object with physics backing
 - (id) initAtPosition:(CGPoint)position
 			  atAngle:(float)angle
 			 withSize:(CGSize)size
@@ -76,6 +79,7 @@
 
 #pragma mark Accessors
 
+//If the object is physics controlled, return the b2Body position
 - (CGPoint) position
 {
     if(_isPhysicsControlled && (_physicsData != NULL))
@@ -87,6 +91,7 @@
         return _position;
 }
 
+//TODO: Move physics backed bodies to this location
 - (void) setPosition:(CGPoint)position
 {
     _position = position;
@@ -115,6 +120,7 @@
     return _size;
 }
 
+//Change the size of the object. If the change is larger than a given treshold resize the physics backed body
 - (void) setSize:(CGSize)size
 {
     _size = size;
@@ -125,6 +131,7 @@
             _physicsSize = self.size;
             switch(_type)
             {
+                //Resize an ellipse
                 case ELLIPSE:
                 {
                     b2Fixture *fixtures = _physicsData->GetFixtureList();
@@ -154,6 +161,7 @@
                     _physicsData->CreateFixture(&fixtureDef);
                 } break;
                     
+                //Resize a circle
                 case CIRCLE:
                 {
                     BOOL bodyFixture = FALSE;

@@ -181,27 +181,16 @@
 	return texture;
 }
 
-+ (CGImageRef) getCGImageAtPath:(NSString*)filePath
++ (CGImageRef) cgImageNamed:(NSString*)name
 {
-	CGImageSourceRef  myImageSource;
-	NSURL *picturePath;
+	CFURLRef url = (CFURLRef) CFBridgingRetain([[NSBundle mainBundle] URLForResource:name withExtension:nil]);
+	CGImageSourceRef source = CGImageSourceCreateWithURL(url, NULL);
+	CGImageRef image = CGImageSourceCreateImageAtIndex(source, 0, NULL);
 	
-	picturePath = [NSURL fileURLWithPath:filePath];
-	
-	NSError *err;
-	if ([picturePath checkResourceIsReachableAndReturnError:&err] == NO)
-	{
-		NSLog(@"Invalid path: %@", filePath);
-		return NULL;
-	}
-	
-	myImageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)picturePath, NULL);
-	CGImageRef image = CGImageSourceCreateImageAtIndex(myImageSource,
-													   0,
-													   NULL);
-	CFRelease(myImageSource);
-	
-	return image;
+    CFRelease(source);
+    CFRelease(url);
+    
+	return (CGImageRef) image;
 }
 #pragma mark -
 

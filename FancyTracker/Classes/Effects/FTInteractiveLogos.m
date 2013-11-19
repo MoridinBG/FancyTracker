@@ -37,19 +37,24 @@
     [_physics createGroundWithDimensions:CGSizeMake(_aspect, 1.f)];
 }
 
+//Creates a Obj-C contact detector and sets self as delegate
 - (void) setupSensors
 {
     _contactDetector = [_physics addContactDetector];
     _contactDetector.effect = self;
 }
 
+
+//Loads images and places them around either freely or in connected trees
 - (void) loadImagesFrom:(NSArray*)imagePaths
           withNumOfEach:(int)num
                withSize:(CGSize) size
      connectsAllToFirst:(BOOL)connectsAll
 {
+    //Random placement with no connections
     if(!connectsAll)
     {
+        //For each image there are 'num' copies made
         for(NSString *path in imagePaths)
         {
             NSImage *image = [NSImage imageNamed:path];
@@ -64,16 +69,19 @@
                 CALayer *layer = [CALayer layer];
                 layer.contents = image;
                 
-                CGPoint glPosition = [self getRandomGLPointWithinDimension];
-                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+                CGPoint glPosition = [self getRandomGLPointWithinDimension]; //Unit coordinates
+                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition]; //Pixel coordinates
                 
                 layer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
                 CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
                 
+                //Create new InteractiveObject and attach a physical object to it
                 FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
                                                                                withSize:glSize
                                                                             withDensity:LOGO_DENSITY
                                                                         withRestitution:LOGO_RESTITUTION];
+                
+                //Attach a Contact Sensor - non-colliding body
                 [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
                 
                 _pictureId--;
@@ -89,8 +97,10 @@
         }
     } else
     {
+        //Num of trees
         for(int i = 0; i < num; i++)
         {
+            //Setup for main(root) image same as above
             NSImage *mainImage = [NSImage imageNamed:[imagePaths objectAtIndex:0]];
             
             CALayer *centralLayer = [CALayer layer];
@@ -117,6 +127,7 @@
             [self addSublayer:centralLayer];
             
             
+            //Current implementation allows for only one root as first element in Images array. All the rest - children
             NSMutableArray *subImages = [NSMutableArray arrayWithArray:imagePaths];
             [subImages removeObjectAtIndex:0];
             
@@ -129,6 +140,9 @@
                 
                 CGPoint glPosition;
                 float distance;
+                
+                //Keep calculating new position, until it's within reasonable distance
+                //TODO: Make specific utility function for points within distance
                 do
                 {
                     glPosition = [self getRandomGLPointWithinDimension];
@@ -151,6 +165,8 @@
                 layerObject.shouldResizePhysics = TRUE;
                 layerObject.type = CIRCLE;
                 
+                //Children are by default connected
+                //TODO: Make this controllable
                 FTConnection *connection = [[_connectionDrawer alloc] initWithendA:centralObject
                                                                               endB:layerObject
                                                                        beginningAt:0.f
@@ -159,6 +175,7 @@
                 [centralObject connectTo:layerObject withConnection:connection];
                 [layerObject connectTo:centralObject withConnection:connection];
                 
+                //By definition tree layouts are distance joint
                 if(_mustDistanceJointNeihgbours)
                 {
                     NSValue *joint = [_physics distanceJointBody:centralObject.physicsData
@@ -186,6 +203,7 @@
     return _mustCreateSensors;
 }
 
+//Broken implementation. Better keep the sensors working and disable their function
 - (void) setMustCreateSensors:(BOOL)mustCreateSensors
 {
     if(_mustCreateSensors)
@@ -222,6 +240,7 @@
 #pragma mark Drawing
 - (void) drawGL
 {
+    //Connections queued to be joint before the next world step (sometimes attempts are made to create Joints when the world is in step
     for(FTConnection *conn in _queuedForJoints)
     {
         NSValue *joint = [_physics distanceJointBody:conn.endA.physicsData
@@ -234,12 +253,14 @@
     }
     [_queuedForJoints removeAllObjects];
     
+    //Render blobs
     for(FTInteractiveObject *blob in [_blobs allValues])
 	{
         [[blob color] stepColors];
         [self renderContourOfObject:blob];
 	}
     
+    //Move logo layers without animation. Position depends on physics simulation, which should be smooth
     [CATransaction begin];
     [CATransaction setAnimationDuration:0.f];
     for(FTInteractiveObject *logo in _logoObjects)
@@ -251,6 +272,8 @@
     }
     [CATransaction commit];
     
+    
+    //Draw connections if requested
     if(_mustDrawConnections)
     {
         for(FTConnection *connection in _connections)
@@ -270,6 +293,7 @@
     unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
     switch(key)
     {
+        //Reduce logo size
         case '-' :
         {
             float stepSize = 0.9f;
@@ -288,6 +312,7 @@
             [CATransaction commit];
         } break;
             
+        //Enlarge logos
         case '+' :
         {
             [CATransaction begin];
@@ -316,6 +341,7 @@
 {
     [super tuioBoundsAdded:newBounds];
     
+    //Create a colliding physical body and attach it to the touch
     FTInteractiveObject *object = [_blobs objectForKey:newBounds.sessionID];
     [_physics attachEllipsoidBodyWithSize:newBounds.dimensions
                                 rotatedAt:0.f
@@ -329,6 +355,7 @@
 
 - (void) tuioBoundsUpdated:(TuioBounds*) updatedBounds
 {
+    //Update physical body on touch position
     [super tuioBoundsUpdated:updatedBounds];
     [_physics updateMouseJointWithId:updatedBounds.sessionID
                           toPosition:updatedBounds.position];
@@ -348,6 +375,8 @@
 
 - (void) tuioStopListening
 {
+    //Remove all objects for touches, as the layer won't be listening and may miss future tuiouBoundsRemoved leaving ghost bodies
+    //TODO: Store the current blobs and on consecutive reconnect compare
     for(FTInteractiveObject *object in [_blobs allValues])
     {
         [_physics destroyBody:object.physicsData];
@@ -358,6 +387,7 @@
 #pragma mark -
 
 #pragma mark Contact Handlers
+//Creates a connection between two objects if they don't have enaugh neighbours
 - (void) contactBetween:(FTInteractiveObject*)firstObj And:(FTInteractiveObject*)secondObj
 {
 	[firstObj addNeighbour:secondObj];
@@ -374,6 +404,7 @@
 			[firstObj connectTo:secondObj withConnection:connection];
 			[secondObj connectTo:firstObj withConnection:connection];
             
+            //If required also create a physical connection
             if(_mustDistanceJointNeihgbours)
             {
                 NSValue *joint = [_physics distanceJointBody:firstObj.physicsData
