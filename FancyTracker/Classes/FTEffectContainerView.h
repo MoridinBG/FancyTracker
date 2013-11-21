@@ -33,7 +33,7 @@
     FTBackgroundLayer *_background;
     
     FTBaseGLLayer *_currentEffect;
-    FTInteractiveLogos *_logos13, *_logos24, *_logos56;
+    FTInteractiveLogos *_logos12, *_logos34, *_logos56;
     FTBaseGLLayer *_colorTracks;
     FTSparkleEmitter *_sparkleEmitter;
     

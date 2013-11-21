@@ -14,6 +14,7 @@
 {
     CALayer *_hostingLayer;
     NSMutableDictionary *_emitters;
+    NSArray *_paths;
 }
 
 - (id) init;

@@ -78,7 +78,6 @@
 #pragma mark -
 
 #pragma mark Accessors
-
 //If the object is physics controlled, return the b2Body position
 - (CGPoint) position
 {
@@ -95,24 +94,6 @@
 - (void) setPosition:(CGPoint)position
 {
     _position = position;
-}
-
-- (float) angle
-{
-    if(_isPhysicsControlled && (_physicsData != NULL))
-    {
-        _angle = _physicsData->GetAngle();
-        return _angle;
-    } else
-        return _angle;
-}
-
-- (void) setAngle:(float)angle
-{
-    if(_isPhysicsControlled && (_physicsData != NULL))
-        NSLog(@"Ignoring setting angle on physics backed body");
-    else
-        _angle = angle;
 }
 
 - (CGSize) size
@@ -132,33 +113,77 @@
             switch(_type)
             {
                 //Resize an ellipse
+                //TODO: Allow for more than one sensor and one non-sensor fixture per body!
                 case ELLIPSE:
                 {
+                    
+                    BOOL bodyFixture = FALSE;
+                    BOOL sensorFixture = FALSE;
+                    
+                    float angleStep = 360.f / (ELLIPSOID_RESOLUTION - 1);
+
+                    b2FixtureDef fixtureDefBody;
+                    b2FixtureDef fixtureDefSensor;
+                    
                     b2Fixture *fixtures = _physicsData->GetFixtureList();
-                    for(b2Fixture* f = fixtures; f; f = f->GetNext())
+                    
+                    while(fixtures)
                     {
-                        _physicsData->DestroyFixture(f);
+                        b2Fixture *copy = fixtures;
+                        fixtures = fixtures->GetNext();
+                        
+                        if(!copy->IsSensor())
+                        {
+                            b2Vec2 vertices[ELLIPSOID_RESOLUTION]; //Must have separate array declaration. Otherwise Shape .Set corrupts the copy pointer?!
+                            for(int i = 0; i < ELLIPSOID_RESOLUTION; i++)
+                            {
+                                vertices[i].Set(cos(i * angleStep * DEG2RAD)  * size.width * 50.f,
+                                                sin(i * angleStep * DEG2RAD)  * size.height * 50.f);
+                            }
+                            
+                            b2PolygonShape ellipsBody;
+                            ellipsBody.Set(vertices, ELLIPSOID_RESOLUTION);
+                            
+                            fixtureDefBody.shape = &ellipsBody;
+                            fixtureDefBody.density = LOGO_DENSITY;
+                            fixtureDefBody.restitution = LOGO_RESTITUTION;
+                            fixtureDefBody.userData = (__bridge void *) self;
+                            fixtureDefBody.density = copy->GetDensity();
+                            fixtureDefBody.restitution = copy->GetRestitution();
+                            
+                            bodyFixture = TRUE;
+                        } else
+                        {
+                            b2Vec2 vertices[ELLIPSOID_RESOLUTION];
+                            for(int i = 0; i < ELLIPSOID_RESOLUTION; i++)
+                            {
+                                vertices[i].Set(cos(i * angleStep * DEG2RAD)  * size.width * 50.f * PHYSICS_SENSOR_FACTOR,
+                                                sin(i * angleStep * DEG2RAD)  * size.height * 50.f * PHYSICS_SENSOR_FACTOR);
+                            }
+                            
+                            b2PolygonShape ellipsSensor;
+                            ellipsSensor.Set(vertices, ELLIPSOID_RESOLUTION);
+                            
+                            fixtureDefSensor.shape = &ellipsSensor;
+                            fixtureDefSensor.density = LOGO_DENSITY;
+                            fixtureDefSensor.restitution = LOGO_RESTITUTION;
+                            fixtureDefSensor.userData = (__bridge void *) self;
+                            fixtureDefSensor.density = copy->GetDensity();
+                            fixtureDefSensor.restitution = copy->GetRestitution();
+                            fixtureDefSensor.isSensor = true;
+                            
+                            sensorFixture = TRUE;
+                        }
+                        
+                        _physicsData->DestroyFixture(copy);
                     }
                     
-                    b2Vec2 vertices[ELLIPSOID_RESOLUTION];
                     
-                    float angleStep = 360.f / ELLIPSOID_RESOLUTION;
+                    if(sensorFixture)
+                        _physicsData->CreateFixture(&fixtureDefSensor);
+                    if(bodyFixture)
+                        _physicsData->CreateFixture(&fixtureDefBody);
                     
-                    for(int i = 0; i < ELLIPSOID_RESOLUTION; i++)
-                    {
-                        vertices[i].Set(cos(i * angleStep * DEG2RAD)  * self.size.width * 50.f,
-                                        sin(i * angleStep * DEG2RAD)  * self.size.height * 50.f);
-                    }
-                    
-                    b2PolygonShape ellips;
-                    ellips.Set(vertices, ELLIPSOID_RESOLUTION);
-                    
-                    b2FixtureDef fixtureDef;
-                    fixtureDef.shape = &ellips;
-                    fixtureDef.density = 1.0f;
-                    fixtureDef.userData = (__bridge void *) self;
-                    
-                    _physicsData->CreateFixture(&fixtureDef);
                 } break;
                     
                 //Resize a circle
@@ -215,6 +240,64 @@
         }
     }
 }
+
+- (float) angle
+{
+    if(_isPhysicsControlled && (_physicsData != NULL))
+    {
+        _angle = _physicsData->GetAngle();
+        return _angle;
+    } else
+        return _angle;
+}
+
+- (void) setAngle:(float)angle
+{
+    if(_isPhysicsControlled && (_physicsData != NULL))
+        NSLog(@"Ignoring setting angle on physics backed body");
+    else
+        _angle = angle;
+}
+
+- (float) velocityAngle
+{
+    float angle = 0.f;
+    
+    if(self.avgRecentMovement > VELOCITY_ANGLE_MOVE_TRESHOLD)
+    {
+        if(_positionHistory.count < VEL_ANGLE_RECENT_STEPS)
+            return angle;
+        
+        for(int i = 0; i < VEL_ANGLE_RECENT_STEPS - 1; i++)
+        {
+            ObjectPoint *point1 = [_positionHistory objectAtIndex:(_positionHistory.count - i - 1)];
+            ObjectPoint *point2 = [_positionHistory objectAtIndex:(_positionHistory.count - i - 2)];
+            angle += [FTUtilityFunctions angleBetweenPoint:point1.cgPoint andPoint:point2.cgPoint];
+        }
+        
+        angle /= VEL_ANGLE_RECENT_STEPS - 1;
+        
+    }
+    
+    return angle;
+}
+
+- (float) avgRecentMovement
+{
+    if(_positionHistory.count < (AVG_RECENT_STEPS + 2))
+        return 0;
+    
+    float avgRecentMovement = 0;
+    for(int i = (int) _positionHistory.count - 1; i > _positionHistory.count - AVG_RECENT_STEPS - 1; i--)
+    {
+        ObjectPoint *point1 = [_positionHistory objectAtIndex:i];
+        ObjectPoint *point2 = [_positionHistory objectAtIndex:(i - 1)];
+        avgRecentMovement += [FTUtilityFunctions distanceBetweenPoint:point1.cgPoint andPoint:point2.cgPoint];
+    }
+    
+    return avgRecentMovement;
+}
+
 
 #pragma mark -
 

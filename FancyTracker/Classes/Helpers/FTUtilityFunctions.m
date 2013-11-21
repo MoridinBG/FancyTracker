@@ -11,7 +11,7 @@
 @implementation FTUtilityFunctions
 
 #pragma mark Geometry
-+ (CGPoint) findEndPointForStart:(CGPoint)start withLength:(float)length atAngle:(float)angle
++ (CGPoint) endPointForStart:(CGPoint)start withLength:(float)length atAngle:(float)angle
 {
 	CGPoint end;
 	
@@ -54,7 +54,7 @@
 	return end;
 }
 
-+ (float) lengthBetweenPoint:(CGPoint)start  andPoint:(CGPoint)end
++ (float) distanceBetweenPoint:(CGPoint)start  andPoint:(CGPoint)end
 {
 	float x = start.x - end.x;
 	float y = start.y - end.y;
@@ -62,7 +62,7 @@
 	return sqrt(x * x + y * y);
 }
 
-+ (float) findAngleBetweenPoint:(CGPoint) start andPoint:(CGPoint)end
++ (float) angleBetweenPoint:(CGPoint) start andPoint:(CGPoint)end
 {
 	float a = start.y - end.y;
 	float b = start.x - end.x;
@@ -71,7 +71,7 @@
 	float cosine = b / c;
 	float angle = acos(cosine) * RAD2DEG;
 	
-	if(end.y < start.y)
+	if(end.y > start.y)
 		angle = -angle;
 	
 	if(angle < 0.f)
@@ -79,20 +79,20 @@
 		angle = 180.f + (180.f - (-1.f * angle));
 	}
 	
-	if(angle <= 180.f)
-		angle = 180.f - angle;
-	else
-		angle = 360.f - (angle - 180.f);
+//	if(angle <= 180.f)
+//		angle = 180.f - angle;
+//	else
+//		angle = 360.f - (angle - 180.f);
 	
 	return angle;
 }
 
-+ (CGPoint) findPointBetweenPoint:(CGPoint)pointA andPoint:(CGPoint)pointB
++ (CGPoint) midPointBetweenPoint:(CGPoint)pointA andPoint:(CGPoint)pointB
 {
-	float angle = [self findAngleBetweenPoint:pointA andPoint:pointB];
-	float length = [self lengthBetweenPoint:pointA andPoint:pointB];
+	float angle = [self angleBetweenPoint:pointA andPoint:pointB];
+	float length = [self distanceBetweenPoint:pointA andPoint:pointB];
 	
-	return [self findEndPointForStart:pointA withLength:(length / 2) atAngle:angle];
+	return [self endPointForStart:pointA withLength:(length / 2) atAngle:angle];
 }
 
 //    Return: >0 for point left of the line through point1 and point2
@@ -102,6 +102,24 @@
 {
 	return (point2.x - point1.x)*(point.y - point1.y) - (point.x - point1.x)*(point2.y - point1.y);
 }
+#pragma mark -
+
+#pragma mark Sizes
+
++ (CGSize) fittingSizeForSize:(CGSize)givenSize toFitIn:(CGSize)boundingSize
+{
+    float hfactor = givenSize.width / boundingSize.width;
+    float vfactor = givenSize.height / boundingSize.height;
+    
+    float factor = fmax(hfactor, vfactor);
+    
+    // Divide the size by the greater of the vertical or horizontal shrinkage factor
+    float newWidth = givenSize.width / factor;
+    float newHeight = givenSize.height / factor;
+    
+    return CGSizeMake(newWidth, newHeight);
+}
+
 #pragma mark -
 
 #pragma mark Time

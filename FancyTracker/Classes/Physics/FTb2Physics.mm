@@ -143,22 +143,22 @@
 }
 
 - (FTInteractiveObject*) createRectangleBodyAtPosition:(CGPoint)position
-                                            withSize:(CGSize)size
-                                           rotatedAt:(float)angle
+                                              withSize:(CGSize)size
+                                             rotatedAt:(float)angle
                                            withDensity:(float)density
                                        withRestitution:(float)restitution
 {
     
 	
 	FTInteractiveObject *objBody = [[FTInteractiveObject alloc] initAtPosition:position
-																   atAngle:angle
-																  withSize:size
-														   physicsBackedBy:nil
-																  withType:RECTANGLE];
+                                                                       atAngle:angle
+                                                                      withSize:size
+                                                               physicsBackedBy:nil
+                                                                      withType:RECTANGLE];
 	[self attachRectangleBodyWithSize:size
                             rotatedAt:angle
                           withDensity:density
-                          withRestitution:(float)restitution
+                      withRestitution:(float)restitution
                              toObject:objBody];
 	return objBody;
 }
@@ -197,10 +197,10 @@
 {
 	size.width = size.height;
 	FTInteractiveObject *objBody = [[FTInteractiveObject alloc] initAtPosition:position
-																   atAngle:0.f
-																  withSize:size
-														   physicsBackedBy:nil
-																  withType:CIRCLE];
+                                                                       atAngle:0.f
+                                                                      withSize:size
+                                                               physicsBackedBy:nil
+                                                                      withType:CIRCLE];
 	[self attachCircleBodyWithSize:size
                        withDensity:density
                    withRestitution:restitution
@@ -212,6 +212,8 @@
 
 - (void) attachEllipsoidBodyWithSize:(CGSize)size
                            rotatedAt:(float)angle
+                         withDensity:(float)density
+                     withRestitution:(float)restitution
                             toObject:(FTInteractiveObject*)object
 {
     if(size.width <= 0.f || size.height <= 0)
@@ -221,10 +223,9 @@
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(object.position.x * 100, object.position.y * 100);
 	b2Body* body = _world->CreateBody(&bodyDef);
-	
-    b2Vec2 vertices[ELLIPSOID_RESOLUTION];
-    
     object.physicsSize = size;
+    
+    b2Vec2 vertices[ELLIPSOID_RESOLUTION];
     
     float angleStep = 360.f / (ELLIPSOID_RESOLUTION - 1);
     size.width *= 50.f;
@@ -241,27 +242,32 @@
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &ellips;
-	fixtureDef.density = 1.0f;
-    fixtureDef.restitution = 1.5f;
+	fixtureDef.density = LOGO_DENSITY;
+    fixtureDef.restitution = LOGO_RESTITUTION;
 	fixtureDef.userData = (__bridge void *) object;
 	
 	body->CreateFixture(&fixtureDef);
 	body->SetUserData((__bridge_retained void *) object);
 	
 	object.physicsData = [NSValue valueWithPointer:body];
+    object.type = ELLIPSE;
 }
 
 - (FTInteractiveObject*) createEllipsoidleBodyAtPosition:(CGPoint)position
                                                 withSize:(CGSize)size
                                                rotatedAt:(float)angle
+                                             withDensity:(float)density
+                                         withRestitution:(float)restitution
 {
 	FTInteractiveObject *objBody = [[FTInteractiveObject alloc] initAtPosition:position
                                                                        atAngle:0.f
                                                                       withSize:size
                                                                physicsBackedBy:nil
-                                                                      withType:RECTANGLE_SENSOR];
+                                                                      withType:ELLIPSE];
 	[self attachEllipsoidBodyWithSize:size
                             rotatedAt:angle
+                          withDensity:density
+                      withRestitution:restitution
                              toObject:objBody];
 	
 	return objBody;
@@ -328,14 +334,14 @@
 }
 
 - (FTInteractiveObject*) createRectangleSensorAtPosition:(CGPoint)position
-                                              withSize:(CGSize)size
-                                             rotatedAt:(float)angle
+                                                withSize:(CGSize)size
+                                               rotatedAt:(float)angle
 {
 	FTInteractiveObject *objBody = [[FTInteractiveObject alloc] initAtPosition:position
-																   atAngle:0.f
-																  withSize:size
-														   physicsBackedBy:nil
-																  withType:RECTANGLE_SENSOR];
+                                                                       atAngle:0.f
+                                                                      withSize:size
+                                                               physicsBackedBy:nil
+                                                                      withType:RECTANGLE_SENSOR];
 	[self attachRectangleSensorWithSize:size
                               rotatedAt:angle
                                toObject:objBody];
@@ -374,18 +380,69 @@
 }
 
 - (FTInteractiveObject*) createCircleSensorAtPosition:(CGPoint)position
-										   withSize:(CGSize)size
+                                             withSize:(CGSize)size
 {
 	FTInteractiveObject *objBody = [[FTInteractiveObject alloc] initAtPosition:position
-																   atAngle:0.f
-																  withSize:size
-														   physicsBackedBy:nil
-																  withType:CIRCLE_SENSOR];
+                                                                       atAngle:0.f
+                                                                      withSize:size
+                                                               physicsBackedBy:nil
+                                                                      withType:CIRCLE_SENSOR];
 	[self attachCircleSensorWithSize:size
 							toObject:objBody];
 	
 	return objBody;
 }
+
+- (void) attachEllipsoidSensorWithSize:(CGSize)size
+                             rotatedAt:(float)angle
+                              toObject:(FTInteractiveObject*)object
+{
+    if(size.width <= 0.f || size.height <= 0)
+        return;
+    
+    b2Body* body;
+    if((object.physicsData != nil) && ([object.physicsData pointerValue] != NULL))
+    {
+        body = (b2Body*) [object.physicsData pointerValue];
+    } else
+    {
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        bodyDef.position.Set(object.position.x * 100, object.position.y * 100);
+        body = _world->CreateBody(&bodyDef);
+        body->SetUserData((__bridge_retained void *) object);
+        
+        object.physicsSize = size;
+        object.physicsData = [NSValue valueWithPointer:body];
+    }
+    
+    b2PolygonShape ellips;
+    b2Vec2 vertices[ELLIPSOID_RESOLUTION];
+    
+    object.physicsSize = size;
+    
+    float angleStep = 360.f / (ELLIPSOID_RESOLUTION - 1);
+    size.width *= 50.f * PHYSICS_SENSOR_FACTOR;
+    size.height *= 50.f * PHYSICS_SENSOR_FACTOR;
+    
+    for(int i = 0; i < ELLIPSOID_RESOLUTION; i++)
+    {
+        vertices[i].Set(cos(i * angleStep * DEG2RAD)  * size.width,
+                        sin(i * angleStep * DEG2RAD)  * size.height);
+    }
+    
+    ellips.Set(vertices, ELLIPSOID_RESOLUTION);
+	
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &ellips;
+	fixtureDef.density = 1.f;
+    fixtureDef.restitution = 1.f;
+    fixtureDef.isSensor = TRUE;
+	fixtureDef.userData = (__bridge void *) object;
+	
+	body->CreateFixture(&fixtureDef);
+}
+
 #pragma mark -
 
 #pragma mark Create Joints

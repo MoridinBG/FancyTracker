@@ -35,38 +35,40 @@
 
 - (void) loadEffects
 {
-    NSArray *imagePaths = [NSArray arrayWithObjects:@"C1.png", @"C2.png", @"C3.png", nil];
-    _logos13 = [FTInteractiveLogos layer];
-    _logos13.mustGLClear = TRUE;
-    _logos13.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos13.mustCreateSensors = FALSE;
-    _logos13.mustDrawConnections = FALSE;
-    _logos13.mustRunPhysics = FALSE;
-    _logos13.mustDistanceJointNeihgbours = FALSE;
-    [_logos13 setupSensors];
-    _logos13.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [(FTInteractiveLogos*) _logos13 loadImagesFrom:imagePaths
-                                     withNumOfEach:2
-                                          withSize:CGSizeMake(0.2f * self.frame.size.width,
-                                                              0.2f * self.frame.size.width)
-                                connectsAllToFirst:FALSE];
+    NSArray *imagePaths = [NSArray arrayWithObjects:@"ASUSLogo_1.png", @"ASUSLogo_2.png", @"N550_1.png", @"N550_2.png", nil];
+    _logos12 = [FTInteractiveLogos layer];
+    _logos12.mustGLClear = TRUE;
+    _logos12.connectionDrawer = [FTLineConnectionDrawer class];
+    _logos12.mustCreateSensors = FALSE;
+    _logos12.mustDrawConnections = FALSE;
+    _logos12.mustRunPhysics = FALSE;
+    _logos12.mustDistanceJointNeihgbours = FALSE;
+    [_logos12 setupSensors];
+    _logos12.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [_logos12 loadImagesFrom:imagePaths
+               withNumOfEach:2
+                    withSize:CGSizeMake(0.2f * self.frame.size.width,
+                                        0.2f * self.frame.size.width)
+          connectsAllToFirst:FALSE];
     
-    _logos24 = [FTInteractiveLogos layer];
-    _logos24.mustGLClear = TRUE;
-    _logos24.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos24.mustCreateSensors = FALSE;
-    _logos24.mustDrawConnections = FALSE;
-    _logos24.mustRunPhysics = FALSE;
-    _logos24.mustDistanceJointNeihgbours = FALSE;
-    [_logos24 setupSensors];
-    _logos24.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    [(FTInteractiveLogos*) _logos24 loadImagesFrom:imagePaths
+    imagePaths = [NSArray arrayWithObjects:@"ASUSLogo_1.png", @"ASUSLogo_2.png", @"T100_1.png", @"T100_2.png",
+                                            @"T100_3.png", @"T100_4.png", @"T100_5.png", @"T100_6.png", nil];
+    _logos34 = [FTInteractiveLogos layer];
+    _logos34.mustGLClear = TRUE;
+    _logos34.connectionDrawer = [FTLineConnectionDrawer class];
+    _logos34.mustCreateSensors = FALSE;
+    _logos34.mustDrawConnections = FALSE;
+    _logos34.mustRunPhysics = FALSE;
+    _logos34.mustDistanceJointNeihgbours = FALSE;
+    [_logos34 setupSensors];
+    _logos34.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [(FTInteractiveLogos*) _logos34 loadImagesFrom:imagePaths
                                      withNumOfEach:4
                                           withSize:CGSizeMake(0.1f * self.frame.size.width,
                                                               0.1f * self.frame.size.width)
                                 connectsAllToFirst:FALSE];
     
-    imagePaths = [NSArray arrayWithObjects:@"Humira.png", @"H1.png", @"H2.png", @"H3.png", nil];
+//    imagePaths = [NSArray arrayWithObjects:@"Humira.png", @"H1.png", @"H2.png", @"H3.png", nil];
     _logos56 = [FTInteractiveLogos layer];
     _logos56.mustGLClear = TRUE;
     _logos56.connectionDrawer = [FTLineConnectionDrawer class];
@@ -241,71 +243,71 @@
     {
         case '1' :
         {
-            if(_currentEffect != _logos13)
+            if(_currentEffect != _logos12)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos13;
+                _currentEffect = _logos12;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos13.mustCreateSensors = FALSE;
-            _logos13.mustDrawConnections = FALSE;
-            _logos13.mustRunPhysics = TRUE;
-            _logos13.mustDistanceJointNeihgbours = FALSE;
+            _logos12.mustCreateSensors = FALSE;
+            _logos12.mustDrawConnections = FALSE;
+            _logos12.mustRunPhysics = TRUE;
+            _logos12.mustDistanceJointNeihgbours = FALSE;
         } break;
             
             
         case '2' :
         {
-            if(_currentEffect != _logos24)
+            if(_currentEffect != _logos12)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos24;
+                _currentEffect = _logos12;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos24.mustCreateSensors = FALSE;
-            _logos24.mustDrawConnections = FALSE;
-            _logos24.mustRunPhysics = TRUE;
-            _logos24.mustDistanceJointNeihgbours = FALSE;
+            _logos12.mustCreateSensors = TRUE;
+            _logos12.mustDrawConnections = TRUE;
+            _logos12.mustRunPhysics = TRUE;
+            _logos12.mustDistanceJointNeihgbours = FALSE;
         } break;
             
         case '3' :
         {
-            if(_currentEffect != _logos13)
+            if(_currentEffect != _logos34)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos13;
+                _currentEffect = _logos34;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos13.mustCreateSensors = TRUE;
-            _logos13.mustDrawConnections = TRUE;
-            _logos13.mustRunPhysics = TRUE;
-            _logos13.mustDistanceJointNeihgbours = FALSE;
+            _logos34.mustCreateSensors = FALSE;
+            _logos34.mustDrawConnections = FALSE;
+            _logos34.mustRunPhysics = TRUE;
+            _logos34.mustDistanceJointNeihgbours = FALSE;
         } break;
             
         case '4' :
         {
-            if(_currentEffect != _logos24)
+            if(_currentEffect != _logos34)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos24;
+                _currentEffect = _logos34;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos24.mustCreateSensors = TRUE;
-            _logos24.mustDrawConnections = TRUE;
-            _logos24.mustRunPhysics = TRUE;
-            _logos24.mustDistanceJointNeihgbours = FALSE;
+            _logos34.mustCreateSensors = TRUE;
+            _logos34.mustDrawConnections = TRUE;
+            _logos34.mustRunPhysics = TRUE;
+            _logos34.mustDistanceJointNeihgbours = FALSE;
         } break;
             
         case '5' :

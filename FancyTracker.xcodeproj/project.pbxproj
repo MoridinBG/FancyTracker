@@ -15,6 +15,8 @@
 		000AB43C182F1FDB004D7B67 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000AB43B182F1FDB004D7B67 /* GLUT.framework */; };
 		000AB43D182F21A4004D7B67 /* FTContactDetectorCpp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000AB439182F1E0E004D7B67 /* FTContactDetectorCpp.mm */; };
 		000AB440182F3334004D7B67 /* FTInteractiveLogos.m in Sources */ = {isa = PBXBuildFile; fileRef = 000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */; };
+		001D3638183C391200F0E12F /* Spark1.png in Resources */ = {isa = PBXBuildFile; fileRef = 001D3636183C391100F0E12F /* Spark1.png */; };
+		001D3639183C391200F0E12F /* Spark2.png in Resources */ = {isa = PBXBuildFile; fileRef = 001D3637183C391100F0E12F /* Spark2.png */; };
 		002C3530182B330E007154BB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C352F182B330E007154BB /* OpenGL.framework */; };
 		002C3532182B332C007154BB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002C3531182B332C007154BB /* QuartzCore.framework */; };
 		0073573B1829E7A2000075A2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0073573A1829E7A2000075A2 /* Cocoa.framework */; };
@@ -24,16 +26,19 @@
 		0073574E1829E7A2000075A2 /* FTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0073574D1829E7A2000075A2 /* FTAppDelegate.m */; };
 		007357511829E7A2000075A2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0073574F1829E7A2000075A2 /* MainMenu.xib */; };
 		007357531829E7A2000075A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 007357521829E7A2000075A2 /* Images.xcassets */; };
-		0092CCDA18354BE100159598 /* H1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD618354BE100159598 /* H1.png */; };
-		0092CCDB18354BE100159598 /* H2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD718354BE100159598 /* H2.png */; };
-		0092CCDC18354BE100159598 /* H3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD818354BE100159598 /* H3.png */; };
-		0092CCDD18354BE100159598 /* Humira.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCD918354BE100159598 /* Humira.png */; };
-		00A6866218329DB600D40A7C /* C1.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6865F18329DB600D40A7C /* C1.png */; };
-		00A6866318329DB600D40A7C /* C2.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866018329DB600D40A7C /* C2.png */; };
-		00A6866418329DB600D40A7C /* C3.png in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866118329DB600D40A7C /* C3.png */; };
+		007B9B50183D68A6008EA868 /* ASUSLogo_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B4C183D68A6008EA868 /* ASUSLogo_1.png */; };
+		007B9B51183D68A6008EA868 /* ASUSLogo_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B4D183D68A6008EA868 /* ASUSLogo_2.png */; };
+		007B9B52183D68A6008EA868 /* N550_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B4E183D68A6008EA868 /* N550_1.png */; };
+		007B9B53183D68A6008EA868 /* N550_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B4F183D68A6008EA868 /* N550_2.png */; };
+		007B9B5B183D6E6F008EA868 /* T100_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B55183D6E6F008EA868 /* T100_1.png */; };
+		007B9B5C183D6E6F008EA868 /* T100_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B56183D6E6F008EA868 /* T100_2.png */; };
+		007B9B5D183D6E6F008EA868 /* T100_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B57183D6E6F008EA868 /* T100_3.png */; };
+		007B9B5E183D6E6F008EA868 /* T100_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B58183D6E6F008EA868 /* T100_4.png */; };
+		007B9B5F183D6E6F008EA868 /* T100_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B59183D6E6F008EA868 /* T100_5.png */; };
+		007B9B60183D6E6F008EA868 /* T100_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B5A183D6E6F008EA868 /* T100_6.png */; };
+		0092CCE0183AE2AB00159598 /* FTSparkleEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0092CCDF183AE2AB00159598 /* FTSparkleEmitter.m */; };
+		0092CCE4183BEB3B00159598 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCE3183BEB3B00159598 /* fire.png */; };
 		00A686671832B1CB00D40A7C /* FTPictureReveal.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A686661832B1CB00D40A7C /* FTPictureReveal.m */; };
-		00A6866A18338EFF00D40A7C /* back_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866818338EFF00D40A7C /* back_1.jpg */; };
-		00A6866B18338EFF00D40A7C /* back_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 00A6866918338EFF00D40A7C /* back_2.jpg */; };
 		00A6866E18339BF700D40A7C /* FTBackgroundLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */; };
 		00A68673183414C300D40A7C /* FTConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A68672183414C300D40A7C /* FTConnection.m */; };
 		00A6867618341FD800D40A7C /* FTUtilityFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6867518341FD800D40A7C /* FTUtilityFunctions.m */; };
@@ -84,6 +89,8 @@
 		000AB43B182F1FDB004D7B67 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLUT.framework; sourceTree = DEVELOPER_DIR; };
 		000AB43E182F3334004D7B67 /* FTInteractiveLogos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTInteractiveLogos.h; path = Classes/Effects/FTInteractiveLogos.h; sourceTree = "<group>"; };
 		000AB43F182F3334004D7B67 /* FTInteractiveLogos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTInteractiveLogos.m; path = Classes/Effects/FTInteractiveLogos.m; sourceTree = "<group>"; };
+		001D3636183C391100F0E12F /* Spark1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spark1.png; sourceTree = "<group>"; };
+		001D3637183C391100F0E12F /* Spark2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spark2.png; sourceTree = "<group>"; };
 		002C34F8182B0EDA007154BB /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = consts.h; path = Classes/Helpers/consts.h; sourceTree = "<group>"; };
 		002C352F182B330E007154BB /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		002C3531182B332C007154BB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -101,17 +108,21 @@
 		0073574D1829E7A2000075A2 /* FTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTAppDelegate.m; sourceTree = "<group>"; };
 		007357501829E7A2000075A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		007357521829E7A2000075A2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		0092CCD618354BE100159598 /* H1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H1.png; sourceTree = "<group>"; };
-		0092CCD718354BE100159598 /* H2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H2.png; sourceTree = "<group>"; };
-		0092CCD818354BE100159598 /* H3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = H3.png; sourceTree = "<group>"; };
-		0092CCD918354BE100159598 /* Humira.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Humira.png; sourceTree = "<group>"; };
-		00A6865F18329DB600D40A7C /* C1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C1.png; sourceTree = "<group>"; };
-		00A6866018329DB600D40A7C /* C2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C2.png; sourceTree = "<group>"; };
-		00A6866118329DB600D40A7C /* C3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = C3.png; sourceTree = "<group>"; };
+		007B9B4C183D68A6008EA868 /* ASUSLogo_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ASUSLogo_1.png; sourceTree = "<group>"; };
+		007B9B4D183D68A6008EA868 /* ASUSLogo_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ASUSLogo_2.png; sourceTree = "<group>"; };
+		007B9B4E183D68A6008EA868 /* N550_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = N550_1.png; sourceTree = "<group>"; };
+		007B9B4F183D68A6008EA868 /* N550_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = N550_2.png; sourceTree = "<group>"; };
+		007B9B55183D6E6F008EA868 /* T100_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_1.png; sourceTree = "<group>"; };
+		007B9B56183D6E6F008EA868 /* T100_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_2.png; sourceTree = "<group>"; };
+		007B9B57183D6E6F008EA868 /* T100_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_3.png; sourceTree = "<group>"; };
+		007B9B58183D6E6F008EA868 /* T100_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_4.png; sourceTree = "<group>"; };
+		007B9B59183D6E6F008EA868 /* T100_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_5.png; sourceTree = "<group>"; };
+		007B9B5A183D6E6F008EA868 /* T100_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_6.png; sourceTree = "<group>"; };
+		0092CCDE183AE2AB00159598 /* FTSparkleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTSparkleEmitter.h; path = Classes/Effects/FTSparkleEmitter.h; sourceTree = "<group>"; };
+		0092CCDF183AE2AB00159598 /* FTSparkleEmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTSparkleEmitter.m; path = Classes/Effects/FTSparkleEmitter.m; sourceTree = "<group>"; };
+		0092CCE3183BEB3B00159598 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		00A686651832B1CB00D40A7C /* FTPictureReveal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTPictureReveal.h; path = Classes/Effects/FTPictureReveal.h; sourceTree = "<group>"; };
 		00A686661832B1CB00D40A7C /* FTPictureReveal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTPictureReveal.m; path = Classes/Effects/FTPictureReveal.m; sourceTree = "<group>"; };
-		00A6866818338EFF00D40A7C /* back_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back_1.jpg; sourceTree = "<group>"; };
-		00A6866918338EFF00D40A7C /* back_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back_2.jpg; sourceTree = "<group>"; };
 		00A6866C18339BF700D40A7C /* FTBackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTBackgroundLayer.h; path = Classes/Effects/FTBackgroundLayer.h; sourceTree = "<group>"; };
 		00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTBackgroundLayer.m; path = Classes/Effects/FTBackgroundLayer.m; sourceTree = "<group>"; };
 		00A6866F1834149900D40A7C /* FTConnectionProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FTConnectionProtocol.h; path = Protocols/FTConnectionProtocol.h; sourceTree = "<group>"; };
@@ -301,18 +312,30 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		007B9B54183D6E6F008EA868 /* T100 */ = {
+			isa = PBXGroup;
+			children = (
+				007B9B55183D6E6F008EA868 /* T100_1.png */,
+				007B9B56183D6E6F008EA868 /* T100_2.png */,
+				007B9B57183D6E6F008EA868 /* T100_3.png */,
+				007B9B58183D6E6F008EA868 /* T100_4.png */,
+				007B9B59183D6E6F008EA868 /* T100_5.png */,
+				007B9B5A183D6E6F008EA868 /* T100_6.png */,
+			);
+			path = T100;
+			sourceTree = "<group>";
+		};
 		00A6865E18329DB600D40A7C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				00A6866818338EFF00D40A7C /* back_1.jpg */,
-				00A6866918338EFF00D40A7C /* back_2.jpg */,
-				00A6865F18329DB600D40A7C /* C1.png */,
-				00A6866018329DB600D40A7C /* C2.png */,
-				00A6866118329DB600D40A7C /* C3.png */,
-				0092CCD618354BE100159598 /* H1.png */,
-				0092CCD718354BE100159598 /* H2.png */,
-				0092CCD818354BE100159598 /* H3.png */,
-				0092CCD918354BE100159598 /* Humira.png */,
+				007B9B54183D6E6F008EA868 /* T100 */,
+				007B9B4C183D68A6008EA868 /* ASUSLogo_1.png */,
+				007B9B4D183D68A6008EA868 /* ASUSLogo_2.png */,
+				007B9B4E183D68A6008EA868 /* N550_1.png */,
+				007B9B4F183D68A6008EA868 /* N550_2.png */,
+				001D3636183C391100F0E12F /* Spark1.png */,
+				001D3637183C391100F0E12F /* Spark2.png */,
+				0092CCE3183BEB3B00159598 /* fire.png */,
 			);
 			name = Resources;
 			path = FancyTracker/Resources;
@@ -363,6 +386,8 @@
 				00A686661832B1CB00D40A7C /* FTPictureReveal.m */,
 				00A6866C18339BF700D40A7C /* FTBackgroundLayer.h */,
 				00A6866D18339BF700D40A7C /* FTBackgroundLayer.m */,
+				0092CCDE183AE2AB00159598 /* FTSparkleEmitter.h */,
+				0092CCDF183AE2AB00159598 /* FTSparkleEmitter.m */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -551,18 +576,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0092CCDA18354BE100159598 /* H1.png in Resources */,
-				00A6866318329DB600D40A7C /* C2.png in Resources */,
-				00A6866218329DB600D40A7C /* C1.png in Resources */,
-				00A6866A18338EFF00D40A7C /* back_1.jpg in Resources */,
-				0092CCDC18354BE100159598 /* H3.png in Resources */,
-				00A6866418329DB600D40A7C /* C3.png in Resources */,
+				001D3639183C391200F0E12F /* Spark2.png in Resources */,
 				007357451829E7A2000075A2 /* InfoPlist.strings in Resources */,
 				007357531829E7A2000075A2 /* Images.xcassets in Resources */,
-				0092CCDB18354BE100159598 /* H2.png in Resources */,
-				0092CCDD18354BE100159598 /* Humira.png in Resources */,
-				00A6866B18338EFF00D40A7C /* back_2.jpg in Resources */,
+				007B9B52183D68A6008EA868 /* N550_1.png in Resources */,
+				007B9B5D183D6E6F008EA868 /* T100_3.png in Resources */,
+				007B9B5C183D6E6F008EA868 /* T100_2.png in Resources */,
+				007B9B5F183D6E6F008EA868 /* T100_5.png in Resources */,
+				0092CCE4183BEB3B00159598 /* fire.png in Resources */,
+				007B9B5E183D6E6F008EA868 /* T100_4.png in Resources */,
 				0073574B1829E7A2000075A2 /* Credits.rtf in Resources */,
+				007B9B53183D68A6008EA868 /* N550_2.png in Resources */,
+				007B9B51183D68A6008EA868 /* ASUSLogo_2.png in Resources */,
+				007B9B60183D6E6F008EA868 /* T100_6.png in Resources */,
+				001D3638183C391200F0E12F /* Spark1.png in Resources */,
+				007B9B50183D68A6008EA868 /* ASUSLogo_1.png in Resources */,
+				007B9B5B183D6E6F008EA868 /* T100_1.png in Resources */,
 				007357511829E7A2000075A2 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -577,6 +606,7 @@
 				0073574E1829E7A2000075A2 /* FTAppDelegate.m in Sources */,
 				00C52802182DB8A500D10198 /* FTStack.m in Sources */,
 				00C52808182DE61100D10198 /* FTColorTrails.m in Sources */,
+				0092CCE0183AE2AB00159598 /* FTSparkleEmitter.m in Sources */,
 				00A68673183414C300D40A7C /* FTConnection.m in Sources */,
 				00A6867A183459FB00D40A7C /* FTLineConnectionDrawer.m in Sources */,
 				00BBED58182A0B4000CF3573 /* FTRGBA.m in Sources */,

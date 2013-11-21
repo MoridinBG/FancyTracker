@@ -22,17 +22,18 @@
 #import "FTUtilityFunctions.h"
 
 typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RECTANGLE_SENSOR} Type;
-#define PHYS_AREA_DIFF 0.2f
+#define PHYS_AREA_DIFF              0.2f
+#define AVG_RECENT_STEPS            3
+#define VEL_ANGLE_RECENT_STEPS      5
+#define VELOCITY_ANGLE_MOVE_TRESHOLD     0.01f
 
 @class FTConnection;
 @interface FTInteractiveObject : NSObject
 {
-    Type _type;
-    
+    //Actually needed to be declared, as accessors are user defined, so property not explictly synthesized -> no auto _position object
     CGPoint _position;
     CGSize _size;
     float _angle;
-    id _userObject;
     
 #ifdef __cplusplus
 	b2Body *_physicsData;
@@ -53,6 +54,8 @@ typedef enum type {CIRCLE, ELLIPSE, RECTANGLE, CIRCLE_SENSOR, ELLIPSE_SENSOR, RE
 @property CGSize size;
 @property float angle;
 @property CGPoint velocity;
+@property (readonly) float velocityAngle;                           //Radians
+@property (readonly) float avgRecentMovement;
 
 @property NSMutableArray *contour;
 @property NSMutableArray *contourHistory;

@@ -37,12 +37,12 @@
 #pragma mark Property Accessors
 - (float) length
 {
-	return [FTUtilityFunctions lengthBetweenPoint:_endA.position andPoint:_endB.position];
+	return [FTUtilityFunctions distanceBetweenPoint:_endA.position andPoint:_endB.position];
 }
 
 - (float) connectionAngle
 {
-	return [FTUtilityFunctions findAngleBetweenPoint:_endA.position andPoint:_endB.position];
+	return [FTUtilityFunctions angleBetweenPoint:_endA.position andPoint:_endB.position];
 }
 #pragma mark -
 

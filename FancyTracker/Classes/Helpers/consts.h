@@ -24,16 +24,22 @@ typedef enum debugstate {DEBUG_TOUCH, DEBUG_TOUCH_MOVE, DEBUG_LISTENER, DEBUG_LI
 #pragma mark -
 
 #pragma mark Math Constants
-#define PI 3.14159265f
-#define DEG2RAD PI / 180.0f
-#define RAD2DEG 180.f / PI
+#define PI                              3.14159265f
+#define DEG2RAD                         PI / 180.0f
+#define RAD2DEG                         180.f / PI
 #pragma mark -
 
-#define MIN_RANDOM_COLOR 40
-#define BACKGROUND 0.f, 0.f, 0.f //BLACK
+#define MIN_RANDOM_COLOR                40
+#define BACKGROUND                      0.f, 0.f, 0.f //BLACK
 
-#define PHYSICS_DRAG_ELASTICITY 1000.f
-#define ELLIPSOID_RESOLUTION 12
-#define PHYSICS_SCALE 100.f
-#define PHYSICS_SENSOR_FACTOR 3.f
+#define PHYSICS_DRAG_ELASTICITY         1000.f
+#define ELLIPSOID_RESOLUTION            12
+#define PHYSICS_SCALE                   100.f
+#define PHYSICS_SENSOR_FACTOR           3.f
+
+#define BLOB_DENSITY                    1.f
+#define BLOB_RESTITUTION                1.f
+
+#define LOGO_RESTITUTION 0.9f
+#define LOGO_DENSITY 1.f
 #endif

@@ -16,13 +16,17 @@
 }
 
 #pragma mark Geometry
-+ (CGPoint) findEndPointForStart:(CGPoint)start withLength:(float)length atAngle:(float)angle;
-+ (float) lengthBetweenPoint:(CGPoint)start  andPoint:(CGPoint)end;
-+ (float) findAngleBetweenPoint:(CGPoint) start andPoint:(CGPoint)end;
++ (CGPoint) endPointForStart:(CGPoint)start withLength:(float)length atAngle:(float)angle;
++ (float) distanceBetweenPoint:(CGPoint)start  andPoint:(CGPoint)end;
++ (float) angleBetweenPoint:(CGPoint) start andPoint:(CGPoint)end;
 
 + (char) isPoint:(CGPoint)point toTheLeftOfLineBetween:(CGPoint)point1 andPoint:(CGPoint)point2;
 
-+ (CGPoint) findPointBetweenPoint:(CGPoint)pointA andPoint:(CGPoint)pointB;
++ (CGPoint) midPointBetweenPoint:(CGPoint)pointA andPoint:(CGPoint)pointB;
+#pragma mark -
+
+#pragma mark Sizes
++ (CGSize) fittingSizeForSize:(CGSize)givenSize toFitIn:(CGSize)boundingSize;
 #pragma mark -
 
 #pragma mark Time

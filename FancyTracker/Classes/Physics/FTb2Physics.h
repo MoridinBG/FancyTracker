@@ -70,14 +70,27 @@
                                         withDensity:(float)density
                                     withRestitution:(float)restitution;
 
-- (void) attachEllipsoidBodyWithSize:(CGSize)size rotatedAt:(float)angle toObject:(FTInteractiveObject*)object;
-- (FTInteractiveObject*) createEllipsoidleBodyAtPosition:(CGPoint)position withSize:(CGSize)size rotatedAt:(float)angle;
+- (void) attachEllipsoidBodyWithSize:(CGSize)size
+                           rotatedAt:(float)angle
+                         withDensity:(float)density
+                     withRestitution:(float)restitution
+                            toObject:(FTInteractiveObject*)object;
+
+- (FTInteractiveObject*) createEllipsoidleBodyAtPosition:(CGPoint)position
+                                                withSize:(CGSize)size
+                                               rotatedAt:(float)angle
+                                             withDensity:(float)density
+                                         withRestitution:(float)restitution;
 
 - (void) attachRectangleSensorWithSize:(CGSize)size rotatedAt:(float)angle toObject:(FTInteractiveObject*)object;
 - (FTInteractiveObject*) createRectangleSensorAtPosition:(CGPoint)position withSize:(CGSize)size rotatedAt:(float)angle;
 
 - (void) attachCircleSensorWithSize:(CGSize)size toObject:(FTInteractiveObject*)object;
 - (FTInteractiveObject*) createCircleSensorAtPosition:(CGPoint)position withSize:(CGSize)size;
+
+- (void) attachEllipsoidSensorWithSize:(CGSize)size
+                             rotatedAt:(float)angle
+                              toObject:(FTInteractiveObject*)object;
 
 - (void) destroyBody:(NSValue*)packedBody;
 #pragma mark -

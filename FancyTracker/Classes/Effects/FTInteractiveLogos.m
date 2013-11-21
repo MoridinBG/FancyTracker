@@ -60,9 +60,11 @@
             NSImage *image = [NSImage imageNamed:path];
             if(!image.isValid)
             {
-                NSLog(@"Ignoring invalid image path");
+                NSLog(@"Ignoring invalid image path %@", path);
                 continue;
             }
+            
+            CGSize imgSize = [FTUtilityFunctions fittingSizeForSize:image.size toFitIn:size];
             
             for(int i = 0; i < num; i++)
             {
@@ -72,24 +74,29 @@
                 CGPoint glPosition = [self getRandomGLPointWithinDimension]; //Unit coordinates
                 CGPoint caPosition = [self convertGLPointToCAPoint:glPosition]; //Pixel coordinates
                 
-                layer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
-                CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
+                layer.frame = CGRectMake(caPosition.x, caPosition.y, imgSize.width, imgSize.height);
+                CGSize glSize = CGSizeMake((imgSize.width / self.bounds.size.width) * _aspect, imgSize.height / self.bounds.size.height);
                 
                 //Create new InteractiveObject and attach a physical object to it
-                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
-                                                                               withSize:glSize
-                                                                            withDensity:LOGO_DENSITY
-                                                                        withRestitution:LOGO_RESTITUTION];
-                
+//                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+//                                                                               withSize:glSize
+//                                                                            withDensity:LOGO_DENSITY
+//                                                                        withRestitution:LOGO_RESTITUTION];
+
+                FTInteractiveObject *layerObject = [_physics createEllipsoidleBodyAtPosition:glPosition
+                                                                                    withSize:glSize
+                                                                                   rotatedAt:0.f
+                                                                                 withDensity:LOGO_DENSITY
+                                                                             withRestitution:LOGO_RESTITUTION];
                 //Attach a Contact Sensor - non-colliding body
-                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
+                [_physics attachEllipsoidSensorWithSize:layerObject.size rotatedAt:0.f toObject:layerObject];
+//                 ircleSensorWithSize:layerObject.size toObject:layerObject];
                 
                 _pictureId--;
                 layerObject.uid = [NSNumber numberWithLong:_pictureId];
                 layerObject.isPhysicsControlled = TRUE;
                 layerObject.userObject = layer;
                 layerObject.shouldResizePhysics = TRUE;
-                layerObject.type = CIRCLE;
                 
                 [_logoObjects addObject:layerObject];
                 [self addSublayer:layer];
@@ -146,7 +153,7 @@
                 do
                 {
                     glPosition = [self getRandomGLPointWithinDimension];
-                    distance = [FTUtilityFunctions lengthBetweenPoint:glPositionCentral andPoint:glPosition];
+                    distance = [FTUtilityFunctions distanceBetweenPoint:glPositionCentral andPoint:glPosition];
                 } while (distance > SUBIMAGES_MAX_DISTANCE || distance < SUBIMAGES_MIN_DISTANCE);
                 
                 CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
@@ -343,9 +350,13 @@
     
     //Create a colliding physical body and attach it to the touch
     FTInteractiveObject *object = [_blobs objectForKey:newBounds.sessionID];
+    
     [_physics attachEllipsoidBodyWithSize:newBounds.dimensions
                                 rotatedAt:0.f
+                              withDensity:BLOB_DENSITY
+                          withRestitution:BLOB_RESTITUTION
                                  toObject:object];
+    
     [_physics attachMouseJointToBody:object.physicsData
                               withId:object.uid];
     object.type = ELLIPSE;
