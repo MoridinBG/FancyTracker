@@ -36,6 +36,19 @@
 		007B9B5E183D6E6F008EA868 /* T100_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B58183D6E6F008EA868 /* T100_4.png */; };
 		007B9B5F183D6E6F008EA868 /* T100_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B59183D6E6F008EA868 /* T100_5.png */; };
 		007B9B60183D6E6F008EA868 /* T100_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B5A183D6E6F008EA868 /* T100_6.png */; };
+		007B9B63183DB327008EA868 /* FTLightningConnectionDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 007B9B62183DB327008EA868 /* FTLightningConnectionDrawer.m */; };
+		007B9B70183DC827008EA868 /* circl_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B65183DC827008EA868 /* circl_1.png */; };
+		007B9B71183DC827008EA868 /* circl_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B66183DC827008EA868 /* circl_2.png */; };
+		007B9B72183DC827008EA868 /* circl_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B67183DC827008EA868 /* circl_3.png */; };
+		007B9B73183DC827008EA868 /* cuad_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B68183DC827008EA868 /* cuad_1.png */; };
+		007B9B74183DC827008EA868 /* cuad_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B69183DC827008EA868 /* cuad_2.png */; };
+		007B9B75183DC827008EA868 /* cuad_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6A183DC827008EA868 /* cuad_3.png */; };
+		007B9B76183DC827008EA868 /* triang_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6B183DC827008EA868 /* triang_1.png */; };
+		007B9B77183DC827008EA868 /* triang_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6C183DC827008EA868 /* triang_2.png */; };
+		007B9B78183DC827008EA868 /* X_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6D183DC827008EA868 /* X_1.png */; };
+		007B9B79183DC827008EA868 /* X_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6E183DC827008EA868 /* X_2.png */; };
+		007B9B7A183DC827008EA868 /* X_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 007B9B6F183DC827008EA868 /* X_3.png */; };
+		007B9B7C183DDC9B008EA868 /* TUIOFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 007B9B7B183DDC9B008EA868 /* TUIOFramework.framework */; };
 		0092CCE0183AE2AB00159598 /* FTSparkleEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0092CCDF183AE2AB00159598 /* FTSparkleEmitter.m */; };
 		0092CCE4183BEB3B00159598 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 0092CCE3183BEB3B00159598 /* fire.png */; };
 		00A686671832B1CB00D40A7C /* FTPictureReveal.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A686661832B1CB00D40A7C /* FTPictureReveal.m */; };
@@ -55,7 +68,6 @@
 		00C52805182DBD9800D10198 /* FTQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C52804182DBD9800D10198 /* FTQueue.m */; };
 		00C52808182DE61100D10198 /* FTColorTrails.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C52807182DE61100D10198 /* FTColorTrails.m */; };
 		00C5280A182DF89500D10198 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00C527F5182CAAFA00D10198 /* Syphon.framework */; };
-		00C5280B182DF89900D10198 /* TUIOFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */; };
 		00D4D433182C7D4B002F0B4E /* TUIOFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D4D432182C7D4B002F0B4E /* TUIOFramework.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,7 +79,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				00C5280A182DF89500D10198 /* Syphon.framework in CopyFiles */,
-				00C5280B182DF89900D10198 /* TUIOFramework.framework in CopyFiles */,
+				007B9B7C183DDC9B008EA868 /* TUIOFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +130,20 @@
 		007B9B58183D6E6F008EA868 /* T100_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_4.png; sourceTree = "<group>"; };
 		007B9B59183D6E6F008EA868 /* T100_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_5.png; sourceTree = "<group>"; };
 		007B9B5A183D6E6F008EA868 /* T100_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T100_6.png; sourceTree = "<group>"; };
+		007B9B61183DB327008EA868 /* FTLightningConnectionDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTLightningConnectionDrawer.h; path = Classes/Items/Connections/FTLightningConnectionDrawer.h; sourceTree = "<group>"; };
+		007B9B62183DB327008EA868 /* FTLightningConnectionDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTLightningConnectionDrawer.m; path = Classes/Items/Connections/FTLightningConnectionDrawer.m; sourceTree = "<group>"; };
+		007B9B65183DC827008EA868 /* circl_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circl_1.png; sourceTree = "<group>"; };
+		007B9B66183DC827008EA868 /* circl_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circl_2.png; sourceTree = "<group>"; };
+		007B9B67183DC827008EA868 /* circl_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circl_3.png; sourceTree = "<group>"; };
+		007B9B68183DC827008EA868 /* cuad_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuad_1.png; sourceTree = "<group>"; };
+		007B9B69183DC827008EA868 /* cuad_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuad_2.png; sourceTree = "<group>"; };
+		007B9B6A183DC827008EA868 /* cuad_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuad_3.png; sourceTree = "<group>"; };
+		007B9B6B183DC827008EA868 /* triang_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triang_1.png; sourceTree = "<group>"; };
+		007B9B6C183DC827008EA868 /* triang_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triang_2.png; sourceTree = "<group>"; };
+		007B9B6D183DC827008EA868 /* X_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = X_1.png; sourceTree = "<group>"; };
+		007B9B6E183DC827008EA868 /* X_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = X_2.png; sourceTree = "<group>"; };
+		007B9B6F183DC827008EA868 /* X_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = X_3.png; sourceTree = "<group>"; };
+		007B9B7B183DDC9B008EA868 /* TUIOFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = TUIOFramework.framework; path = "/Users/mort/Library/Developer/Xcode/DerivedData/BrandNew-fylwtprzvsvxyadknsczjvxteyis/Build/Products/Debug/TUIOFramework.framework"; sourceTree = "<absolute>"; };
 		0092CCDE183AE2AB00159598 /* FTSparkleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTSparkleEmitter.h; path = Classes/Effects/FTSparkleEmitter.h; sourceTree = "<group>"; };
 		0092CCDF183AE2AB00159598 /* FTSparkleEmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTSparkleEmitter.m; path = Classes/Effects/FTSparkleEmitter.m; sourceTree = "<group>"; };
 		0092CCE3183BEB3B00159598 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
@@ -248,6 +274,7 @@
 		0073572E1829E7A2000075A2 = {
 			isa = PBXGroup;
 			children = (
+				007B9B7B183DDC9B008EA868 /* TUIOFramework.framework */,
 				00A6865E18329DB600D40A7C /* Resources */,
 				007357401829E7A2000075A2 /* FancyTracker */,
 				007357391829E7A2000075A2 /* Frameworks */,
@@ -325,9 +352,28 @@
 			path = T100;
 			sourceTree = "<group>";
 		};
+		007B9B64183DC827008EA868 /* Sparks */ = {
+			isa = PBXGroup;
+			children = (
+				007B9B65183DC827008EA868 /* circl_1.png */,
+				007B9B66183DC827008EA868 /* circl_2.png */,
+				007B9B67183DC827008EA868 /* circl_3.png */,
+				007B9B68183DC827008EA868 /* cuad_1.png */,
+				007B9B69183DC827008EA868 /* cuad_2.png */,
+				007B9B6A183DC827008EA868 /* cuad_3.png */,
+				007B9B6B183DC827008EA868 /* triang_1.png */,
+				007B9B6C183DC827008EA868 /* triang_2.png */,
+				007B9B6D183DC827008EA868 /* X_1.png */,
+				007B9B6E183DC827008EA868 /* X_2.png */,
+				007B9B6F183DC827008EA868 /* X_3.png */,
+			);
+			path = Sparks;
+			sourceTree = "<group>";
+		};
 		00A6865E18329DB600D40A7C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				007B9B64183DC827008EA868 /* Sparks */,
 				007B9B54183D6E6F008EA868 /* T100 */,
 				007B9B4C183D68A6008EA868 /* ASUSLogo_1.png */,
 				007B9B4D183D68A6008EA868 /* ASUSLogo_2.png */,
@@ -348,6 +394,8 @@
 				00A68672183414C300D40A7C /* FTConnection.m */,
 				00A68678183459FB00D40A7C /* FTLineConnectionDrawer.h */,
 				00A68679183459FB00D40A7C /* FTLineConnectionDrawer.m */,
+				007B9B61183DB327008EA868 /* FTLightningConnectionDrawer.h */,
+				007B9B62183DB327008EA868 /* FTLightningConnectionDrawer.m */,
 			);
 			name = Connections;
 			sourceTree = "<group>";
@@ -576,23 +624,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				007B9B73183DC827008EA868 /* cuad_1.png in Resources */,
 				001D3639183C391200F0E12F /* Spark2.png in Resources */,
 				007357451829E7A2000075A2 /* InfoPlist.strings in Resources */,
 				007357531829E7A2000075A2 /* Images.xcassets in Resources */,
 				007B9B52183D68A6008EA868 /* N550_1.png in Resources */,
 				007B9B5D183D6E6F008EA868 /* T100_3.png in Resources */,
+				007B9B72183DC827008EA868 /* circl_3.png in Resources */,
+				007B9B77183DC827008EA868 /* triang_2.png in Resources */,
 				007B9B5C183D6E6F008EA868 /* T100_2.png in Resources */,
 				007B9B5F183D6E6F008EA868 /* T100_5.png in Resources */,
 				0092CCE4183BEB3B00159598 /* fire.png in Resources */,
+				007B9B71183DC827008EA868 /* circl_2.png in Resources */,
+				007B9B7A183DC827008EA868 /* X_3.png in Resources */,
+				007B9B78183DC827008EA868 /* X_1.png in Resources */,
 				007B9B5E183D6E6F008EA868 /* T100_4.png in Resources */,
+				007B9B70183DC827008EA868 /* circl_1.png in Resources */,
 				0073574B1829E7A2000075A2 /* Credits.rtf in Resources */,
 				007B9B53183D68A6008EA868 /* N550_2.png in Resources */,
 				007B9B51183D68A6008EA868 /* ASUSLogo_2.png in Resources */,
+				007B9B79183DC827008EA868 /* X_2.png in Resources */,
 				007B9B60183D6E6F008EA868 /* T100_6.png in Resources */,
 				001D3638183C391200F0E12F /* Spark1.png in Resources */,
 				007B9B50183D68A6008EA868 /* ASUSLogo_1.png in Resources */,
 				007B9B5B183D6E6F008EA868 /* T100_1.png in Resources */,
+				007B9B76183DC827008EA868 /* triang_1.png in Resources */,
 				007357511829E7A2000075A2 /* MainMenu.xib in Resources */,
+				007B9B74183DC827008EA868 /* cuad_2.png in Resources */,
+				007B9B75183DC827008EA868 /* cuad_3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,6 +686,7 @@
 				00A6867618341FD800D40A7C /* FTUtilityFunctions.m in Sources */,
 				000AB435182F1B69004D7B67 /* FTContactDetector.mm in Sources */,
 				000AB432182F1AC2004D7B67 /* Render.cpp in Sources */,
+				007B9B63183DB327008EA868 /* FTLightningConnectionDrawer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

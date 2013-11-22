@@ -14,11 +14,13 @@
 			   endB:(FTInteractiveObject*) endB
 		beginningAt:(float) beginnning
 		   endingAt:(float) ending
+             within:(CGSize) dimensions
 {
     if(self = [super initWithendA:endA
                              endB:endB
                       beginningAt:beginnning
-                         endingAt:ending])
+                         endingAt:ending
+                           within:dimensions])
     {
     }
     

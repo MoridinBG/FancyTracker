@@ -14,8 +14,11 @@
 {
     CALayer *_hostingLayer;
     NSMutableDictionary *_emitters;
-    NSArray *_paths;
+    float _cellScale;
+    float _cellScaleSpeed;
 }
+@property NSArray *paths;
+@property int birthRate;
 
 - (id) init;
 - (void) setBounds:(CGRect)bounds;

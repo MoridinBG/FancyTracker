@@ -13,6 +13,7 @@
 
 #import "FTQueue.h"
 #import "FTLineConnectionDrawer.h"
+#import "Items/Connections/FTLightningConnectionDrawer.h"
 
 #import "FTBoundariesBurnEffect.h"
 #import "Effects/FTPainterEffect.h"

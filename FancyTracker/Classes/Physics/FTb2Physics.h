@@ -46,6 +46,7 @@
 - (void) step;
 
 - (FTContactDetector *) addContactDetector;
+- (void) removeContactDetector;
 
 #pragma mark Create/Destroy Bodies
 - (void) attachRectangleBodyWithSize:(CGSize)size

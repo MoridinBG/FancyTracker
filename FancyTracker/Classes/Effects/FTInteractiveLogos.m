@@ -17,9 +17,10 @@
     {
         _physics = [[FTb2Physics alloc] init];
         _mustRunPhysics = TRUE;
-        _mustCreateSensors = FALSE;
+        _mustCollisionDetect = FALSE;
         _mustDistanceJointNeihgbours = FALSE;
         _mustDrawConnections = TRUE;
+        _mustAttachToBlob = FALSE;
         
         _logoObjects = [[NSMutableArray alloc] init];
         _connections = [[NSMutableArray alloc] init];
@@ -49,199 +50,182 @@
 - (void) loadImagesFrom:(NSArray*)imagePaths
           withNumOfEach:(int)num
                withSize:(CGSize) size
-     connectsAllToFirst:(BOOL)connectsAll
 {
-    //Random placement with no connections
-    if(!connectsAll)
+    //For each image there are 'num' copies made
+    for(NSString *path in imagePaths)
     {
-        //For each image there are 'num' copies made
-        for(NSString *path in imagePaths)
+        NSImage *image = [NSImage imageNamed:path];
+        if(!image.isValid)
         {
-            NSImage *image = [NSImage imageNamed:path];
-            if(!image.isValid)
-            {
-                NSLog(@"Ignoring invalid image path %@", path);
-                continue;
-            }
-            
-            CGSize imgSize = [FTUtilityFunctions fittingSizeForSize:image.size toFitIn:size];
-            
-            for(int i = 0; i < num; i++)
-            {
-                CALayer *layer = [CALayer layer];
-                layer.contents = image;
-                
-                CGPoint glPosition = [self getRandomGLPointWithinDimension]; //Unit coordinates
-                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition]; //Pixel coordinates
-                
-                layer.frame = CGRectMake(caPosition.x, caPosition.y, imgSize.width, imgSize.height);
-                CGSize glSize = CGSizeMake((imgSize.width / self.bounds.size.width) * _aspect, imgSize.height / self.bounds.size.height);
-                
-                //Create new InteractiveObject and attach a physical object to it
-//                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
-//                                                                               withSize:glSize
-//                                                                            withDensity:LOGO_DENSITY
-//                                                                        withRestitution:LOGO_RESTITUTION];
-
-                FTInteractiveObject *layerObject = [_physics createEllipsoidleBodyAtPosition:glPosition
-                                                                                    withSize:glSize
-                                                                                   rotatedAt:0.f
-                                                                                 withDensity:LOGO_DENSITY
-                                                                             withRestitution:LOGO_RESTITUTION];
-                //Attach a Contact Sensor - non-colliding body
-                [_physics attachEllipsoidSensorWithSize:layerObject.size rotatedAt:0.f toObject:layerObject];
-//                 ircleSensorWithSize:layerObject.size toObject:layerObject];
-                
-                _pictureId--;
-                layerObject.uid = [NSNumber numberWithLong:_pictureId];
-                layerObject.isPhysicsControlled = TRUE;
-                layerObject.userObject = layer;
-                layerObject.shouldResizePhysics = TRUE;
-                
-                [_logoObjects addObject:layerObject];
-                [self addSublayer:layer];
-            }
+            NSLog(@"Ignoring invalid image path %@", path);
+            continue;
         }
-    } else
-    {
-        //Num of trees
+        
+        CGSize imgSize = [FTUtilityFunctions fittingSizeForSize:image.size toFitIn:size];
+        
         for(int i = 0; i < num; i++)
         {
-            //Setup for main(root) image same as above
-            NSImage *mainImage = [NSImage imageNamed:[imagePaths objectAtIndex:0]];
+            CALayer *layer = [CALayer layer];
+            layer.contents = image;
             
-            CALayer *centralLayer = [CALayer layer];
-            centralLayer.contents = mainImage;
+            CGPoint glPosition = [self getRandomGLPointWithinDimension]; //Unit coordinates
+            CGPoint caPosition = [self convertGLPointToCAPoint:glPosition]; //Pixel coordinates
             
-            CGPoint glPositionCentral = [self getRandomGLPointWithinDimension];
-            CGPoint caPositionCentral = [self convertGLPointToCAPoint:glPositionCentral];
+            layer.frame = CGRectMake(caPosition.x, caPosition.y, imgSize.width, imgSize.height);
+            CGSize glSize = CGSizeMake((imgSize.width / self.bounds.size.width) * _aspect, imgSize.height / self.bounds.size.height);
             
-            centralLayer.frame = CGRectMake(caPositionCentral.x, caPositionCentral.y, size.width, size.height);
+            FTInteractiveObject *layerObject = [_physics createRectangleBodyAtPosition:glPosition
+                                                                              withSize:glSize
+                                                                             rotatedAt:0.f
+                                                                           withDensity:LOGO_DENSITY
+                                                                       withRestitution:LOGO_RESTITUTION];
+            
+            //Attach a Contact Sensor - non-colliding body
+//                [_physics attachEllipsoidSensorWithSize:layerObject.size rotatedAt:0.f toObject:layerObject];
+//                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
+            glSize.height = glSize.width;
+            [_physics attachRectangleSensorWithSize:glSize rotatedAt:0.f toObject:layerObject];
+            
+            
+            _pictureId--;
+            layerObject.uid = [NSNumber numberWithLong:_pictureId];
+            layerObject.isPhysicsControlled = TRUE;
+            layerObject.userObject = layer;
+            layerObject.shouldResizePhysics = TRUE;
+            
+            [_logoObjects addObject:layerObject];
+            [self addSublayer:layer];
+        }
+    }
+}
+
+- (void) loadImages2From:(NSArray*)imagePaths
+          withNumOfEach:(int)num
+               withSize:(CGSize) size
+{
+    for(int i = 0; i < num; i++)
+    {
+        //Setup for main(root) image same as above
+        NSImage *mainImage = [NSImage imageNamed:[imagePaths objectAtIndex:0]];
+        
+        CALayer *centralLayer = [CALayer layer];
+        centralLayer.contents = mainImage;
+        
+        CGPoint glPositionCentral = [self getRandomGLPointWithinDimension];
+        CGPoint caPositionCentral = [self convertGLPointToCAPoint:glPositionCentral];
+        
+        centralLayer.frame = CGRectMake(caPositionCentral.x, caPositionCentral.y, size.width, size.height);
+        CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
+        
+        FTInteractiveObject *centralObject = [_physics createCircleBodyAtPosition:glPositionCentral
+                                                                         withSize:glSize
+                                                                      withDensity:LOGO_DENSITY
+                                                                  withRestitution:LOGO_RESTITUTION];
+        _pictureId--;
+        centralObject.uid = [NSNumber numberWithLong:_pictureId];
+        centralObject.isPhysicsControlled = TRUE;
+        centralObject.userObject = centralLayer;
+        centralObject.shouldResizePhysics = TRUE;
+        centralObject.type = CIRCLE;
+        
+        [_logoObjects addObject:centralObject];
+        [self addSublayer:centralLayer];
+        
+        
+        //Current implementation allows for only one root as first element in Images array. All the rest - children
+        NSMutableArray *subImages = [NSMutableArray arrayWithArray:imagePaths];
+        [subImages removeObjectAtIndex:0];
+        
+        for(NSString *path in subImages)
+        {
+            NSImage *subImage = [NSImage imageNamed:path];
+            
+            CALayer *subLayer = [CALayer layer];
+            subLayer.contents = subImage;
+            
+            CGPoint glPosition;
+            float distance;
+            
+            //Keep calculating new position, until it's within reasonable distance
+            //TODO: Make specific utility function for points within distance
+            do
+            {
+                glPosition = [self getRandomGLPointWithinDimension];
+                distance = [FTUtilityFunctions distanceBetweenPoint:glPositionCentral andPoint:glPosition];
+            } while (distance > SUBIMAGES_MAX_DISTANCE || distance < SUBIMAGES_MIN_DISTANCE);
+            
+            CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
+            
+            subLayer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
             CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
             
-            FTInteractiveObject *centralObject = [_physics createCircleBodyAtPosition:glPositionCentral
-                                                                             withSize:glSize
-                                                                          withDensity:LOGO_DENSITY
-                                                                      withRestitution:LOGO_RESTITUTION];
+            FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
+                                                                           withSize:glSize
+                                                                        withDensity:LOGO_DENSITY
+                                                                    withRestitution:LOGO_RESTITUTION];
             _pictureId--;
-            centralObject.uid = [NSNumber numberWithLong:_pictureId];
-            centralObject.isPhysicsControlled = TRUE;
-            centralObject.userObject = centralLayer;
-            centralObject.shouldResizePhysics = TRUE;
-            centralObject.type = CIRCLE;
+            layerObject.uid = [NSNumber numberWithLong:_pictureId];
+            layerObject.isPhysicsControlled = TRUE;
+            layerObject.userObject = subLayer;
+            layerObject.shouldResizePhysics = TRUE;
+            layerObject.type = CIRCLE;
             
-            [_logoObjects addObject:centralObject];
-            [self addSublayer:centralLayer];
+            //Children are by default connected
+            //TODO: Make this controllable
+            FTConnection *connection = [[_connectionDrawer alloc] initWithendA:centralObject
+                                                                          endB:layerObject
+                                                                   beginningAt:0.f
+                                                                      endingAt:1.f
+                                                                        within:CGSizeMake(_aspect, 1.f)];
             
+            [centralObject connectTo:layerObject withConnection:connection];
+            [layerObject connectTo:centralObject withConnection:connection];
             
-            //Current implementation allows for only one root as first element in Images array. All the rest - children
-            NSMutableArray *subImages = [NSMutableArray arrayWithArray:imagePaths];
-            [subImages removeObjectAtIndex:0];
-            
-            for(NSString *path in subImages)
+            //By definition tree layouts are distance joint
+            if(_mustDistanceJointNeihgbours)
             {
-                NSImage *subImage = [NSImage imageNamed:path];
-                
-                CALayer *subLayer = [CALayer layer];
-                subLayer.contents = subImage;
-                
-                CGPoint glPosition;
-                float distance;
-                
-                //Keep calculating new position, until it's within reasonable distance
-                //TODO: Make specific utility function for points within distance
-                do
-                {
-                    glPosition = [self getRandomGLPointWithinDimension];
-                    distance = [FTUtilityFunctions distanceBetweenPoint:glPositionCentral andPoint:glPosition];
-                } while (distance > SUBIMAGES_MAX_DISTANCE || distance < SUBIMAGES_MIN_DISTANCE);
-                
-                CGPoint caPosition = [self convertGLPointToCAPoint:glPosition];
-                
-                subLayer.frame = CGRectMake(caPosition.x, caPosition.y, size.width, size.height);
-                CGSize glSize = CGSizeMake((size.width / self.bounds.size.width) * _aspect, size.height / self.bounds.size.height);
-                
-                FTInteractiveObject *layerObject = [_physics createCircleBodyAtPosition:glPosition
-                                                                               withSize:glSize
-                                                                            withDensity:LOGO_DENSITY
-                                                                        withRestitution:LOGO_RESTITUTION];
-                _pictureId--;
-                layerObject.uid = [NSNumber numberWithLong:_pictureId];
-                layerObject.isPhysicsControlled = TRUE;
-                layerObject.userObject = subLayer;
-                layerObject.shouldResizePhysics = TRUE;
-                layerObject.type = CIRCLE;
-                
-                //Children are by default connected
-                //TODO: Make this controllable
-                FTConnection *connection = [[_connectionDrawer alloc] initWithendA:centralObject
-                                                                              endB:layerObject
-                                                                       beginningAt:0.f
-                                                                          endingAt:1.f];
-                
-                [centralObject connectTo:layerObject withConnection:connection];
-                [layerObject connectTo:centralObject withConnection:connection];
-                
-                //By definition tree layouts are distance joint
-                if(_mustDistanceJointNeihgbours)
-                {
-                    NSValue *joint = [_physics distanceJointBody:centralObject.physicsData
-                                                        withBody:layerObject.physicsData
-                                                        withFreq:SPRING_FREQ
-                                                        withDamp:SPRING_DAMP];
-                    if(joint == nil)
-                        [_queuedForJoints addObject:connection];
-                    else
-                        connection.joint = joint;
-                }
-                
-                [_connections addObject:connection];
-                
-                [_logoObjects addObject:layerObject];
-                [self addSublayer:subLayer];
+                NSValue *joint = [_physics distanceJointBody:centralObject.physicsData
+                                                    withBody:layerObject.physicsData
+                                                    withFreq:SPRING_FREQ
+                                                    withDamp:SPRING_DAMP];
+                if(joint == nil)
+                    [_queuedForJoints addObject:connection];
+                else
+                    connection.joint = joint;
             }
+            
+            [_connections addObject:connection];
+            
+            [_logoObjects addObject:layerObject];
+            [self addSublayer:subLayer];
         }
     }
 }
 #pragma mark -
 
-- (BOOL) mustCreateSensors
+- (BOOL) mustCollisionDetect
 {
-    return _mustCreateSensors;
+    return _mustCollisionDetect;
 }
 
 //Broken implementation. Better keep the sensors working and disable their function
-- (void) setMustCreateSensors:(BOOL)mustCreateSensors
+- (void) setMustCollisionDetect:(BOOL)mustCollisionDetect
 {
-    if(_mustCreateSensors)
+    if(_mustCollisionDetect)
     {
-        if(!mustCreateSensors)
+        if(!mustCollisionDetect)
         {
-            for(FTInteractiveObject *layerObject in _logoObjects)
-            {
-//                [_physics destroyBody:layerObject.physicsData];
-//                layerObject.physicsData = nil;
-            }
-            
-            for(FTConnection *conn in _connections)
-            {
-                if(conn.joint != nil)
-                {
-                    [_physics destroyJoint:conn.joint];
-                }
-            }
+            [_connections removeAllObjects];
+            [_physics removeContactDetector];
         }
     } else
     {
-        if(mustCreateSensors)
+        if(mustCollisionDetect)
         {
-            for(FTInteractiveObject *layerObject in _logoObjects)
-            {
-//                [_physics attachCircleSensorWithSize:layerObject.size toObject:layerObject];
-            }
+            [self setupSensors];
         }
     }
-    _mustCreateSensors = mustCreateSensors;
+    _mustCollisionDetect = mustCollisionDetect;
 }
 
 #pragma mark Drawing
@@ -404,13 +388,14 @@
 	[firstObj addNeighbour:secondObj];
 	[secondObj addNeighbour:firstObj];
 	
-	if((firstObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && (secondObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && _mustCreateSensors)
+	if((firstObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && (secondObj.connectedNeighboursCount < CONNECTED_NEIGHBOURS) && _mustCollisionDetect)
 		if(![firstObj isConnectedToNeighbour:secondObj])
 		{
 			FTConnection *connection = [[_connectionDrawer alloc] initWithendA:firstObj
                                                                           endB:secondObj
-                                                                   beginningAt:0.f
-                                                                      endingAt:1.f];
+                                                                   beginningAt:0.1f
+                                                                      endingAt:0.9f
+                                                                        within:CGSizeMake(_aspect, 1.f)];
 			
 			[firstObj connectTo:secondObj withConnection:connection];
 			[secondObj connectTo:firstObj withConnection:connection];
@@ -437,7 +422,7 @@
 	[firstObj removeNeighbour:secondObj];
 	[secondObj removeNeighbour:firstObj];
 	
-	if([firstObj isConnectedToNeighbour:secondObj] && _mustCreateSensors)
+	if([firstObj isConnectedToNeighbour:secondObj] && _mustCollisionDetect)
 	{
 		FTConnection *connection = [firstObj disconnectFrom:secondObj];
 		[secondObj disconnectFrom:firstObj];

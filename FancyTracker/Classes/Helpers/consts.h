@@ -35,9 +35,9 @@ typedef enum debugstate {DEBUG_TOUCH, DEBUG_TOUCH_MOVE, DEBUG_LISTENER, DEBUG_LI
 #define PHYSICS_DRAG_ELASTICITY         1000.f
 #define ELLIPSOID_RESOLUTION            12
 #define PHYSICS_SCALE                   100.f
-#define PHYSICS_SENSOR_FACTOR           3.f
+#define PHYSICS_SENSOR_FACTOR           2.f
 
-#define BLOB_DENSITY                    1.f
+#define BLOB_DENSITY                    100.f
 #define BLOB_RESTITUTION                1.f
 
 #define LOGO_RESTITUTION 0.9f

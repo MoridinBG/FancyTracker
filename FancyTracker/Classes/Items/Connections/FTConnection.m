@@ -14,6 +14,7 @@
 			   endB:(FTInteractiveObject*) endB
 		beginningAt:(float) beginnning
 		   endingAt:(float) ending
+             within:(CGSize) dimensions
 {
     if(self = [super init])
     {
@@ -29,6 +30,7 @@
         
         _begin = beginnning;
         _end = ending;
+        _dimensions = dimensions;
     }
     
     return self;

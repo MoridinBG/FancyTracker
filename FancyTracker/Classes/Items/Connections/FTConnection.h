@@ -16,8 +16,11 @@
 {
 	FTInteractiveObject *_endA;
 	FTInteractiveObject *_endB;
-    
+    CGSize _dimensions;
     NSValue *_joint;
+    
+    float _begin;
+    float _end; 
 	
 }
 @property FTInteractiveObject *endA;
@@ -35,7 +38,8 @@
 - (id) initWithendA:(FTInteractiveObject*) endA
                endB:(FTInteractiveObject*) endB
         beginningAt:(float) beginnning
-           endingAt:(float)ending;
+           endingAt:(float)ending
+             within:(CGSize) dimensions;
 
 - (float) length;
 - (float) connectionAngle;

@@ -129,9 +129,12 @@
                     
                     while(fixtures)
                     {
+                        //Store a pointer to the current fixture
                         b2Fixture *copy = fixtures;
+                        //Advance the loop pointer to the next fixture (or NULL if there is no next fixture)
                         fixtures = fixtures->GetNext();
                         
+                        //Sensors are bigger than physical bodies
                         if(!copy->IsSensor())
                         {
                             b2Vec2 vertices[ELLIPSOID_RESOLUTION]; //Must have separate array declaration. Otherwise Shape .Set corrupts the copy pointer?!
@@ -151,6 +154,8 @@
                             fixtureDefBody.density = copy->GetDensity();
                             fixtureDefBody.restitution = copy->GetRestitution();
                             
+                            //Mark that there is a bodyFixture to be made
+                            //It must be created outside of the current fixtures iterration
                             bodyFixture = TRUE;
                         } else
                         {
@@ -259,6 +264,7 @@
         _angle = angle;
 }
 
+//Angle of movement of the body, based on the last several positions averaged
 - (float) velocityAngle
 {
     float angle = 0.f;

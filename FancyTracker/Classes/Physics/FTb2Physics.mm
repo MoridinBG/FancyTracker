@@ -96,6 +96,11 @@
 	return contactDetector;
 }
 
+- (void) removeContactDetector
+{
+    _world->SetContactListener(NULL);
+}
+
 #pragma mark -
 #pragma mark Create/Destroy Bodies
 
@@ -114,21 +119,13 @@
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(position.x, position.y);
 	b2Body* body = _world->CreateBody(&bodyDef);
-	
-    
-    b2Vec2 vertices[4];
     
     object.physicsSize = size;
     size.width *= PHYSICS_SCALE / 2.f;
     size.height *= PHYSICS_SCALE / 2.f;
     
-    vertices[0].Set(- size.width, - size.height);
-    vertices[1].Set(- size.width, size.height);
-    vertices[2].Set(size.width, - size.height);
-    vertices[3].Set(size.width, size.height);
-    
 	b2PolygonShape solidBox;
-	solidBox.Set(vertices, 4);
+    solidBox.SetAsBox(size.width, size.height);
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &solidBox;
@@ -305,21 +302,24 @@
                              rotatedAt:(float)angle
                               toObject:(FTInteractiveObject*)object
 {
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(object.position.x, object.position.y);
-	b2Body* body = _world->CreateBody(&bodyDef);
-	if(!body)
-	{
-		body = _world->CreateBody(&bodyDef);
-		
-		if(!body)
-			NSLog(@"Fail not prevented");
-	}
+    b2Body* body;
+    if((object.physicsData != nil) && ([object.physicsData pointerValue] != NULL))
+    {
+        body = (b2Body*) [object.physicsData pointerValue];
+    } else
+    {
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        bodyDef.position.Set(object.position.x * PHYSICS_SCALE, object.position.y * PHYSICS_SCALE);
+        body = _world->CreateBody(&bodyDef);
+        
+        body->SetUserData((__bridge_retained void *) object);
+        object.physicsData = [NSValue valueWithPointer:body];
+    }
 	
 	b2PolygonShape solidBox;
-	solidBox.SetAsBox(size.width / 2.f,
-					  size.height / 2.f);
+	solidBox.SetAsBox(size.width / 2.f * PHYSICS_SCALE * PHYSICS_SENSOR_FACTOR,
+					  size.height / 2.f * PHYSICS_SCALE * PHYSICS_SENSOR_FACTOR);
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &solidBox;
@@ -329,8 +329,6 @@
 	
 	body->CreateFixture(&fixtureDef);
 	body->SetUserData((__bridge_retained void *) object);
-	
-	object.physicsData = [NSValue valueWithPointer:body];
 }
 
 - (FTInteractiveObject*) createRectangleSensorAtPosition:(CGPoint)position
@@ -392,6 +390,7 @@
 	
 	return objBody;
 }
+#pragma mark -
 
 - (void) attachEllipsoidSensorWithSize:(CGSize)size
                              rotatedAt:(float)angle

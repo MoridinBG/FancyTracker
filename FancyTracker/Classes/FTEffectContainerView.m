@@ -38,51 +38,49 @@
     NSArray *imagePaths = [NSArray arrayWithObjects:@"ASUSLogo_1.png", @"ASUSLogo_2.png", @"N550_1.png", @"N550_2.png", nil];
     _logos12 = [FTInteractiveLogos layer];
     _logos12.mustGLClear = TRUE;
-    _logos12.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos12.mustCreateSensors = FALSE;
+    _logos12.connectionDrawer = [FTLightningConnectionDrawer class];
+    _logos12.mustCollisionDetect = FALSE;
     _logos12.mustDrawConnections = FALSE;
     _logos12.mustRunPhysics = FALSE;
     _logos12.mustDistanceJointNeihgbours = FALSE;
     [_logos12 setupSensors];
     _logos12.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     [_logos12 loadImagesFrom:imagePaths
-               withNumOfEach:2
+               withNumOfEach:1
                     withSize:CGSizeMake(0.2f * self.frame.size.width,
-                                        0.2f * self.frame.size.width)
-          connectsAllToFirst:FALSE];
+                                        0.2f * self.frame.size.width)];
     
     imagePaths = [NSArray arrayWithObjects:@"ASUSLogo_1.png", @"ASUSLogo_2.png", @"T100_1.png", @"T100_2.png",
                                             @"T100_3.png", @"T100_4.png", @"T100_5.png", @"T100_6.png", nil];
     _logos34 = [FTInteractiveLogos layer];
     _logos34.mustGLClear = TRUE;
     _logos34.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos34.mustCreateSensors = FALSE;
+    _logos34.mustCollisionDetect = FALSE;
     _logos34.mustDrawConnections = FALSE;
     _logos34.mustRunPhysics = FALSE;
-    _logos34.mustDistanceJointNeihgbours = FALSE;
+    _logos34.mustDistanceJointNeihgbours = TRUE;
+    _logos34.mustAttachToBlob = TRUE;
     [_logos34 setupSensors];
     _logos34.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     [(FTInteractiveLogos*) _logos34 loadImagesFrom:imagePaths
-                                     withNumOfEach:4
+                                     withNumOfEach:1
                                           withSize:CGSizeMake(0.1f * self.frame.size.width,
-                                                              0.1f * self.frame.size.width)
-                                connectsAllToFirst:FALSE];
+                                                              0.1f * self.frame.size.width)];
     
 //    imagePaths = [NSArray arrayWithObjects:@"Humira.png", @"H1.png", @"H2.png", @"H3.png", nil];
     _logos56 = [FTInteractiveLogos layer];
     _logos56.mustGLClear = TRUE;
     _logos56.connectionDrawer = [FTLineConnectionDrawer class];
-    _logos56.mustCreateSensors = FALSE;
+    _logos56.mustCollisionDetect = FALSE;
     _logos56.mustDrawConnections = TRUE;
     _logos56.mustRunPhysics = FALSE;
     _logos56.mustDistanceJointNeihgbours = TRUE;
     _logos56.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     [_logos56 setupSensors];
     [(FTInteractiveLogos*) _logos56 loadImagesFrom:imagePaths
-                                     withNumOfEach:2
+                                     withNumOfEach:1
                                           withSize:CGSizeMake(0.1f * self.frame.size.width,
-                                                              0.1f * self.frame.size.width)
-                                connectsAllToFirst:TRUE];
+                                                              0.1f * self.frame.size.width)];
     
     _colorTracks = [FTPictureReveal layer];
     _colorTracks.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
@@ -252,7 +250,7 @@
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos12.mustCreateSensors = FALSE;
+            _logos12.mustCollisionDetect = FALSE;
             _logos12.mustDrawConnections = FALSE;
             _logos12.mustRunPhysics = TRUE;
             _logos12.mustDistanceJointNeihgbours = FALSE;
@@ -270,7 +268,7 @@
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos12.mustCreateSensors = TRUE;
+            _logos12.mustCollisionDetect = TRUE;
             _logos12.mustDrawConnections = TRUE;
             _logos12.mustRunPhysics = TRUE;
             _logos12.mustDistanceJointNeihgbours = FALSE;
@@ -287,10 +285,10 @@
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos34.mustCreateSensors = FALSE;
+            _logos34.mustCollisionDetect = FALSE;
             _logos34.mustDrawConnections = FALSE;
             _logos34.mustRunPhysics = TRUE;
-            _logos34.mustDistanceJointNeihgbours = FALSE;
+            _logos34.mustDistanceJointNeihgbours = TRUE;
         } break;
             
         case '4' :
@@ -304,57 +302,87 @@
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos34.mustCreateSensors = TRUE;
+            _logos34.mustCollisionDetect = TRUE;
             _logos34.mustDrawConnections = TRUE;
             _logos34.mustRunPhysics = TRUE;
-            _logos34.mustDistanceJointNeihgbours = FALSE;
+            _logos34.mustDistanceJointNeihgbours = TRUE;
         } break;
-            
-        case '5' :
+//
+//        case '5' :
+//        {
+//            if(_currentEffect != _logos56)
+//            {
+//                [_tuioClient removeObjectFromDelegates:_currentEffect];
+//                [_currentEffect removeFromSuperlayer];
+//                
+//                _currentEffect = _logos56;
+//                [self.layer addSublayer:_currentEffect];
+//                [_tuioClient addObjectToDelegates:_currentEffect];
+//            }
+//            _logos56.mustCollisionDetect = FALSE;
+//            _logos56.mustDrawConnections = FALSE;
+//            _logos56.mustRunPhysics = TRUE;
+//            _logos56.mustDistanceJointNeihgbours = TRUE;
+//        } break;
+//            
+//        case '6' :
+//        {
+//            if(_currentEffect != _logos56)
+//            {
+//                [_tuioClient removeObjectFromDelegates:_currentEffect];
+//                [_currentEffect removeFromSuperlayer];
+//                
+//                _currentEffect = _logos56;
+//                [self.layer addSublayer:_currentEffect];
+//                [_tuioClient addObjectToDelegates:_currentEffect];
+//            }
+//            _logos56.mustCollisionDetect = FALSE;
+//            _logos56.mustDrawConnections = TRUE;
+//            _logos56.mustRunPhysics = TRUE;
+//            _logos56.mustDistanceJointNeihgbours = TRUE;
+//        } break;
+
+        case '8' :
         {
-            if(_currentEffect != _logos56)
+            if(_currentEffect != _sparkleEmitter)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos56;
+                _currentEffect = _sparkleEmitter;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos56.mustCreateSensors = FALSE;
-            _logos56.mustDrawConnections = FALSE;
-            _logos56.mustRunPhysics = TRUE;
-            _logos56.mustDistanceJointNeihgbours = TRUE;
+            _sparkleEmitter.paths = [NSArray arrayWithObjects:@"cuad_1.png", @"cuad_2.png", @"cuad_3.png", nil];
         } break;
             
-        case '6' :
+        case '9' :
         {
-            if(_currentEffect != _logos56)
+            if(_currentEffect != _sparkleEmitter)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _logos56;
+                _currentEffect = _sparkleEmitter;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
-            _logos56.mustCreateSensors = FALSE;
-            _logos56.mustDrawConnections = TRUE;
-            _logos56.mustRunPhysics = TRUE;
-            _logos56.mustDistanceJointNeihgbours = TRUE;
+            _sparkleEmitter.paths = [NSArray arrayWithObjects:@"X_1.png", @"X_2.png", @"X_3.png", nil];
         } break;
             
         case '0' :
         {
-            if(_currentEffect != _colorTracks)
+            if(_currentEffect != _sparkleEmitter)
             {
                 [_tuioClient removeObjectFromDelegates:_currentEffect];
                 [_currentEffect removeFromSuperlayer];
                 
-                _currentEffect = _colorTracks;
+                _currentEffect = _sparkleEmitter;
                 [self.layer addSublayer:_currentEffect];
                 [_tuioClient addObjectToDelegates:_currentEffect];
             }
+            
+            _sparkleEmitter.paths = [NSArray arrayWithObjects:@"circl_1.png", @"circl_2.png", @"circl_3.png", nil];
         } break;
             
             

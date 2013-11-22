@@ -24,7 +24,10 @@
     {
         _hostingLayer = [CALayer layer];
         _emitters = [[NSMutableDictionary alloc] init];
-        _paths = [NSArray arrayWithObject:@"Spark2.png"];
+        _paths = [NSArray arrayWithObjects:@"cuad_1.png", @"cuad_2.png", @"cuad_3.png", nil];
+        _birthRate = 200.f;
+        _cellScale = 0.6f;
+        _cellScaleSpeed = _cellScale / -6.f;
     }
     
     return self;
@@ -44,6 +47,58 @@
     for(FTInteractiveObject *blob in [_blobs allValues])
     {
         [self renderContourOfObject:blob];
+    }
+}
+
+#pragma mark Event handling
+- (void)keyDown:(NSEvent *)event
+{
+    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    switch(key)
+    {
+            //Reduce logo size
+        case '-' :
+        {
+            float stepSize = 0.05;
+            _cellScale -= stepSize;
+            _cellScaleSpeed = _cellScale / -6.f;
+            
+            [CATransaction begin];
+            [CATransaction setAnimationDuration:0.f];
+            
+            for(CAEmitterLayer *emitter in _emitters.allValues)
+            {
+                for(CAEmitterCell *cell in emitter.emitterCells)
+                {
+                    cell.scale = _cellScale;
+                    cell.scaleSpeed = _cellScaleSpeed;;
+                }
+            }
+            
+            [CATransaction commit];
+        } break;
+            
+            //Enlarge logos
+        case '+' :
+        {
+            float stepSize = 0.05f;
+            _cellScale += stepSize;
+            _cellScaleSpeed = _cellScale / -6.f;
+            
+            [CATransaction begin];
+            [CATransaction setAnimationDuration:0.f];
+            
+            for(CAEmitterLayer *emitter in _emitters.allValues)
+            {
+                for(CAEmitterCell *cell in emitter.emitterCells)
+                {
+                    cell.scale = _cellScale;
+                    cell.scaleSpeed = _cellScaleSpeed;;
+                }
+            }
+            
+            [CATransaction commit];
+        } break;
     }
 }
 
@@ -67,6 +122,19 @@
     [_emitters removeObjectForKey:deadBounds.sessionID];
     
     [super tuioBoundsRemoved:deadBounds];
+}
+
+- (void) tuioStopListening
+{
+    for(FTInteractiveObject *object in [_blobs allValues])
+    {
+        CAEmitterLayer *emitter = [_emitters objectForKey:object.uid];
+        [emitter removeFromSuperlayer];
+    }
+    
+    [_emitters removeAllObjects];
+    
+    [super tuioStopListening];
 }
 #pragma mark -
 
@@ -123,7 +191,7 @@
     CGPoint pointSize = CGPointMake(object.size.width, object.size.height);
     pointSize = [self convertGLPointToCAPoint:pointSize];
     
-    emitterLayer.emitterSize = CGSizeMake(pointSize.x, pointSize.y);
+    emitterLayer.emitterSize = CGSizeMake(pointSize.x * 0.8f, pointSize.y * 0.8f);
     emitterLayer.emitterPosition = [self convertGLPointToCAPoint:object.position];
     
     emitterLayer.emitterMode = kCAEmitterLayerOutline;
@@ -135,30 +203,60 @@
     {
         CAEmitterCell *cell = [CAEmitterCell emitterCell];
         cell = [CAEmitterCell emitterCell];
-        cell.birthRate = 499.f;
-        cell.velocity = 200.f;
-        cell.lifetime = 0.6f;
-        cell.scale = 0.6f;
-//        cell.alphaSpeed = -0.2;
-//        cell.yAcceleration = -80;
-//        cell.beginTime = 4.5;
-//        cell.duration = 0.9;
-        
-//        cell.emissionLongitude = object.velocityAngle * DEG2RAD;
+        cell.birthRate = (_birthRate / [_paths count]) / 2.f;
+        cell.velocity = 150.f;
+        cell.lifetime = 1.f;
+        cell.scale = _cellScale;
+        cell.scaleSpeed = _cellScaleSpeed;
+        cell.spin = 0.f;
+        cell.spinRange = 3.5f;
         cell.emissionRange = M_PI / 2;
+        //        cell.alphaSpeed = -0.2;
+        //        cell.yAcceleration = -80;
+        //        cell.beginTime = 4.5;
+        //        cell.duration = 0.9;
+        //        cell.emissionLongitude = object.velocityAngle * DEG2RAD;
         
-        cell.scaleSpeed = -0.1f;
-        cell.spin = 2.f;
-        
-        CGColorRef color = CGColorCreateGenericRGB(0.5f, 0.5f, 0.5f, 0.8);
-        cell.color = color;
-        CGColorRelease(color);
-        cell.redRange = 0.5f;
-        cell.greenRange = 0.5f;
-        cell.blueRange = 0.5f;
+//        CGColorRef color = CGColorCreateGenericRGB(0.5f, 0.5f, 0.5f, 0.8);
+//        cell.color = color;
+//        CGColorRelease(color);
+//        cell.redRange = 0.5f;
+//        cell.greenRange = 0.5f;
+//        cell.blueRange = 0.5f;
         
         cell.contents = (id) [FTUtilityFunctions cgImageNamed:name];
         [cell setName:@"spark1"];
+        
+        [cells addObject:cell];
+    }
+    
+    for(NSString *name in names)
+    {
+        CAEmitterCell *cell = [CAEmitterCell emitterCell];
+        cell = [CAEmitterCell emitterCell];
+        cell.birthRate = (_birthRate / [_paths count]) / 2.f;
+        cell.velocity = 150.f;
+        cell.lifetime = 1.f;
+        cell.scale = _cellScale;
+        cell.scaleSpeed = _cellScaleSpeed;
+        cell.spin = 0.f;
+        cell.spinRange = -3.5f;
+        cell.emissionRange = M_PI / 2;
+        //        cell.alphaSpeed = -0.2;
+        //        cell.yAcceleration = -80;
+        //        cell.beginTime = 4.5;
+        //        cell.duration = 0.9;
+        //        cell.emissionLongitude = object.velocityAngle * DEG2RAD;
+        
+        //        CGColorRef color = CGColorCreateGenericRGB(0.5f, 0.5f, 0.5f, 0.8);
+        //        cell.color = color;
+        //        CGColorRelease(color);
+        //        cell.redRange = 0.5f;
+        //        cell.greenRange = 0.5f;
+        //        cell.blueRange = 0.5f;
+        
+        cell.contents = (id) [FTUtilityFunctions cgImageNamed:name];
+        [cell setName:@"spark2"];
         
         [cells addObject:cell];
     }

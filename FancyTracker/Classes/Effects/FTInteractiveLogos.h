@@ -28,9 +28,10 @@
     FTb2Physics *_physics;
     FTContactDetector *_contactDetector;
     BOOL _mustRunPhysics;
-    BOOL _mustCreateSensors;
+    BOOL _mustCollisionDetect;
     BOOL _mustDistanceJointNeihgbours;
     BOOL _mustDrawConnections;
+    BOOL _mustAttachToBlob;
     
     NSMutableArray *_logoObjects;
     NSMutableArray *_queuedForJoints;
@@ -44,9 +45,10 @@
 @property float density;
 
 @property BOOL mustRunPhysics;
-@property BOOL mustCreateSensors;
+@property BOOL mustCollisionDetect;
 @property BOOL mustDistanceJointNeihgbours;
 @property BOOL mustDrawConnections;
+@property BOOL mustAttachToBlob;
 
 @property(assign) Class connectionDrawer;
 
@@ -56,8 +58,10 @@
 
 - (void) loadImagesFrom:(NSArray*)imagePaths
           withNumOfEach:(int)num
-               withSize:(CGSize) size
-     connectsAllToFirst:(BOOL)connectsAll;
+               withSize:(CGSize) size;
+
+- (BOOL) mustCollisionDetect;
+- (void) setMustCollisionDetect:(BOOL)mustCollisionDetect;
 
 - (void) drawGL;
 

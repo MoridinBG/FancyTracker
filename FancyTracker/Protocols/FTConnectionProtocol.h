@@ -14,7 +14,8 @@
 - (id) initWithendA:(FTInteractiveObject*) endA
 			   endB:(FTInteractiveObject*) endB
 		beginningAt:(float) beginnning
-		   endingAt:(float)ending;
+		   endingAt:(float)ending
+             within:(CGSize) dimensions;
 @optional
 -(void) render;
 
